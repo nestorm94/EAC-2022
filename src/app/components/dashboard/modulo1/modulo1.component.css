@@ -1,0 +1,39 @@
+.container{
+  margin-top: auto;
+  margin-right: auto; 
+  margin-left: auto;
+
+}
+
+  .example-section {
+
+    display: flex;
+    margin: 12px 0;
+  }
+  
+  .example-margin {
+    margin: 0 12px;
+  }
+  .container {
+margin: auto;
+
+  }
+.mat-form-field{
+margin-top: auto;
+top: 50%; left: 0%;
+}
+
+
+.example-headers-align .mat-expansion-panel-header-title,
+.example-headers-align .mat-expansion-panel-header-description {
+  flex-basis: 0;
+}
+
+.example-headers-align .mat-expansion-panel-header-description {
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-headers-align .mat-form-field + .mat-form-field {
+  margin-left: 8px;
+}
