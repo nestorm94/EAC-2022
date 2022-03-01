@@ -5,11 +5,10 @@
   padding: 10px;
 }
 
-  .example-section {
-
-    display: flex;
-    margin: 12px 0;
-  }
+.example-section {
+  display: flex;
+  margin: 12px 0;
+}
   
   .example-margin {
     margin: 0 12px;
@@ -21,12 +20,9 @@ margin: auto;
 .mat-form-field{
 margin-top: auto;
 top: 50%; left: 0%;
+font-size: 16px;
 }
 
-.example-full-width{
-
-
-}
 
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {
@@ -40,4 +36,30 @@ top: 50%; left: 0%;
 
 .example-headers-align .mat-form-field + .mat-form-field {
   margin-left: 8px;
+}
+
+.example-form-field {
+  margin-right: 20px;
+}
+.ducument{
+  height:80px;
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+
+  margin-top: auto;
+  margin-right: auto; 
+  margin-left: auto;
+  padding: 10px;
+
+
+}
+.input{
+  overflow: hidden;
+  width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+
 }

@@ -12,6 +12,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
+import { MatNativeDateModule } from '@angular/material/core';
 
 
 
@@ -28,7 +29,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatSelectModule,
     MatExpansionModule,
     MatDatepickerModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   exports: [
     MatSliderModule,
@@ -39,7 +42,9 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
     MatIconModule,
     MatSelectModule,
     MatExpansionModule,
-    MatDatepickerModule,MatCheckboxModule
+    MatDatepickerModule,
+    MatCheckboxModule,
+    MatNativeDateModule
   ]
 })
 export class SharedModule { }

@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 
-import {FormControl, Validators} from '@angular/forms';
+import {FormControl, Validators, FormGroup} from '@angular/forms';
+
+
+
 
 interface department {
   value: string;
@@ -20,7 +23,13 @@ interface tipOrg {
   styleUrls: ['./modulo1.component.css']
 })
 export class Modulo1Component implements OnInit {
+
   emailFormControl = new FormControl('', [Validators.required, Validators.email]);
+
+  range = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl(),
+  });
 
   departments: municipio[] = [
     {value: 'DP01', viewValue: 'AMAZONAS'},
