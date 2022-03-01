@@ -2,7 +2,7 @@
   margin-top: auto;
   margin-right: auto; 
   margin-left: auto;
-
+  padding: 10px;
 }
 
   .example-section {
@@ -23,6 +23,10 @@ margin-top: auto;
 top: 50%; left: 0%;
 }
 
+.example-full-width{
+
+
+}
 
 .example-headers-align .mat-expansion-panel-header-title,
 .example-headers-align .mat-expansion-panel-header-description {
