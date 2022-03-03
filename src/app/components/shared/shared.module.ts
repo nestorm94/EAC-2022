@@ -13,6 +13,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import { MatNativeDateModule } from '@angular/material/core';
+import {FormsModule} from '@angular/forms';
+import { MatRadioModule } from '@angular/material/radio';
+import {MatTableModule} from '@angular/material/table';
+
 
 
 
@@ -32,6 +36,9 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    FormsModule,
+    MatRadioModule,
+    MatTableModule
   ],
   exports: [
     MatSliderModule,
@@ -44,7 +51,10 @@ import { MatNativeDateModule } from '@angular/material/core';
     MatExpansionModule,
     MatDatepickerModule,
     MatCheckboxModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    FormsModule,
+    MatRadioModule,
+    MatTableModule
   ]
 })
 export class SharedModule { }

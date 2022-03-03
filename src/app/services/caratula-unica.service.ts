@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@Angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -8,11 +8,17 @@ import { HttpClient } from '@Angular/common/http';
 })
 export class CaratulaUnicaService {
 
-    private API_SERV = "http://localhost:8080/modulo1/caratulaUnica";
+  
+    private API_SERV = "http://localhost:8080/modulo1/";
+    
 
     constructor(private httpClient: HttpClient) { }
 
     public guardarCaratula(caratula: any): Observable<any> {
-        return this.httpClient.post(this.API_SERV, caratula);
-    }
+      debugger
+      console.log(caratula);
+      return this.httpClient.post(this.API_SERV+"caratulaUnica", caratula);
+  }
+
+    
 }
