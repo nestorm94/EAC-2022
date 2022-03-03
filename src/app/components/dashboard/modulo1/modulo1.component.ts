@@ -1,10 +1,6 @@
-import { ContentObserver } from '@angular/cdk/observers';
+
 import { Component, OnInit } from '@angular/core';
-
-import { CaratulaUnica } from 'src/app/models/caratulaUnica';
-
-
-import { TipoDocumento } from 'src/app/models/tipoDocumento';
+import { CaratulaUnica } from 'src/app/models/caratulaUnica'
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import { CaratulaUnicaService } from 'src/app/services/caratula-unica.service';
 
