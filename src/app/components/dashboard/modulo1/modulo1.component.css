@@ -10,23 +10,25 @@
   margin: 12px 0;
 }
   
-  .example-margin {
-    margin: 0 12px;
-  }
+.example-margin {
+  margin: 0 12px;
+}
   .container {
-margin: auto;
-
+    margin: auto;
   }
 .mat-form-field{
 margin-top: auto;
 top: 50%; left: 0%;
 font-size: 16px;
 }
+.guardar{
+  text-align: right;
+}
 
 
 .example-headers-align .mat-expansion-panel-header-title,
-.example-headers-align .mat-expansion-panel-header-description {
-  flex-basis: 0;
+.mat-expansion-panel-header-description {
+  flex-basis: auto;
 }
 
 .example-headers-align .mat-expansion-panel-header-description {
@@ -70,10 +72,7 @@ table {
 
   width: 100%;
 }
-.mat-form-field {
-width: 100%;
 
-}
 .fecha{
 width: 25%;
 

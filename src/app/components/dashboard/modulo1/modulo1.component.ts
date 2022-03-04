@@ -47,6 +47,20 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 export class Modulo1Component implements OnInit {
 
+  step = 0;
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
+
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = ELEMENT_DATA;
 
