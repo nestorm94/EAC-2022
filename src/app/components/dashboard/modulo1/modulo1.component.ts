@@ -1,9 +1,10 @@
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CaratulaUnica } from 'src/app/models/caratulaUnica'
 import {FormControl, Validators, FormGroup} from '@angular/forms';
 import { CaratulaUnicaService } from 'src/app/services/caratula-unica.service';
 
+import {MatAccordion, MatAccordionBase} from '@angular/material/expansion';
 
 
 
@@ -44,8 +45,9 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './modulo1.component.html',
   styleUrls: ['./modulo1.component.css']
 })
-
 export class Modulo1Component implements OnInit {
+
+
 
   step = 0;
 
@@ -121,6 +123,8 @@ export class Modulo1Component implements OnInit {
 
   ngOnInit(): void {
   }
+
+
 
   guardar(): void {
     debugger

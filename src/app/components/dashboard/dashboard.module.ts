@@ -9,7 +9,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReportesComponent } from './reportes/reportes.component';
 import { Modulo1Component } from './modulo1/modulo1.component';
-import { Modoulo3Component } from './modoulo3/modoulo3.component';
+import { Modoulo3Component } from './modulo3/modoulo3.component';
 import { Modulo2Component } from './modulo2/modulo2.component';
 
 

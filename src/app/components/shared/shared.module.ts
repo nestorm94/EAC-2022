@@ -16,6 +16,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import {FormsModule} from '@angular/forms';
 import { MatRadioModule } from '@angular/material/radio';
 import {MatTableModule} from '@angular/material/table';
+import {MatGridListModule} from '@angular/material/grid-list';
+
 
 
 
@@ -38,7 +40,8 @@ import {MatTableModule} from '@angular/material/table';
     MatNativeDateModule,
     FormsModule,
     MatRadioModule,
-    MatTableModule
+    MatTableModule,
+    MatGridListModule
   ],
   exports: [
     MatSliderModule,
@@ -54,7 +57,8 @@ import {MatTableModule} from '@angular/material/table';
     MatNativeDateModule,
     FormsModule,
     MatRadioModule,
-    MatTableModule
+    MatTableModule,
+    MatGridListModule
   ]
 })
 export class SharedModule { }
