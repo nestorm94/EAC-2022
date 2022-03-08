@@ -54,11 +54,11 @@ export class Modulo1Component implements OnInit {
     debugger
     if(this.IcaratulaUnica.idTipoDocumento== null&& this.IcaratulaUnica.idTipoDocumento== undefined)
     {
-
-
-    }
+    }else{
 
     this.step++;
+    }
+
   }
 
   prevStep() {
@@ -101,8 +101,7 @@ export class Modulo1Component implements OnInit {
 
   constructor(
     public httpCaratula: CaratulaUnicaService,
-    private _formBuild: FormBuilder,
-  ) {
+    private _formBuild: FormBuilder) {
     this.buildForm();
   }
 

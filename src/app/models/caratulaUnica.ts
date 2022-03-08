@@ -1,4 +1,7 @@
-
+//===============================================
+// Caratula unica de la ecuesta EAC
+//===============================================
+// CaratulaUnica
 export interface CaratulaUnica{
     id?: number;
     numeroOrden?: number;    
