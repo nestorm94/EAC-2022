@@ -1,526 +1,529 @@
 <div class="container">
-  <mat-accordion class="example-headers-align" multi>
-      <!--numeral 1-->
-      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>
-                  Númeral 1. IDENTIFICACIÓN
-              </mat-panel-title>
-              <mat-icon>account_circle</mat-icon>
-          </mat-expansion-panel-header>
-          <div class="container">
-              <div class="row g-4">
-                  <div class="col-sm-6">
-                      <section class="example-section">
-                          <mat-radio-group name="tipoDocumento" [(ngModel)]="CaratulaUnica.idTipoDocumento">
-                              <mat-radio-button *ngFor="let td of tipoDocumento" name="opciones" [value]="td.id" style="margin: 10px;">
-                                  {{td.op}}
-                              </mat-radio-button>
-                          </mat-radio-group>
-                      </section>
-                  </div>
-                  <div class="col-sm-6">
-                      <p>Registro mercantil/ sin ánimo de lucro / de proponentes</p>
-                      <section class="example-section">
-                          <mat-radio-group [(ngModel)]="CaratulaUnica.cualTipoOrgaizacion">
-                              <mat-checkbox class="example-margin">Inscripcion/Matricula</mat-checkbox>
-                              <mat-checkbox class="example-margin">Renovacion</mat-checkbox>
-                          </mat-radio-group>
-                      </section>
-                  </div>
-                  <div class="col-sm-5">
-                      <label for="firstName" class="form-label">Nro. Documento</label>
-                      <input type="number" class="form-control" id="firstName" placeholder="" value="" required />
-                      <div class="invalid-feedback">
-                          Nro. Documento requerido
-                      </div>
-                  </div>
-                  <div class="col-sm-1">
-                      <label for="firstName" class="form-label">D.v</label>
-                      <input type="number" class="form-control" id="firstName" placeholder="" value="" required />
-                      <div class="invalid-feedback">
-                          Nro. Documento requerido
-                      </div>
-                  </div>
-                  <div class="col-sm-3">
-                      <label for="firstName" class="form-label"> Cámara </label>
-                      <input type="number" class="form-control" id="firstName" placeholder="" value="" required />
-                      <div class="invalid-feedback">
-                          Nombre comercial requerido
-                      </div>
-                  </div>
-                  <div class="col-sm-3">
-                      <label for="firstName" class="form-label"> Matrícula / Registro</label>
-                      <input type="number" class="form-control" id="firstName" placeholder="" value="" required />
-                      <div class="invalid-feedback">
-                          Nombre comercial requerido
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <mat-action-row>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 2-->
-      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 2. UBICACIÓN Y DATOS GENERALES </mat-panel-title>
-              <mat-icon>map</mat-icon>
-          </mat-expansion-panel-header>
-          <div class="numeral2">
-              <div class="col-md-12">
-                  <form class="caratulaUnica" novalidate>
-                      <div class="container">
-                          <div class="row g-4">
-                              <div class="col-sm-10">
-                                  <label for="firstName" class="form-label">1. Razón social de la empresa</label>
-                                  <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
-                                  <div class="invalid-feedback">
-                                      Razón social de la empresa requerido
-                                  </div>
-                              </div>
-                              <div class="col-sm-2">
-                                  <label for="lastName" class="form-label">LGGR</label>
-                                  <input type="text" class="form-control" id="CaratulaUnica.LGGR" placeholder="" value="" disabled />
-                                  <div class="invalid-feedback">
-                                      LGGR es requerido.
-                                  </div>
-                              </div>
-                              <div class="col-sm-10">
-                                  <label for="firstName" class="form-label"> 2. Nombre comercial </label>
-                                  <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
-                                  <div class="invalid-feedback">
-                                      Nombre comercial requerido
-                                  </div>
-                              </div>
-                              <div class="col-sm-2">
-                                  <label for="lastName" class="form-label">3. Sigla</label>
-                                  <input type="text" class="form-control" id="CaratulaUnica.LGGR" placeholder="" value="" required />
-                                  <div class="invalid-feedback">
-                                      Sigla es requerido.
-                                  </div>
-                              </div>
-                              <div class="col-12">
-                                  <label for="username" class="form-label">4. Domicilio principal o dirección de la gerencia</label>
-                                  <div class="input-group has-validation">
-                                      <input type="text" class="form-control" id="username" placeholder="" required />
-                                      <div class="invalid-feedback">
-                                          Domicilio principal o dirección de la gerencia es requerido.
-                                      </div>
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <label for="country" class="form-label">5. Departamento</label>
-                                  <select class="form-select" ng-model="selectedDept" id="country" required>
-                                      <option *ngFor="let department of departments" value="">{{department.value}}</option>
-                                  </select>
-                                  <div class="invalid-feedback">
-                                      Departamento es un valor requerido.
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <label for="state" class="form-label">6. Municipio</label>
-                                  <select class="form-select" ng-model="selectedMuni" id="country" required>
-                                      <option *ngFor="let municipio of municipios" value="">{{municipio.value}}</option>
-                                  </select>
-                                  <div class="invalid-feedback">
-                                      Municipio es un valor requerido.
-                                  </div>
-                              </div>
-                              <div class="col-3">
-                                  <label for="address" class="form-label">7. Teléfono</label>
-                                  <input type="tel" class="form-control" id="address" placeholder="" required />
-                                  <div class="invalid-feedback">
-                                      Teléfono
-                                  </div>
-                              </div>
-                              <div class="col-9">
-                                  <label for="address2" class="form-label">8. Redes sociales</label>
-                                  <input type="text" class="form-control" id="redes" placeholder="" required />
-                                  <div class="invalid-feedback">
-                                      Teléfono
-                                  </div>
-                              </div>
-                              <div class="col-6">
-                                  <label for="email" class="form-label">9. Correo electrónico </label>
-                                  <input type="email" class="form-control" id="email" placeholder="you@example.com" />
-                                  <div class="invalid-feedback">
-                                      Requerido correo electrónico.
-                                  </div>
-                              </div>
-                              <div class="col-6">
-                                  <label for="address2" class="form-label">10 Página Web</label>
-                                  <input type="text" class="form-control" id="redes" placeholder="" required />
-                                  <div class="invalid-feedback">
-                                      Teléfono
-                                  </div>
-                              </div>
-                              <div class="col-sm-10">
-                                  <label for="firstName" class="form-label">11. Dirección para notificación</label>
-                                  <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
-                                  <div class="invalid-feedback"></div>
-                              </div>
-                              <div class="col-sm-2">
-                                  <label for="lastName" class="form-label">LGPN</label>
-                                  <input type="text" class="form-control" id="CaratulaUnica.LGGR" placeholder="" value="" disabled />
-                                  <div class="invalid-feedback"></div>
-                              </div>
-                              <div class="col-md-6">
-                                  <label for="country" class="form-label">5. Departamento</label>
-                                  <select class="form-select" ng-model="selectedDept" id="country" required>
-                                      <option *ngFor="let department of departments" value="">{{department.value}}</option>
-                                  </select>
-                                  <div class="invalid-feedback">
-                                      Departamento es un valor requerido.
-                                  </div>
-                              </div>
-                              <div class="col-md-6">
-                                  <label for="state" class="form-label">6. Municipio</label>
-                                  <select class="form-select" ng-model="selectedMuni" id="country" required>
-                                      <option *ngFor="let municipio of municipios" value="">{{municipio.value}}</option>
-                                  </select>
-                                  <div class="invalid-feedback">
-                                      Municipio es un valor requerido.
-                                  </div>
-                              </div>
-                              <div class="col-3">
-                                  <label for="address" class="form-label">7. Teléfono</label>
-                                  <input type="tel" class="form-control" id="address" placeholder="" required />
-                                  <div class="invalid-feedback">
-                                      Teléfono
-                                  </div>
-                              </div>
-                              <div class="col-9">
-                                  <label for="address2" class="form-label">8. Redes sociales</label>
-                                  <input type="text" class="form-control" id="redes" placeholder="" required />
-                                  <div class="invalid-feedback">
-                                      Teléfono
-                                  </div>
-                              </div>
-                              <div class="col-12">
-                                  <label for="email" class="form-label">9. Correo electrónico </label>
-                                  <input type="email" class="form-control" id="email" placeholder="you@example.com" />
-                                  <div class="invalid-feedback">
-                                      Requerido correo electrónico.
-                                  </div>
-                              </div>
-                          </div>
-                      </div>
-                  </form>
-              </div>
-          </div>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 3-->
-      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 3. TIPO DE ORGANIZACIÓN </mat-panel-title>
-              <mat-icon> import_export</mat-icon>
-          </mat-expansion-panel-header>
-          <div class="container">
-              <div class="row g-4">
-                  <div class="col-md-6">
-                      <label for="country" class="form-label">Tipo Organización</label>
-                      <select class="form-select" ng-model="selectedDept" id="country" required>
-                          <option *ngFor="let department of departments" value="">{{department.value}}</option>
-                      </select>
-                      <div class="invalid-feedback">
-                      </div>
-                  </div>
-                  <div class="col-sm-4">
-                    <label for="firstName" class="form-label">Cual?</label>
-                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
-                    <div class="invalid-feedback">
+    <mat-accordion class="example-headers-align" multi>
+        <!--numeral 1-->
+        <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    Númeral 1. IDENTIFICACIÓN
+                </mat-panel-title>
+                <mat-icon>account_circle</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="container">
+                <form formGroup="numeral1" ngNativeValidate class="form-horizontal-left mb-lg">
+                    <div class="row g-4">
+                        <div class="col-sm-6">
+                            <section class="example-section">
+                                <mat-radio-group [(ngModel)]="IcaratulaUnica.idTipoDocumento" >
+                                    <mat-radio-button *ngFor="let td of tipoDocumento" name="opciones" [value]="td.id" style="margin: 10px;">
+                                        {{td.op}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                                <div class="alert-danger">
+                                    <div class="container-error-message">
+
+
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="col-sm-6">
+                            <p>Registro mercantil/ sin ánimo de lucro / de proponentes</p>
+                            <section class="example-section">
+                                <mat-radio-group>
+                                    <mat-checkbox class="example-margin">Inscripcion/Matricula</mat-checkbox>
+                                    <mat-checkbox class="example-margin">Renovacion</mat-checkbox>
+                                </mat-radio-group>
+                            </section>
+                        </div>
+                        <div class="col-sm-5">
+                            <label class="form-label">Nro. Documento</label>
+                            <input [(ngModel)]="IcaratulaUnica.numeroDocumento" type="number" class="form-control" formGroupName="numeroDocumento"  [class.is-invalid]="numeral1.get('numeroDocumento')?.touched && numeral1.get('numeroDocumento')?.invalid" />
+                        </div>
+                        <div class="col-sm-1">
+                            <label for="firstName" class="form-label">D.v</label>
+                            <input [(ngModel)]="IcaratulaUnica.digitoVerificacion" formGroupName="digitoVerificacion" type="number" class="form-control" />
+                            <div class="invalid-feedback">
+                                Nro. Documento requerido
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="firstName" class="form-label"> Cámara </label>
+                            <input [(ngModel)]="IcaratulaUnica.numeroCamara" type="number" class="form-control" id="firstName" placeholder="" value="" />
+                            <div class="invalid-feedback">
+                                Nombre comercial requerido
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label for="firstName" class="form-label"> Matrícula / Registro</label>
+                            <input [(ngModel)]="IcaratulaUnica.numeroRegistro" type="number" class="form-control" id="firstName" placeholder="" value="" />
+                            <div class="invalid-feedback">
+                                Nombre comercial requerido
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <mat-action-row>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 2-->
+        <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 2. UBICACIÓN Y DATOS GENERALES </mat-panel-title>
+                <mat-icon>map</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="numeral2">
+                <div class="col-md-12">
+                    <form class="CaratulicaUnica" novalidate>
+                        <div class="container">
+                            <div class="row g-4">
+                                <div class="col-sm-10">
+                                    <label for="firstName" class="form-label">1. Razón social de la empresa</label>
+                                    <input type="text" class="form-control" />
+                                    <div class="invalid-feedback">
+                                        Razón social de la empresa requerido
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="lastName" class="form-label">LGGR</label>
+                                    <input type="text" class="form-control" id="CaratulaUnica.LGGR" placeholder="" value="" disabled />
+                                    <div class="invalid-feedback">
+                                        LGGR es requerido.
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <label for="firstName" class="form-label"> 2. Nombre comercial </label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
+                                    <div class="invalid-feedback">
+                                        Nombre comercial requerido
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="lastName" class="form-label">3. Sigla</label>
+                                    <input type="text" class="form-control" id="CaratulaUnica.LGGR" placeholder="" value="" required />
+                                    <div class="invalid-feedback">
+                                        Sigla es requerido.
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="username" class="form-label">4. Domicilio principal o dirección de la gerencia</label>
+                                    <div class="input-group has-validation">
+                                        <input type="text" class="form-control" id="username" placeholder="" required />
+                                        <div class="invalid-feedback">
+                                            Domicilio principal o dirección de la gerencia es requerido.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="country" class="form-label">5. Departamento</label>
+                                    <select class="form-select" id="country" required>
+                                        <option *ngFor="let department of departments" value="">{{department.value}}</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Departamento es un valor requerido.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="state" class="form-label">6. Municipio</label>
+                                    <select class="form-select" id="country" required>
+                                        <option *ngFor="let municipio of municipios" value="">{{municipio.value}}</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Municipio es un valor requerido.
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label for="address" class="form-label">7. Teléfono</label>
+                                    <input type="tel" class="form-control" id="address" placeholder="" required />
+                                    <div class="invalid-feedback">
+                                        Teléfono
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <label for="address2" class="form-label">8. Redes sociales</label>
+                                    <input type="text" class="form-control" id="redes" placeholder="" required />
+                                    <div class="invalid-feedback">
+                                        Teléfono
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="email" class="form-label">9. Correo electrónico </label>
+                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" />
+                                    <div class="invalid-feedback">
+                                        Requerido correo electrónico.
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="address2" class="form-label">10 Página Web</label>
+                                    <input type="text" class="form-control" id="redes" placeholder="" required />
+                                    <div class="invalid-feedback">
+                                        Teléfono
+                                    </div>
+                                </div>
+                                <div class="col-sm-10">
+                                    <label for="firstName" class="form-label">11. Dirección para notificación</label>
+                                    <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <label for="lastName" class="form-label">LGPN</label>
+                                    <input type="text" class="form-control" id="CaratulaUnica.LGGR" placeholder="" value="" disabled />
+                                    <div class="invalid-feedback"></div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="country" class="form-label">5. Departamento</label>
+                                    <select class="form-select" id="country" required>
+                                        <option *ngFor="let department of departments" value="">{{department.value}}</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Departamento es un valor requerido.
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="state" class="form-label">6. Municipio</label>
+                                    <select class="form-select" id="country" required>
+                                        <option *ngFor="let municipio of municipios" value="">{{municipio.value}}</option>
+                                    </select>
+                                    <div class="invalid-feedback">
+                                        Municipio es un valor requerido.
+                                    </div>
+                                </div>
+                                <div class="col-3">
+                                    <label for="address" class="form-label">7. Teléfono</label>
+                                    <input type="tel" class="form-control" id="address" placeholder="" required />
+                                    <div class="invalid-feedback">
+                                        Teléfono
+                                    </div>
+                                </div>
+                                <div class="col-9">
+                                    <label for="address2" class="form-label">8. Redes sociales</label>
+                                    <input type="text" class="form-control" id="redes" placeholder="" required />
+                                    <div class="invalid-feedback">
+                                        Teléfono
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="email" class="form-label">9. Correo electrónico </label>
+                                    <input type="email" class="form-control" id="email" placeholder="you@example.com" />
+                                    <div class="invalid-feedback">
+                                        Requerido correo electrónico.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 3-->
+        <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 3. TIPO DE ORGANIZACIÓN </mat-panel-title>
+                <mat-icon> import_export</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <label for="country" class="form-label">Tipo Organización</label>
+                        <select class="form-select" id="country" required>
+                            <option *ngFor="let department of departments" value="">{{department.value}}</option>
+                        </select>
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-sm-4">
+                        <label for="firstName" class="form-label">Cual?</label>
+                        <input type="text" class="form-control" id="firstName" placeholder="" value="" required />
+                        <div class="invalid-feedback"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="state" class="form-label">6. Municipio</label>
+                        <select class="form-select" id="country" required>
+                            <option *ngFor="let municipio of municipios" value="">{{municipio.value}}</option>
+                        </select>
+                        <div class="invalid-feedback">
+                            Municipio es un valor requerido.
+                        </div>
                     </div>
                 </div>
-                  <div class="col-md-6">
-                      <label for="state" class="form-label">6. Municipio</label>
-                      <select class="form-select" ng-model="selectedMuni" id="country" required>
-                          <option *ngFor="let municipio of municipios" value="">{{municipio.value}}</option>
-                      </select>
-                      <div class="invalid-feedback">
-                          Municipio es un valor requerido.
-                      </div>
-                  </div>
-              </div>
-          </div>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 4-->
-      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 4. FECHA DE CONSTITUCIÓN (DD /MM /AAAA) </mat-panel-title>
-              <mat-icon>date_range</mat-icon>
-          </mat-expansion-panel-header>
-          <div class="container">
-              <br />
-              <mat-form-field class="fecha" appearance="fill">
-                  <mat-label>Desde</mat-label>
-                  <input matInput />
-                  <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-              <mat-form-field class="fecha" appearance="fill">
-                  <mat-label>hasta</mat-label>
-                  <input matInput />
-                  <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field>
-          </div>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 5-->
-      <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 5. COMPOSICIÓN DEL CAPITAL SOCIAL </mat-panel-title>
-              <mat-icon>collections_bookmark</mat-icon>
-          </mat-expansion-panel-header>
-          <div class="container">
-              <p>1</p>
-              <mat-form-field class="example-user-input" appearance="fill">
-                  <mat-label>% Publico </mat-label>
-                  <input matInput type="number" aria-label="Adds a delay between hovering over the button and displaying the tooltip" />
-                  <mat-hint>1.1 % Publico </mat-hint>
-              </mat-form-field>
-              <mat-form-field class="example-user-input" appearance="fill">
-                  <mat-label>% Privado</mat-label>
-                  <input matInput type="number" aria-label="Adds a delay between hovering away from the button and hiding the tooltip" />
-                  <mat-hint>1.2 % Privado</mat-hint>
-              </mat-form-field>
-              <mat-form-field class="example-user-input" appearance="fill">
-                  <mat-label>Hide delay</mat-label>
-                  <input matInput type="number" aria-label="Adds a delay between hovering away from the button and hiding the tooltip" />
-                  <mat-hint>%</mat-hint>
-              </mat-form-field>
-          </div>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterio</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 6-->
-      <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 6. ESTADO ACTUAL DE LA EMPRESA </mat-panel-title>
-              <mat-icon> insert_chart_outlined</mat-icon>
-          </mat-expansion-panel-header>
-          <mat-form-field appearance="fill">
-              <mat-label>TIPO DE ORGANIZACIÓN</mat-label>
-              <mat-select>
-                  <mat-option *ngFor="let tipOrg of tipoOrgns" [value]="tipOrg.value">
-                      {{tipOrg.viewValue}}
-                  </mat-option>
-              </mat-select>
-          </mat-form-field>
-          <mat-form-field class="example-full-width" appearance="fill">
-              <mat-label>Cual?</mat-label>
-              <textarea matInput placeholder="Describa el estado Actual de la empresa"></textarea>
-          </mat-form-field>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 7-->
-      <mat-expansion-panel [expanded]="step === 6" (opened)="setStep(6)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 7. VARIABLES PRINCIPALES DEL TOTAL DE LA EMPRESA. </mat-panel-title>
-              <mat-icon>description</mat-icon>
-          </mat-expansion-panel-header>
-          <div>
-              <mat-panel-description>
-                  <p>Columna 2: Asigne para cada sección la principal actividad en codigo (CIIU 4 Rev.4 A.C.) realizada por la empresa durante el año.</p>
-                  <p>Columnas 3 y 4 Relacione el número de establecimientos y el valor de los ingresos causados durante el año en cada sección.</p>
-                  <p>Columnas 5, 6 y 7 Relacione el personal ocupado, la remuneración y los costos y gastos causados durante el año en cada sección.</p>
-              </mat-panel-description>
-              <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
-                  <!--- Note that these columns can be defined in any order.
+            </div>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 4-->
+        <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 4. FECHA DE CONSTITUCIÓN (DD /MM /AAAA) </mat-panel-title>
+                <mat-icon>date_range</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="container">
+                <br />
+                <mat-form-field class="fecha" appearance="fill">
+                    <mat-label>Desde</mat-label>
+                    <input matInput />
+                    <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class="fecha" appearance="fill">
+                    <mat-label>hasta</mat-label>
+                    <input matInput />
+                    <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 5-->
+        <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 5. COMPOSICIÓN DEL CAPITAL SOCIAL </mat-panel-title>
+                <mat-icon>collections_bookmark</mat-icon>
+            </mat-expansion-panel-header>
+            <div class="container">
+                <p>1</p>
+                <mat-form-field class="example-user-input" appearance="fill">
+                    <mat-label>% Publico </mat-label>
+                    <input matInput type="number" aria-label="Adds a delay between hovering over the button and displaying the tooltip" />
+                    <mat-hint>1.1 % Publico </mat-hint>
+                </mat-form-field>
+                <mat-form-field class="example-user-input" appearance="fill">
+                    <mat-label>% Privado</mat-label>
+                    <input matInput type="number" aria-label="Adds a delay between hovering away from the button and hiding the tooltip" />
+                    <mat-hint>1.2 % Privado</mat-hint>
+                </mat-form-field>
+                <mat-form-field class="example-user-input" appearance="fill">
+                    <mat-label>Hide delay</mat-label>
+                    <input matInput type="number" aria-label="Adds a delay between hovering away from the button and hiding the tooltip" />
+                    <mat-hint>%</mat-hint>
+                </mat-form-field>
+            </div>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterio</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 6-->
+        <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 6. ESTADO ACTUAL DE LA EMPRESA </mat-panel-title>
+                <mat-icon> insert_chart_outlined</mat-icon>
+            </mat-expansion-panel-header>
+            <mat-form-field appearance="fill">
+                <mat-label>TIPO DE ORGANIZACIÓN</mat-label>
+                <mat-select>
+                    <mat-option *ngFor="let tipOrg of tipoOrgns" [value]="tipOrg.value">
+                        {{tipOrg.viewValue}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width" appearance="fill">
+                <mat-label>Cual?</mat-label>
+                <textarea matInput placeholder="Describa el estado Actual de la empresa"></textarea>
+            </mat-form-field>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 7-->
+        <mat-expansion-panel [expanded]="step === 6" (opened)="setStep(6)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 7. VARIABLES PRINCIPALES DEL TOTAL DE LA EMPRESA. </mat-panel-title>
+                <mat-icon>description</mat-icon>
+            </mat-expansion-panel-header>
+            <div>
+                <mat-panel-description>
+                    <p>Columna 2: Asigne para cada sección la principal actividad en codigo (CIIU 4 Rev.4 A.C.) realizada por la empresa durante el año.</p>
+                    <p>Columnas 3 y 4 Relacione el número de establecimientos y el valor de los ingresos causados durante el año en cada sección.</p>
+                    <p>Columnas 5, 6 y 7 Relacione el personal ocupado, la remuneración y los costos y gastos causados durante el año en cada sección.</p>
+                </mat-panel-description>
+                <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+                    <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
-                  <!-- Position Column -->
-                  <ng-container matColumnDef="position">
-                      <th mat-header-cell *matHeaderCellDef>No.</th>
-                      <td mat-cell *matCellDef="let element">{{element.position}}</td>
-                  </ng-container>
-                  <!-- Name Column -->
-                  <ng-container matColumnDef="name">
-                      <th mat-header-cell *matHeaderCellDef>Name</th>
-                      <td mat-cell *matCellDef="let element">{{element.name}}</td>
-                  </ng-container>
-                  <!-- Weight Column -->
-                  <ng-container matColumnDef="weight">
-                      <th mat-header-cell *matHeaderCellDef>Weight</th>
-                      <td mat-cell *matCellDef="let element">{{element.weight}}</td>
-                  </ng-container>
-                  <!-- Symbol Column -->
-                  <ng-container matColumnDef="symbol">
-                      <th mat-header-cell *matHeaderCellDef>Symbol</th>
-                      <td mat-cell *matCellDef="let element">{{element.symbol}}</td>
-                  </ng-container>
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-              </table>
-          </div>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterio</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 8-->
-      <mat-expansion-panel [expanded]="step === 7" (opened)="setStep(7)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 8. INGRESOS NO OPERACIONALES </mat-panel-title>
-              <mat-icon> attach_money</mat-icon>
-          </mat-expansion-panel-header>
-          <table>
-              <tr>
-                  <td>
-                      <p>1. Ingresos por intereses causados, diferencia en cambio, utilidad por venta de activos, etc.,</p>
-                  </td>
-                  <td>
-                      <mat-form-field appearance="fill" cellspacing="0">
-                          <input matInput [(ngModel)]="CaratulaUnica.numeroCamara" type="number" />
-                      </mat-form-field>
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-                      <p>2. Aprovechamientos y recuperaciones</p>
-                  </td>
-                  <td>
-                      <mat-form-field appearance="fill" cellspacing="0">
-                          <input matInput [(ngModel)]="CaratulaUnica.numeroCamara" type="number" />
-                      </mat-form-field>
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-                      <p>3. Descuentos por pronto pago</p>
-                  </td>
-                  <td>
-                      <mat-form-field appearance="fill" cellspacing="0">
-                          <input matInput [(ngModel)]="CaratulaUnica.numeroCamara" type="number" />
-                      </mat-form-field>
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-                      <p>4. Otros ingresos. Incluye: codificación de productos, comisiones por venta de: loterías, tarjetas y pines telefónicos, cobro de servicios publicos; etc. (relacione en observaciones)</p>
-                  </td>
-                  <td>
-                      <mat-form-field appearance="fill" cellspacing="0">
-                          <input matInput [(ngModel)]="CaratulaUnica.numeroCamara" type="number" />
-                      </mat-form-field>
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-                      <p>Total (Suma renglones 1-4)</p>
-                  </td>
-                  <td>
-                      <mat-form-field appearance="fill" cellspacing="0">
-                          <input matInput [(ngModel)]="CaratulaUnica.numeroCamara" type="text" />
-                      </mat-form-field>
-                  </td>
-              </tr>
-          </table>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 9-->
-      <mat-expansion-panel [expanded]="step === 8" (opened)="setStep(8)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 9. NUMERO DE UNIDADES DE APOYO </mat-panel-title>
-              <mat-icon>group_work</mat-icon>
-          </mat-expansion-panel-header>
-          <table>
-              <tr>
-                  <td>
-                      <p>Número de unidades de apoyo*</p>
-                  </td>
-                  <td>
-                      <mat-form-field appearance="fill" cellspacing="0">
-                          <input matInput [(ngModel)]="CaratulaUnica.numeroCamara" type="number" />
-                      </mat-form-field>
-                  </td>
-                  <td>
-                      <p>
-                          *Establecimientos independientes de aquellos en los que se desarrollan las actividades principales o secundarias , destinados a apoyar dichas actividades (relacionadas con el comercio) y en los cuales, "NO se
-                          realiza Facturación". Por ejemplo: bodegas, gerencia general, oficinas de contabilidad e informática, agencias de distribución, dispensarios de medicamentos a EPS en los que no se realice venta directa y
-                          facturación, etc.
-                      </p>
-                  </td>
-              </tr>
-          </table>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterio</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 10-->
-      <mat-expansion-panel [expanded]="step === 9" (opened)="setStep(9)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 10. IMPORTACIONES Y EXPORTACIONES REALIZADAS EN EL AÑO </mat-panel-title>
-              <mat-icon> import_export</mat-icon>
-          </mat-expansion-panel-header>
-          <table>
-              <tr>
-                  <td>
-                      <p>1. La empresa efectuó operaciones de compra con otro (s) país (es) de:</p>
-                  </td>
-                  <td>
-                      <section class="example-section">
-                          <mat-radio-group>
-                              <mat-radio-button name="opciones" [value]="1" style="margin: 10px;"> Bienes</mat-radio-button>
-                              <mat-radio-button name="opciones" [value]="2" style="margin: 10px;"> Servicios</mat-radio-button>
-                              <mat-radio-button name="opciones" [value]="3" style="margin: 10px;"> Ninguana</mat-radio-button>
-                          </mat-radio-group>
-                      </section>
-                  </td>
-              </tr>
-              <tr>
-                  <td>
-                      <p>2. La empresa efectuó operaciones de venta con otro (s) país (es) de:</p>
-                  </td>
-                  <td>
-                      <section class="example-section">
-                          <mat-radio-group>
-                              <mat-radio-button name="opciones" [value]="1" style="margin: 10px;"> Bienes</mat-radio-button>
-                              <mat-radio-button name="opciones" [value]="2" style="margin: 10px;"> Servicios</mat-radio-button>
-                              <mat-radio-button name="opciones" [value]="3" style="margin: 10px;"> Ninguana</mat-radio-button>
-                          </mat-radio-group>
-                      </section>
-                  </td>
-              </tr>
-          </table>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-              <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 11-->
-      <mat-expansion-panel [expanded]="step === 10" (opened)="setStep(10)" hideToggle>
-          <mat-expansion-panel-header>
-              <mat-panel-title>Númeral 11. FUNCIONAMIENTO DE LA ACTIVIDAD COMERCIAL Y ORGANIZACIÓN DE LA EMPRESA, DURANTE EL AÑO DE LA ENCUESTA </mat-panel-title><mat-icon>reorder</mat-icon>
-          </mat-expansion-panel-header>
-          <mat-action-row>
-              <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-              <button mat-button color="primary" (click)="nextStep()">Fin</button>
-          </mat-action-row>
-      </mat-expansion-panel>
-      <div class="container">
-          <button type="button" class="btn btn-lg btn-primary" (click)="guardar()">GUARDAR</button>
-      </div>
-  </mat-accordion>
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="position">
+                        <th mat-header-cell *matHeaderCellDef>No.</th>
+                        <td mat-cell *matCellDef="let element">{{element.position}}</td>
+                    </ng-container>
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                        <th mat-header-cell *matHeaderCellDef>Name</th>
+                        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+                    </ng-container>
+                    <!-- Weight Column -->
+                    <ng-container matColumnDef="weight">
+                        <th mat-header-cell *matHeaderCellDef>Weight</th>
+                        <td mat-cell *matCellDef="let element">{{element.weight}}</td>
+                    </ng-container>
+                    <!-- Symbol Column -->
+                    <ng-container matColumnDef="symbol">
+                        <th mat-header-cell *matHeaderCellDef>Symbol</th>
+                        <td mat-cell *matCellDef="let element">{{element.symbol}}</td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+            </div>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterio</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 8-->
+        <mat-expansion-panel [expanded]="step === 7" (opened)="setStep(7)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 8. INGRESOS NO OPERACIONALES </mat-panel-title>
+                <mat-icon> attach_money</mat-icon>
+            </mat-expansion-panel-header>
+            <table>
+                <tr>
+                    <td>
+                        <p>1. Ingresos por intereses causados, diferencia en cambio, utilidad por venta de activos, etc.,</p>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="fill" cellspacing="0">
+                            <input matInput type="number" />
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>2. Aprovechamientos y recuperaciones</p>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="fill" cellspacing="0">
+                            <input matInput type="number" />
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>3. Descuentos por pronto pago</p>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="fill" cellspacing="0">
+                            <input matInput type="number" />
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>4. Otros ingresos. Incluye: codificación de productos, comisiones por venta de: loterías, tarjetas y pines telefónicos, cobro de servicios publicos; etc. (relacione en observaciones)</p>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="fill" cellspacing="0">
+                            <input matInput type="number" />
+                        </mat-form-field>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>Total (Suma renglones 1-4)</p>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="fill" cellspacing="0">
+                            <input matInput type="text" />
+                        </mat-form-field>
+                    </td>
+                </tr>
+            </table>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 9-->
+        <mat-expansion-panel [expanded]="step === 8" (opened)="setStep(8)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 9. NUMERO DE UNIDADES DE APOYO </mat-panel-title>
+                <mat-icon>group_work</mat-icon>
+            </mat-expansion-panel-header>
+            <table>
+                <tr>
+                    <td>
+                        <p>Número de unidades de apoyo*</p>
+                    </td>
+                    <td>
+                        <mat-form-field appearance="fill" cellspacing="0">
+                            <input matInput type="number" />
+                        </mat-form-field>
+                    </td>
+                    <td>
+                        <p>
+                            *Establecimientos independientes de aquellos en los que se desarrollan las actividades principales o secundarias , destinados a apoyar dichas actividades (relacionadas con el comercio) y en los cuales, "NO se
+                            realiza Facturación". Por ejemplo: bodegas, gerencia general, oficinas de contabilidad e informática, agencias de distribución, dispensarios de medicamentos a EPS en los que no se realice venta directa y
+                            facturación, etc.
+                        </p>
+                    </td>
+                </tr>
+            </table>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterio</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 10-->
+        <mat-expansion-panel [expanded]="step === 9" (opened)="setStep(9)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 10. IMPORTACIONES Y EXPORTACIONES REALIZADAS EN EL AÑO </mat-panel-title>
+                <mat-icon> import_export</mat-icon>
+            </mat-expansion-panel-header>
+            <table>
+                <tr>
+                    <td>
+                        <p>1. La empresa efectuó operaciones de compra con otro (s) país (es) de:</p>
+                    </td>
+                    <td>
+                        <section class="example-section">
+                            <mat-radio-group>
+                                <mat-radio-button name="opciones" [value]="1" style="margin: 10px;"> Bienes</mat-radio-button>
+                                <mat-radio-button name="opciones" [value]="2" style="margin: 10px;"> Servicios</mat-radio-button>
+                                <mat-radio-button name="opciones" [value]="3" style="margin: 10px;"> Ninguana</mat-radio-button>
+                            </mat-radio-group>
+                        </section>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>2. La empresa efectuó operaciones de venta con otro (s) país (es) de:</p>
+                    </td>
+                    <td>
+                        <section class="example-section">
+                            <mat-radio-group>
+                                <mat-radio-button name="opciones" [value]="1" style="margin: 10px;"> Bienes</mat-radio-button>
+                                <mat-radio-button name="opciones" [value]="2" style="margin: 10px;"> Servicios</mat-radio-button>
+                                <mat-radio-button name="opciones" [value]="3" style="margin: 10px;"> Ninguana</mat-radio-button>
+                            </mat-radio-group>
+                        </section>
+                    </td>
+                </tr>
+            </table>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <!--numeral 11-->
+        <mat-expansion-panel [expanded]="step === 10" (opened)="setStep(10)" hideToggle>
+            <mat-expansion-panel-header>
+                <mat-panel-title>Númeral 11. FUNCIONAMIENTO DE LA ACTIVIDAD COMERCIAL Y ORGANIZACIÓN DE LA EMPRESA, DURANTE EL AÑO DE LA ENCUESTA </mat-panel-title><mat-icon>reorder</mat-icon>
+            </mat-expansion-panel-header>
+            <mat-action-row>
+                <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+                <button mat-button color="primary" (click)="nextStep()">Fin</button>
+            </mat-action-row>
+        </mat-expansion-panel>
+        <div class="container">
+            <button type="button" class="btn btn-lg btn-primary" (click)="guardar()">GUARDAR</button>
+        </div>
+    </mat-accordion>
 </div>

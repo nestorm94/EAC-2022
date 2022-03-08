@@ -5,11 +5,11 @@ import { CaratulaUnicaService } from 'src/app/services/caratula-unica.service';
 
 
 @Component({
-  selector: 'app-modoulo3',
-  templateUrl: './modoulo3.component.html',
-  styleUrls: ['./modoulo3.component.css']
+  selector: 'app-modulo3',
+  templateUrl: './modulo3.component.html',
+  styleUrls: ['./modulo3.component.css']
 })
-export class Modoulo3Component implements OnInit {
+export class Modulo3Component implements OnInit {
 
   constructor() { }
 

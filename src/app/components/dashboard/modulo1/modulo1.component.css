@@ -1,6 +1,6 @@
-.container{
+.container {
   margin-top: auto;
-  margin-right: auto; 
+  margin-right: auto;
   margin-left: auto;
   padding: 10px;
 }
@@ -10,33 +10,31 @@
   display: flex;
   margin: 12px 0;
 }
-  
+
 .example-margin {
   margin: 0 12px;
 }
 .container {
-    margin: auto;
+  margin: auto;
 }
-.containerm2{ 
+.containerm2 {
   display: flex;
   margin: 12px 0;
   flex-direction: row;
   width: 50%;
-
 }
-.mat-form-field{
-margin-top: auto;
-top: 50%; left: 0%;
-font-size: 16px;
+.mat-form-field {
+  margin-top: auto;
+  top: 50%;
+  left: 0%;
+  font-size: 16px;
 }
-.guardar{
+.guardar {
   text-align: right;
 }
-.numeral2{
+.numeral2 {
   width: auto;
-
 }
-
 
 .example-headers-align .mat-expansion-panel-header-title,
 .mat-expansion-panel-header-description {
@@ -56,37 +54,31 @@ font-size: 16px;
 .example-form-field {
   margin-right: 20px;
 }
-.ducument{
-  height:80px;
+.ducument {
+  height: 80px;
   width: 100%;
-  display:flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 
   margin-top: auto;
-  margin-right: auto; 
+  margin-right: auto;
   margin-left: auto;
   padding: 10px;
-
-
 }
-.input{
+.input {
   overflow: hidden;
   width: 200px;
   text-overflow: ellipsis;
   white-space: nowrap;
-
-
 }
 table {
   width: 100%;
 }
-.example-full-width{
-
+.example-full-width {
   width: 100%;
 }
 
-.fecha{
-width: 25%;
-
+.fecha {
+  width: 25%;
 }

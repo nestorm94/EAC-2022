@@ -6,7 +6,7 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
 import { Modulo1Component } from './modulo1/modulo1.component';
 import { Modulo2Component } from './modulo2/modulo2.component';
-import { Modoulo3Component } from './modulo3/modoulo3.component';
+import { Modulo3Component } from './modulo3/modulo3.component';
 
 const routes: Routes = [
       { path: '', component: DashboardComponent, children: [
@@ -15,7 +15,7 @@ const routes: Routes = [
       { path: 'reportes', component: ReportesComponent },
       { path: 'modulo1', component: Modulo1Component },
       { path: 'modulo2', component: Modulo2Component },
-      { path: 'modulo3', component: Modoulo3Component },
+      { path: 'modulo3', component: Modulo3Component },
 
     ]  
   },
