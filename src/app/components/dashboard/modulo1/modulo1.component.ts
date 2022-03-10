@@ -51,13 +51,10 @@ export class Modulo1Component implements OnInit {
   }
 
   nextStep() {
-    debugger
-    if(this.IcaratulaUnica.idTipoDocumento== null&& this.IcaratulaUnica.idTipoDocumento== undefined)
-    {
-    }else{
+    
 
     this.step++;
-    }
+
 
   }
 
