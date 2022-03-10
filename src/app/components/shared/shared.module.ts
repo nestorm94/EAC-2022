@@ -22,6 +22,9 @@ import {MatTableModule} from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
 
 
+import { ToastrModule } from 'ngx-toastr';
+
+
 
 
 
@@ -47,7 +50,7 @@ import {MatGridListModule} from '@angular/material/grid-list';
     FormsModule,
     MatRadioModule,
     MatTableModule,
-    MatGridListModule
+    MatGridListModule, ToastrModule.forRoot(),
   ],
   exports: [
     MatSliderModule,
