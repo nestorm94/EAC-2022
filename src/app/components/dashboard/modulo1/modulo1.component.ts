@@ -1,34 +1,15 @@
-import { Component,
-  Input,
-  OnInit,
-  TemplateRef,
-  Inject,
-  Output,
-  EventEmitter ,ViewChild} from "@angular/core";
+import { Component,OnInit ,ViewChild} from "@angular/core";
 import { CaratulaUnica } from "src/app/models/caratulaUnica";
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  FormBuilder,
-} from "@angular/forms";
+import { InformacionFuncionamiento } from "src/app/models/InformacionFuncionamiento";
 
-import {MatAccordion} from '@angular/material/expansion';
-
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatAccordion} from '@angular/material/expansion';
 import { CaratulaUnicaService } from "src/app/services/caratula-unica.service";
+import { TipoDocumento } from "src/app/models/TipoDocumento";
+import { Direccion } from "src/app/models/Direccion";
+import { Modulo1 } from "src/app/models/modulo1";
 
-interface department {
-  value: string;
-  viewValue: string;
-}
-interface municipio {
-  value: string;
-  viewValue: string;
-}
-interface tipOrg {
-  value: string;
-  viewValue: string;
-}
+
 
 @Component({
   selector: "app-modulo1",
@@ -37,6 +18,10 @@ interface tipOrg {
 })
 export class Modulo1Component implements OnInit {
 
+log(x: any){
+
+  console.log(x);
+}
 
   @ViewChild(MatAccordion) accordion!: MatAccordion;
   step = 0;
@@ -44,57 +29,27 @@ export class Modulo1Component implements OnInit {
 
   public numeral1!: FormGroup;
   public numeral2!: FormGroup;
-  public IcaratulaUnica!: CaratulaUnica;
+
+  
+  public modulo1!:Modulo1;
+  public listTipoDocumento!: TipoDocumento[];
+  public listTipoRegMercantil!: any[];
+  public listDepto!: any[];
+  public listMunicipio!: any[];
+  public listTipoOrg!: any[];
+
 
   setStep(index: number) {
     this.step = index;
   }
 
   nextStep() {
-    
-
     this.step++;
-
-
   }
 
   prevStep() {
     this.step--;
   }
-
-
-  tipoDocumento = [
-    { id: 1, op: "C.C" },
-    { id: 2, op: "NIT" },
-    { id: 3, op: "C.I" },
-  ];
-
-  emailFormControl = new FormControl("", [
-    Validators.required,
-    Validators.email,
-  ]);
-
-  range = new FormGroup({
-    start: new FormControl(),
-    end: new FormControl(),
-  });
-
-  departments: municipio[] = [
-    { value: "DP01", viewValue: "AMAZONAS" },
-    { value: "DP02", viewValue: "CASANARE" },
-    { value: "DP03", viewValue: "META" },
-  ];
-
-  municipios: municipio[] = [
-    { value: "MN01", viewValue: "TAURAMENA" },
-    { value: "MN02", viewValue: "ACUAZUL" },
-    { value: "MN03", viewValue: "YOPAL" },
-  ];
-  tipoOrgns: tipOrg[] = [
-    { value: "MN01", viewValue: "SAS" },
-    { value: "MN02", viewValue: "LIMITDA" },
-    { value: "MN03", viewValue: "CONSORCIO" },
-  ];
 
   constructor(
     public httpCaratula: CaratulaUnicaService,
@@ -103,78 +58,183 @@ export class Modulo1Component implements OnInit {
   }
 
   ngOnInit(): void {
-    this.IcaratulaUnica = {
-      id: undefined,
-      numeroOrden: undefined,
-      numeroDocumento: undefined,
-      digitoVerificacion: undefined,
-      numeroCamara: undefined,
-      numeroRegistro: undefined,
-      razonSocial: "",
-      georeferenciaGerecia: undefined,
-      nombreComercial: "",
-      sigla: "",
-      paginaWeb: "",
-      georeferenciaNotificacion: undefined,
-      cualTipoOrgaizacion: "",
-      fechaConstitucionDesde: "",
-      fechaConstitucionHasta: "",
-      cualOtroEstado: "",
-      numeroUnidadesApoyo: "",
-      idTipoDocumento: undefined,
+    
+    this.cargarCaratulaUnica();
+    this.getTipoDocumento();
+    this.getTipoRegistro();
+    this.getDepartamento();
+    this.getMunicipios(5);
+    this.getTipoOrganizacion();
+    debugger
+
+    this.modulo1 = {
+      IcaratulaUnica:{},
+      IDireccion:{},
+      IInformacionFuncionamiento:{},
+      ICapitalSocial:{}
     };
     
-
   }
 
   private buildForm() {
     this.numeral1 = this._formBuild.group({
-      id: ["", [Validators.required, Validators.min(1.0)]],
-      numeroOrden: [0, [Validators.required, Validators.min(1.0)]],
-      numeroDocumento: ["", [Validators.required, Validators.min(1.0)]],
-      digitoVerificacion: ["", [Validators.required, Validators.min(1.0)]],
-      numeroCamara: ["", [Validators.required, Validators.min(1.0)]],
-      numeroRegistro: ["", [Validators.required, Validators.min(1.0)]],
-      idTipoDocumento: ["", [Validators.required, Validators.min(1.0)]],
-    });
-
-    this.numeral2 = this._formBuild.group({
-      id: ["", [Validators.required, Validators.min(1.0)]],
-      numeroOrden: ["", [Validators.required, Validators.min(1.0)]],
-      razonSocial: ["", [Validators.required, Validators.min(1.0)]],
-      georeferenciaGerecia: ["", [Validators.required, Validators.min(1.0)]],
-      nombreComercial: ["", [Validators.required, Validators.min(1.0)]],
-      sigla: ["", [Validators.required, Validators.min(1.0)]],
-      paginaWeb: ["", [Validators.required, Validators.min(1.0)]],
-      georeferenciaNotificacion: ["",[Validators.required, Validators.min(1.0)]],
-      cualTipoOrgaizacion: ["", [Validators.required, Validators.min(1.0)]],
-      fechaConstitucionDesde: ["", [Validators.required, Validators.min(1.0)]],
-      fechaConstitucionHasta: ["", [Validators.required, Validators.min(1.0)]],
-      cualOtroEstado: ["", [Validators.required, Validators.min(1.0)]],
-      numeroUnidadesApoyo: ["", [Validators.required, Validators.min(1.0)]],
+      numeroDocumento: ['', [Validators.required, Validators.min(1.0)]]
     });
   }
-
+  inicilaizarCaratulaUnica(){
+    this.modulo1 = {
+      IcaratulaUnica:{},
+      IDireccion:{},
+      IInformacionFuncionamiento:{},
+      ICapitalSocial:{}
+    };
+    
+  }
   guardar(): void {
-    debugger;
-    if(this.IcaratulaUnica.numeroDocumento== null &&  this.IcaratulaUnica.numeroDocumento == null){
+    console.log("imprimir modulo 1:" , JSON.stringify(this.modulo1));
+    console.log(JSON.stringify(this.modulo1.IDireccion));
+    this.modulo1.IDireccion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+    this.modulo1.IDireccion.idTipoDireccion = "1";
 
-    }
-
-    console.log(JSON.stringify(this.IcaratulaUnica));
-    this.httpCaratula.guardarCaratula(this.IcaratulaUnica).subscribe(
+    this.httpCaratula.guardarCaratula(this.modulo1.IcaratulaUnica).subscribe(
       (resp) => {
-        debugger;
         console.log({ resp });
-        //this.personaForm.reset();
-        //this.getAll();
       },
-
       (error) => {
-        debugger;
+        console.log(error);
       }
     );
+
+    this.httpCaratula.guardarDireccion(this.modulo1.IDireccion).subscribe((resp) => {
+      console.log({ resp });
+    },
+
+    (error) => {
+      console.log(error);
+    })
+
+    this.cargarCaratulaUnica();
   }
+
+  cargarCaratulaUnica() {
+    this.httpCaratula.cargarCaratulaUnica().subscribe(
+      result => {
+        this.modulo1.IcaratulaUnica = result;
+        this.getCaratulaUnicaDirecciones(this.modulo1.IcaratulaUnica.id);
+       
+      },
+      err => {
+      console.log(err)
+      }
+    );
+    
+
+  }
+
+
+  getCaratulaUnicaDirecciones(idCaratulaUnica:any)
+  {
+    debugger
+    this.httpCaratula.getCaratulaUnicaDirecciones(idCaratulaUnica).subscribe(
+      result => {
+        debugger
+        console.log("result:",result);
+        
+        this.modulo1.IDireccion = result[0];
+        console.log("imprimir direcciones:",this.modulo1)
+      },
+      err => {
+      console.log(err)
+      }
+    );
+
+  }
+  
+
+
+//listas de parametros
+
+
+  getTipoDocumento(){
+    this.httpCaratula.getTipoDocumento().subscribe(
+      result => {
+
+          this.listTipoDocumento = result;
+        
+      },
+      err => {
+      }
+    )
+
+  }
+
+  getTipoRegistro(){
+    this.httpCaratula.getTipoRegistro().subscribe(
+      result => {
+
+          this.listTipoRegMercantil = result;
+        
+      },
+      err => {
+      }
+    )
+
+  }
+
+  getDepartamento(){
+    this.httpCaratula.getDepartamento().subscribe(
+      result => {
+        debugger
+          this.listDepto = result;
+          this.listDepto.unshift({
+            codigo: "0",
+            nombre: "Seleccione el Departamento",
+            id: 0
+          });
+        
+      },
+      err => {
+      }
+    )
+  }
+
+
+  getMunicipios(idDepartamento:any){
+    debugger
+    this.httpCaratula.getMunicipios(idDepartamento).subscribe(
+      result => {
+        debugger
+          this.listMunicipio = result;
+          this.listMunicipio.unshift({
+            codigo: "0",
+            nombre: "Seleccione el Municipio.",
+            id: 0
+          });
+        
+      },
+      err => {
+      }
+    )
+
+  }
+
+  getTipoOrganizacion(){
+    this.httpCaratula.getTipoOrganizacion().subscribe(
+      result => {
+        debugger
+          this.listTipoOrg = result;
+          this.listTipoOrg.unshift({
+            codigo: "0",
+            nombre: "Seleccione el Tipo de Organización",
+            id: 0
+          });
+        
+      },
+      err => {
+      }
+    )
+  }
+
 
   showValue(){
 }

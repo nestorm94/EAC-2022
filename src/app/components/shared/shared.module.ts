@@ -21,9 +21,8 @@ import {MatRadioModule } from '@angular/material/radio';
 import {MatTableModule} from '@angular/material/table';
 import {MatGridListModule} from '@angular/material/grid-list';
 
-
-import { ToastrModule } from 'ngx-toastr';
-
+//angular forms
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -50,7 +49,7 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     MatRadioModule,
     MatTableModule,
-    MatGridListModule, ToastrModule.forRoot(),
+    MatGridListModule, ReactiveFormsModule
   ],
   exports: [
     MatSliderModule,

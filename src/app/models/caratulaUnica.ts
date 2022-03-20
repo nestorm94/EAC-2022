@@ -1,10 +1,11 @@
 //===============================================
 // Caratula unica de la ecuesta EAC
 //===============================================
+
 // CaratulaUnica
 export interface CaratulaUnica{
     id?: number;
-    numeroOrden?: number;    
+	numeroOrden?:number;    
     numeroDocumento?: number;    
     digitoVerificacion?: number;    
     numeroCamara?: number;
@@ -20,5 +21,21 @@ export interface CaratulaUnica{
 	fechaConstitucionHasta?: string;
 	cualOtroEstado?: string;
 	numeroUnidadesApoyo?: string;	
-	idTipoDocumento?: number;    
+	idTipoDocumento?: number;  
+	tipoDocumento?:number; 
+	tipoRegistroMercantil?:number;
+	tipoOrganizacion?:Number;
+	subTipoOrganizacion?:number;
+	estadoEmpresa?:number; 
+	capitalSocial?:number;
+	operaciones?:string;
+	variablesEmpresa?:number;
+	idTipoOrganizacion?:number;
+	idSubTipoOrganizacion?:string;
+	idEstadoEmpresa?:number;
+	idPeriodoRecoleccion?:number;
+	idDirectorio?:number;
+	idEstadoEncuesta?:number;	
+	idTipoRegistroMercantil?:number;
+
 }
