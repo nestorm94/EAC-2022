@@ -12,6 +12,8 @@ import { Modulo1Component } from './modulo1/modulo1.component';
 import { Modulo3Component } from './modulo3/modulo3.component';
 import { Modulo2Component } from './modulo2/modulo2.component';
 
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -27,7 +29,7 @@ import { Modulo2Component } from './modulo2/modulo2.component';
   imports: [
     CommonModule,
     DashboardRoutingModule,
-    SharedModule
+    SharedModule,FormsModule,ReactiveFormsModule
   ]
 })
 export class DashboardModule { }

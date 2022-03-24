@@ -1,12 +1,12 @@
 import { Component, Injectable, Input, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { CaratulaUnicaService } from "src/app/services/caratula-unica.service";
 import { TipoDocumento } from "src/app/models/TipoDocumento";
 import { Modulo1 } from "src/app/models/modulo1";
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from "ngx-spinner";
- 
+
 
 
 @Component({
@@ -34,6 +34,9 @@ export class Modulo1Component implements OnInit {
   public listTipoRegMercantil!: any[];
   public listDepto!: any[];
   public listMunicipio!: any[];
+  public listDeptoNoti!: any[];
+  public listMunicipioNoti!: any[];
+  public listEstadoEmpresa!: any[];
   public listTipoOrg!: any[];
   public listSubTipoOrg!: any[];
   public listNoOper!: any[];
@@ -54,7 +57,7 @@ export class Modulo1Component implements OnInit {
 
   constructor(
     public httpCaratula: CaratulaUnicaService,
-    private _formBuild: FormBuilder,private toastr: ToastrService,private spinner: NgxSpinnerService) {
+    private _formBuild: FormBuilder, private toastr: ToastrService, private spinner: NgxSpinnerService) {
     this.buildForm();
   }
 
@@ -64,17 +67,20 @@ export class Modulo1Component implements OnInit {
     this.getTipoDocumento();
     this.getTipoRegistro();
     this.getDepartamento();
+    this.getDepartamentoNoti();
     this.getTipoOrganizacion();
     this.getAllTipoIngresosNoOperacionales();
     this.getAllTipoCausa();
-    debugger
+    this.findAllEstadoEmpresa();
+
 
     this.modulo1 = {
       IcaratulaUnica: {},
       IDireccion: {},
       IInformacionFuncionamiento: {},
       ICapitalSocial: {},
-      IIngresosNoOperacioneales:{}
+      IIngresosNoOperacioneales: {},
+      IDireccionNotificacion: {},
     };
 
   }
@@ -85,40 +91,63 @@ export class Modulo1Component implements OnInit {
     });
   }
   inicilaizarCaratulaUnica() {
+
     this.modulo1 = {
       IcaratulaUnica: {},
       IDireccion: {},
       IInformacionFuncionamiento: {},
       ICapitalSocial: {},
-      IIngresosNoOperacioneales:{}
+      IIngresosNoOperacioneales: {},
+      IDireccionNotificacion: {},
     };
 
   }
   guardar(): void {
-    debugger
-    this.modulo1.IDireccion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+    this.modulo1.IDireccion.idTipoDireccion = "1";
+    this.modulo1.IDireccionNotificacion.idTipoDireccion = "2";
+
+    //guardar direccion
     this.httpCaratula.guardarDireccion(this.modulo1.IDireccion).subscribe((resp) => {
-      console.log({ resp });
+      this.modulo1.IDireccion = resp;
     },
+      (err) => {
+        this.toastr.error("No se puedo guardar la Dirección");
+      });
+    //guardar direccion de notificacion
+    this.httpCaratula.guardarDireccion(this.modulo1.IDireccionNotificacion).subscribe((resp) => {
+      this.modulo1.IDireccionNotificacion = resp;
+    },
+      (err) => {
+        this.toastr.error("No se puedo guardar la Dirección de notificación");
+      });
 
-      (error) => {
-        console.log(error);
-      })
-
-
-
-    this.httpCaratula.guardarCaratula(this.modulo1.IcaratulaUnica).subscribe(
+       //guarda la caratula 
+    this.httpCaratula.guardarInformacionFuncionamiento(this.modulo1.IInformacionFuncionamiento).subscribe(
       (resp) => {
-        console.log({ resp });
+        debugger
+        this.modulo1.IInformacionFuncionamiento = resp;
+        this.cargarCaratulaUnica();
+        this.toastr.success("se guardo el modulo 1 exitosamente");
       },
-      (error) => {
-        console.log(error);
+      (err) => {
+        this.toastr.error(err.Message + '');
       }
     );
 
-    
-    this.cargarCaratulaUnica();
+    //guarda la caratula 
+    this.httpCaratula.guardarCaratula(this.modulo1.IcaratulaUnica).subscribe(
+      (resp) => {
+        debugger
+        this.modulo1.IcaratulaUnica = resp;
+        this.toastr.success("se guardo el modulo 1 exitosamente");
+      },
+      (err) => {
+        this.toastr.error(err.Message + '');
+      }
+    );
   }
+
+  
 
   cargarCaratulaUnica() {
     this.spinner.show();
@@ -126,36 +155,39 @@ export class Modulo1Component implements OnInit {
     this.toastr.clear();
     this.httpCaratula.cargarCaratulaUnica().subscribe(
       result => {
-        debugger
-
-        
-        
         this.modulo1.IcaratulaUnica = result;
         this.getCaratulaUnicaDirecciones(this.modulo1.IcaratulaUnica.id);
+        this.getCaratulaUnicaInformacionFuncionamiento(this.modulo1.IcaratulaUnica.id);
 
         this.spinner.hide();
         this.toastr.success("se cargo el modulo exitosamente ");
 
       },
       err => {
-        
+
         this.toastr.error(err.Message + '');
       }
     );
-
-
   }
 
-
+  // lista de direcciones
   getCaratulaUnicaDirecciones(idCaratulaUnica: any) {
-    debugger
+
     this.httpCaratula.getCaratulaUnicaDirecciones(idCaratulaUnica).subscribe(
       result => {
-        debugger
-        console.log("result:", result);
 
-        this.modulo1.IDireccion = result[0];
-        console.log("imprimir direcciones:", this.modulo1)
+        if (result[0].idTipoDireccion == 1) {
+
+          this.modulo1.IDireccion = result[0];
+          this.getMunicipios(this.modulo1.IDireccion.idDepartamento);
+
+        }
+        if (result[1].idTipoDireccion == 2) {
+
+          this.modulo1.IDireccionNotificacion = result[1];
+          this.getMunicipiosNoti(this.modulo1.IDireccionNotificacion.idDepartamento);
+
+        }
       },
       err => {
         console.log(err)
@@ -163,7 +195,6 @@ export class Modulo1Component implements OnInit {
     );
 
   }
-
 
 
   //listas de parametros
@@ -200,7 +231,7 @@ export class Modulo1Component implements OnInit {
   getDepartamento() {
     this.httpCaratula.getDepartamento().subscribe(
       result => {
-        debugger
+
         this.listDepto = result;
         this.listDepto.unshift({
           codigo: "0",
@@ -214,13 +245,11 @@ export class Modulo1Component implements OnInit {
       }
     )
   }
-
-
   getMunicipios(idDepartamento: any) {
-    debugger
+
     this.httpCaratula.getMunicipios(idDepartamento).subscribe(
       result => {
-        debugger
+
         this.listMunicipio = result;
         this.listMunicipio.unshift({
           codigo: "0",
@@ -236,10 +265,65 @@ export class Modulo1Component implements OnInit {
 
   }
 
+  findAllEstadoEmpresa() {
+    this.httpCaratula.findAllEstadoEmpresa().subscribe(
+      result => {
+
+        this.listEstadoEmpresa = result;
+        this.listEstadoEmpresa.unshift({
+          estadoEmpresa: "Seleccione el Estado de la empresa",
+          id: 0
+        });
+
+      },
+      err => {
+        this.toastr.error(err.Message + '');
+      }
+    )
+  }
+  getDepartamentoNoti() {
+    this.httpCaratula.getDepartamento().subscribe(
+      result => {
+
+        this.listDeptoNoti = result;
+        this.listDeptoNoti.unshift({
+          codigo: "0",
+          nombre: "Seleccione el Departamento",
+          id: 0
+        });
+
+      },
+      err => {
+        this.toastr.error(err.Message + '');
+      }
+    )
+  }
+
+  getMunicipiosNoti(idDepartamento: any) {
+
+    this.httpCaratula.getMunicipios(idDepartamento).subscribe(
+      result => {
+
+        this.listMunicipioNoti = result;
+        this.listMunicipioNoti.unshift({
+          codigo: "0",
+          nombre: "Seleccione el Municipio.",
+          id: 0
+        });
+
+      },
+      err => {
+        this.toastr.error(err.Message + '');
+      }
+    )
+
+  }
+
+
   getTipoOrganizacion() {
     this.httpCaratula.getTipoOrganizacion().subscribe(
       result => {
-        debugger
+
         this.listTipoOrg = result;
         this.listTipoOrg.unshift({
           codigo: "0",
@@ -255,21 +339,21 @@ export class Modulo1Component implements OnInit {
   }
 
   getSubtipoOrgnizacion(idTipoOrganizacion: any) {
-    debugger
 
-    this.editableotros = idTipoOrganizacion==99;
+
+    this.editableotros = idTipoOrganizacion == 99;
     this.httpCaratula.findSubTipoOrganizacionByIdTipoOrganizacion(idTipoOrganizacion).subscribe(
       result => {
-        debugger
+
         this.listSubTipoOrg = result;
-        this.editable = this.listSubTipoOrg.length >0;
+        this.editable = this.listSubTipoOrg.length > 0;
         this.listSubTipoOrg.unshift({
           codigo: "0",
           nombre: "Seleccione un Subtipo de Organización.",
           id: 0
         });
 
-        
+
       },
       err => {
         this.toastr.error(err.Message + '');
@@ -278,7 +362,7 @@ export class Modulo1Component implements OnInit {
 
   }
 
-  getAllTipoIngresosNoOperacionales(){
+  getAllTipoIngresosNoOperacionales() {
     this.httpCaratula.getAllTipoIngresosNoOperacionales().subscribe(
 
       result => {
@@ -292,10 +376,10 @@ export class Modulo1Component implements OnInit {
 
   }
 
-  getAllTipoCausa(){
+  getAllTipoCausa() {
     this.httpCaratula.getAllTipoCausa().subscribe(
       result => {
-        debugger
+
         this.listTipoCausa = result;
         this.listTipoCausa.unshift({
           codigo: "0",
@@ -311,8 +395,18 @@ export class Modulo1Component implements OnInit {
 
 
   }
-  changeTipoCausa(idTipoCausa: any){
+  getCaratulaUnicaInformacionFuncionamiento(idCaratulaUnica: any) {
 
+    this.httpCaratula.getCaratulaUnicaInformacionFuncionamiento(idCaratulaUnica).subscribe(
+      result => {
+        this.modulo1.IInformacionFuncionamiento = result;
+        console.log("informacion:", this.modulo1.IInformacionFuncionamiento);
+      },
+      err => {
+        console.log(err)
+      }
+    );
 
   }
+
 }

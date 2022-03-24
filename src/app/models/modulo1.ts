@@ -13,4 +13,5 @@ export interface Modulo1{
     IDireccion:Direccion,
     ICapitalSocial:CapitalSocial,
     IIngresosNoOperacioneales:IngresosNoOperacioneales,
+    IDireccionNotificacion:Direccion,
 }
