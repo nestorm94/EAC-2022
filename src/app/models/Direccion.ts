@@ -14,5 +14,7 @@ export interface Direccion{
 	correoElectronico?: string, 
 	paginaWeb?: string,
 	idTipoDireccion?: string,
-	idCaratulaUnica?: number
+	idCaratulaUnica?: number,
+	idDepartamento?: number,
+    idMunicipio?: number,
 }
