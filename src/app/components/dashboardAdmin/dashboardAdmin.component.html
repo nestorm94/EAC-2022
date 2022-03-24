@@ -1,0 +1,30 @@
+<header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+    <img [src]="logo" alt="" width="10%" height="40%" />
+    <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap" /></svg>
+        <span class="fs-4">ENCUESTA ANUAL DE COMERCIO (EAC)</span>
+    </a>
+    <ul  *ngIf="isLoggedIn">
+         <li class="nav-item">
+          <a href class="nav-link" (click)="logout()">Salir  </a>
+        </li>
+       
+      </ul>
+
+      <ul  *ngIf="isLoggedIn">
+        <li class="nav-item">
+            <a  class="nav-link"  href="/dashboardAdmin/registrar">Registrar</a>
+          </li>
+      
+     </ul>
+
+      
+
+    
+    
+    <div>
+        
+
+    </div>
+</header>
+<router-outlet></router-outlet>

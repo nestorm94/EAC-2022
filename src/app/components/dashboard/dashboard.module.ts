@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardComponent } from './dashboard.component';
 import { UsuariosComponent } from './usuarios/usuarios.component';
@@ -23,6 +22,7 @@ import { Modulo2Component } from './modulo2/modulo2.component';
     Modulo1Component,
     Modulo3Component,
     Modulo2Component,
+
   ],
   imports: [
     CommonModule,

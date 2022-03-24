@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
@@ -9,9 +10,19 @@ export class NavbarComponent implements OnInit {
 
   logo="./assets/img/logo.png"
 
+  
+
   constructor() { }
 
   ngOnInit(): void {
+
+    
+
+    }
+
   }
 
-}
+  
+  
+
+                                 
