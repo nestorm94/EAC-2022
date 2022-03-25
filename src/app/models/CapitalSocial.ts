@@ -10,7 +10,7 @@ export interface CapitalSocial{
 	publico?: number, 
 	privado?:number, 
     total?: number,
-	idTipoCapitalSocial?: string, 
-	idCaratulaUnica?: string
+	idTipoCapitalSocial?: number, 
+	idCaratulaUnica?: number
 	
 }

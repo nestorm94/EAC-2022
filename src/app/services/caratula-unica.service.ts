@@ -22,6 +22,20 @@ export class CaratulaUnicaService {
   public guardarDireccion(direccion: any): Observable<any> {
     return this.httpClient.post(this.API_SERV + 'guardarDireccion/', direccion);
   }
+
+  //guardarCapitalSocial
+  public guardarCapitalSocial(CapitalSocial: any): Observable<any> {
+    return this.httpClient.post(this.API_SERV + 'guardarCapitalSocial/', CapitalSocial);
+  }
+  //getCaratulaUnicaCapitalSocial
+  public getCaratulaUnicaCapitalSocial(idCaratulaUnica: any): Observable<any> {
+    return this.httpClient.get(this.API_SERV + 'getCaratulaUnicaCapitalSocial/', {
+      params: { idCaratulaUnica: idCaratulaUnica },
+    });
+  }
+
+
+
   //obtener la caratula unica 
   public cargarCaratulaUnica(): Observable<any> {
     

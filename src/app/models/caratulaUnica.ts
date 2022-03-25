@@ -31,7 +31,7 @@ export interface CaratulaUnica{
 	operaciones?:string;
 	variablesEmpresa?:number;
 	idTipoOrganizacion?:number;
-	idSubTipoOrganizacion?:string;
+	idSubTipoOrganizacion?:number;
 	idEstadoEmpresa?:number;
 	idPeriodoRecoleccion?:number;
 	idDirectorio?:number;

@@ -1,699 +1,1157 @@
 <div class="container">
-   <div class="container">
-      <button mat-raised-button color="primary" (click)="accordion.openAll()">
-         EXPANDIR TODO
-      </button>
-      <button mat-raised-button color="warn" (click)="accordion.closeAll()">
-         CONTRAER TODO
-      </button>
-   </div>
-   <mat-accordion class="example-headers-align" multi>
-      <!--numeral 1-->
-      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title> Númeral 1. IDENTIFICACIÓN </mat-panel-title>
-            <mat-icon>account_circle</mat-icon>
-         </mat-expansion-panel-header>
-         <div class="container">
-            <div class="row g-4">
-               <div class="col-sm-6">
-                  <h2>Tipo documento (*)</h2>
-               </div>
-               <div class="col-sm-6">
-                  <h2>Registro mercantil/ sin ánimo de lucro / de proponentes</h2>
-               </div>
-               <div class="col-sm-6">
-                  <div class="form-check form-check-inline" *ngFor="let item of listTipoDocumento">
-                     <input name="tipoDoc" [(ngModel)]="modulo1.IcaratulaUnica.idTipoDocumento"
-                        [ngModelOptions]="{ standalone: true }" class="form-check-input" type="radio"
-                        value="{{ item.id }}" />
-                     <label class="form-check-label" for="inlineRadio1">{{
-                        item.tipoDocumento
-                        }}</label>
-                  </div>
-               </div>
-               <div class="col-sm-6">
-                  <div class="form-check form-check-inline" *ngFor="let item of listTipoRegMercantil">
-                     <input name="tipoMercatil" [(ngModel)]="modulo1.IcaratulaUnica.tipoRegistroMercantil"
-                        [ngModelOptions]="{ standalone: true }" class="form-check-input" type="radio"
-                        value="{{ item.id }}" />
-                     <label class="form-check-label" for="inlineRadio1">{{
-                        item.tipoRegistroMercantil
-                        }}</label>
-                  </div>
-               </div>
-               <div class="col-sm-5">
-                  <label class="form-label">Nro. Documento (*)</label>
-                  <input [(ngModel)]="modulo1.IcaratulaUnica.numeroDocumento" [ngModelOptions]="{ standalone: true }"
-                     class="form-control input-sm" type="number" />
-               </div>
-               <div class="col-sm-1">
-                  <label class="form-label">D.v</label>
-                  <input [(ngModel)]="modulo1.IcaratulaUnica.digitoVerificacion" [ngModelOptions]="{ standalone: true }"
-                     type="number" class="form-control" />
-               </div>
-               <div class="col-sm-3">
-                  <label class="form-label"> Cámara </label>
-                  <input [(ngModel)]="modulo1.IcaratulaUnica.numeroCamara" [ngModelOptions]="{ standalone: true }"
-                     type="number" class="form-control" />
-                  <div class="invalid-feedback">Nombre comercial requerido</div>
-               </div>
-               <div class="col-sm-3">
-                  <label for="numeroRegistro" class="form-label">
-                     Matrícula / Registro</label>
-                  <input [(ngModel)]="modulo1.IcaratulaUnica.numeroRegistro" [ngModelOptions]="{ standalone: true }"
-                     type="number" class="form-control" />
-                  <div class="invalid-feedback">Nombre comercial requerido</div>
-               </div>
+  <div class="container">
+    <button mat-raised-button color="primary" (click)="accordion.openAll()">
+      EXPANDIR TODO
+    </button>
+    <button mat-raised-button color="warn" (click)="accordion.closeAll()">
+      CONTRAER TODO
+    </button>
+    <button mat-raised-button  color="primary" (click)="guardar()">
+      GUARDAR
+    </button>
+  </div>
+  <mat-accordion class="example-headers-align" multi>
+    <!--numeral 1-->
+    <mat-expansion-panel
+      [expanded]="step === 1"
+      (opened)="setStep(1)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title> Númeral 1. IDENTIFICACIÓN </mat-panel-title>
+        <mat-icon>account_circle</mat-icon>
+      </mat-expansion-panel-header>
+      <div class="container">
+        <form [formGroup]="numeral1">
+          <div class="row g-4">
+            <div class="col-sm-6">
+              <h2>Tipo documento (*)</h2>
             </div>
-         </div>
-         <mat-action-row>
-            <button mat-button color="primary" (click)="nextStep()">
-               Siguiente
-            </button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 2-->
-      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title>Númeral 2. UBICACIÓN Y DATOS GENERALES
-            </mat-panel-title>
-            <mat-icon>map</mat-icon>
-         </mat-expansion-panel-header>
-         <div class="numeral2">
+            <div class="col-sm-6">
+              <h2>Registro mercantil/ sin ánimo de lucro / de proponentes</h2>
+            </div>
+            <div class="col-sm-6">
+              <div
+                class="form-check form-check-inline"
+                *ngFor="let item of listTipoDocumento"
+              >
+                <input
+                  name="tipoDoc"
+                  [(ngModel)]="modulo1.IcaratulaUnica.idTipoDocumento"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-check-input"
+                  type="radio"
+                  value="{{ item.id }}"
+                />
+                <label class="mat-checkbox" for="inlineRadio1">{{
+                  item.tipoDocumento
+                }}</label>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div
+                class="form-check form-check-inline"
+                *ngFor="let item of listTipoRegMercantil"
+              >
+                <input
+                  name="tipoMercatil"
+                  [(ngModel)]="modulo1.IcaratulaUnica.idTipoRegistroMercantil"
+                  [ngModelOptions]="{ standalone: true }"
+                  class="form-check-input"
+                  type="radio"
+                  value="{{ item.codigo }}"
+                />
+                <label class="form-check-label" for="inlineRadio1">{{
+                  item.tipoRegistroMercantil
+                }}</label>
+              </div>
+            </div>
+            <div class="col-sm-5">
+              <label class="form-label">Nro. Documento (*)</label>
+              <input
+                [class.is-invalid]="
+                  numeral1.get('numeroDocumento')?.touched &&
+                  numeral1.get('numeroDocumento')?.invalid
+                "
+                [(ngModel)]="modulo1.IcaratulaUnica.numeroDocumento"
+                formControlName="numeroDocumento"
+                class="form-control input-sm"
+                type="number"
+              />
+              <div class="invalid-feedback">
+                Numero de documento es requerido
+              </div>
+            </div>
+            <div class="col-sm-1">
+              <label class="form-label">D.v</label>
+              <input
+                [class.is-invalid]="
+                  numeral1.get('digitoVerificacion')?.touched &&
+                  numeral1.get('digitoVerificacion')?.invalid
+                "
+                [(ngModel)]="modulo1.IcaratulaUnica.digitoVerificacion"
+                formControlName="digitoVerificacion"
+                type="number"
+                class="form-control"
+              />
+              <div class="invalid-feedback">
+                dígito de verificación requerido
+              </div>
+            </div>
+            <div class="col-sm-3">
+              <label class="form-label"> Cámara </label>
+              <input
+                [class.is-invalid]="
+                  numeral1.get('numeroCamara')?.touched &&
+                  numeral1.get('numeroCamara')?.invalid
+                "
+                [(ngModel)]="modulo1.IcaratulaUnica.numeroCamara"
+                formControlName="numeroCamara"
+                type="number"
+                class="form-control"
+              />
+              <div class="invalid-feedback">Nombre comercial requerido</div>
+            </div>
+            <div class="col-sm-3">
+              <label for="numeroRegistro" class="form-label">
+                Matrícula / Registro</label
+              >
+              <input
+                [class.is-invalid]="
+                  numeral1.get('numeroRegistro')?.touched &&
+                  numeral1.get('numeroRegistro')?.invalid
+                "
+                [(ngModel)]="modulo1.IcaratulaUnica.numeroRegistro"
+                formControlName="numeroRegistro"
+                type="number"
+                class="form-control"
+              />
+              <div class="invalid-feedback">Nombre comercial requerido</div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">
+          Siguiente
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--numeral 2-->
+    <mat-expansion-panel
+      [expanded]="step === 2"
+      (opened)="setStep(2)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          >Númeral 2. UBICACIÓN Y DATOS GENERALES
+        </mat-panel-title>
+        <mat-icon>map</mat-icon>
+      </mat-expansion-panel-header>
+
+      <div class="container">
+        <form [formGroup]="numeral2">
+          <div class="row g-4">
+            <div class="col-sm-10">
+              <label class="form-label"
+                >1. Razón social de la empresa (*)</label
+              >
+              <input
+                [class.is-invalid]="
+                  numeral2.get('razonSocial')?.touched &&
+                  numeral2.get('razonSocial')?.invalid
+                "
+                [(ngModel)]="modulo1.IcaratulaUnica.razonSocial"
+                formControlName="razonSocial"
+                type="text"
+                class="form-control"
+              />
+              <div class="invalid-feedback">
+                Razón social de la empresa requerido
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <label class="form-label">LGGR</label>
+              <input
+                [(ngModel)]="modulo1.IcaratulaUnica.georeferenciaGerecia"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+                disabled
+              />
+            </div>
+            <div class="col-sm-10">
+              <label class="form-label"> 2. Nombre comercial (*)</label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('nombreComercial')?.touched &&
+                  numeral2.get('nombreComercial')?.invalid
+                "
+                [(ngModel)]="modulo1.IcaratulaUnica.nombreComercial"
+                formControlName="nombreComercial"
+                type="text"
+                class="form-control"
+              />
+              <div class="invalid-feedback">Nombre comercial requerido</div>
+            </div>
+            <div class="col-sm-2">
+              <label class="form-label">3. Sigla</label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('sigla')?.touched &&
+                  numeral2.get('sigla')?.invalid
+                "
+                [(ngModel)]="modulo1.IcaratulaUnica.sigla"
+                formControlName="sigla"
+                type="text"
+                class="form-control"
+              />
+              <div class="invalid-feedback">Sigla requerido</div>
+            </div>
+            <div class="col-12">
+              <label class="form-label"
+                >4. Domicilio principal o dirección de la gerencia
+              </label>
+              <div class="input-group has-validation">
+                <input
+                  [class.is-invalid]="
+                    numeral2.get('direccionGerencia')?.touched &&
+                    numeral2.get('direccionGerencia')?.invalid
+                  "
+                  [(ngModel)]="modulo1.IDireccion.direccion"
+                  formControlName="direccionGerencia"
+                  type="text"
+                  class="form-control"
+                />
+                <div class="invalid-feedback">
+                  Domicilio principal o dirección de la gerencia requerido
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="country" class="form-label"
+                >5. Departamento (*)</label
+              >
+              <select
+                name="depto"
+                class="form-select"
+                [(ngModel)]="modulo1.IDireccion.idDepartamento"
+                [class.is-invalid]="
+                  numeral2.get('departamento')?.touched &&
+                  numeral2.get('departamento')?.invalid
+                "
+                formControlName="departamento"
+                (change)="getMunicipios(modulo1.IDireccion.idDepartamento)"
+              >
+                <option
+                  *ngFor="let item of listDepto"
+                  value="{{ item.codigo }}"
+                >
+                  {{ item.nombre }}
+                </option>
+              </select>
+              <div class="invalid-feedback">Departamento requerido</div>
+            </div>
+            <div class="col-md-6">
+              <label for="state" class="form-label">6. Municipio (*)</label>
+              <select
+                name="muni1"
+                class="form-select"
+                [(ngModel)]="modulo1.IDireccion.idMunicipio"
+                [class.is-invalid]="
+                  numeral2.get('municipio')?.touched &&
+                  numeral2.get('municipio')?.invalid
+                "
+                formControlName="municipio"
+              >
+                <option
+                  *ngFor="let item of listMunicipio"
+                  value="{{ item.codigo }}"
+                >
+                  {{ item.nombre }}
+                </option>
+              </select>
+              <div class="invalid-feedback">Municipio requerido</div>
+            </div>
+            <div class="col-3">
+              <label for="address" class="form-label">7. Teléfono (*)</label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('telefono')?.touched &&
+                  numeral2.get('telefono')?.invalid
+                "
+                [(ngModel)]="modulo1.IDireccion.telefono"
+                formControlName="telefono"
+                type="tel"
+                class="form-control"
+              />
+              <div class="invalid-feedback">Teléfono requerido</div>
+            </div>
+            <div class="col-9">
+              <label for="address2" class="form-label">8. Redes sociales</label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('redesSociales')?.touched &&
+                  numeral2.get('redesSociales')?.invalid
+                "
+                [(ngModel)]="modulo1.IDireccion.redesSociales"
+                formControlName="redesSociales"
+                type="text"
+                class="form-control"
+              />
+              <div class="invalid-feedback">Nombre comercial requerido</div>
+            </div>
+            <div class="col-6">
+              <label class="form-label">9. Correo electrónico </label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('email')?.touched &&
+                  numeral2.get('email')?.invalid
+                "
+                [(ngModel)]="modulo1.IDireccion.correoElectronico"
+                formControlName="email"
+                type="email"
+                class="form-control"
+                id="email"
+                placeholder="you@example.com"
+              />
+              <div class="invalid-feedback">Correo electrónico requerido</div>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label">10 Página Web</label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('paginaWeb')?.touched &&
+                  numeral2.get('paginaWeb')?.invalid
+                "
+                [(ngModel)]="modulo1.IDireccion.paginaWeb"
+                type="text"
+                class="form-control"
+                formControlName="paginaWeb"
+              />
+              <div class="invalid-feedback">Nombre comercial requerido</div>
+            </div>
+            <div class="col-sm-10">
+              <label class="form-label">11. Dirección para notificación</label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('direccion')?.touched &&
+                  numeral2.get('direccion')?.invalid
+                "
+                [(ngModel)]="modulo1.IDireccionNotificacion.direccion"
+                formControlName="direccion"
+                type="text"
+                class="form-control"
+              />
+              <div class="invalid-feedback">
+                Dirección para notificación requerido
+              </div>
+            </div>
+            <div class="col-sm-2">
+              <label class="form-label">LGPN</label>
+              <input
+                [(ngModel)]="modulo1.IcaratulaUnica.numeroRegistro"
+                [ngModelOptions]="{ standalone: true }"
+                type="text"
+                class="form-control"
+                disabled
+              />
+              <div class="invalid-feedback">Nombre comercial requerido</div>
+            </div>
+            <div class="col-md-6">
+              <label for="country" class="form-label">12. Departamento</label>
+              <select
+                name="depto1"
+                [(ngModel)]="modulo1.IDireccionNotificacion.idDepartamento"
+                [ngModelOptions]="{ standalone: true }"
+                class="form-select"
+                (change)="getMunicipiosNoti(modulo1.IDireccion.idDepartamento)"
+              >
+                <option
+                  *ngFor="let item of listDeptoNoti"
+                  [value]="item.codigo"
+                >
+                  {{ item.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label for="state" class="form-label">13. Municipio (*)</label>
+              <select
+                name="muni2"
+                [(ngModel)]="modulo1.IDireccionNotificacion.idMunicipio"
+                [ngModelOptions]="{ standalone: true }"
+                class="form-select"
+              >
+                <option
+                  *ngFor="let item of listMunicipioNoti"
+                  value="{{ item.codigo }}"
+                >
+                  {{ item.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-3">
+              <label for="address" class="form-label">14. Teléfono (*)</label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('telefono')?.touched &&
+                  numeral2.get('telefono')?.invalid
+                "
+                type="tel"
+                class="form-control"
+                [(ngModel)]="modulo1.IDireccionNotificacion.telefono"
+                formControlName="telefono"
+              />
+              <div class="invalid-feedback">Teléfono requerido</div>
+            </div>
+            <div class="col-9">
+              <label for="address2" class="form-label"
+                >15. Redes sociales</label
+              >
+              <input
+                [class.is-invalid]="
+                  numeral2.get('redesSociales')?.touched &&
+                  numeral2.get('redesSociales')?.invalid
+                "
+                type="text"
+                class="form-control"
+                [(ngModel)]="modulo1.IDireccionNotificacion.redesSociales"
+                formControlName="redesSociales"
+              />
+              <div class="invalid-feedback">Redes sociales requerido</div>
+            </div>
+            <div class="col-12">
+              <label for="email" class="form-label"
+                >16. Correo electrónico
+              </label>
+              <input
+                [class.is-invalid]="
+                  numeral2.get('email')?.touched &&
+                  numeral2.get('email')?.invalid
+                "
+                type="email"
+                class="form-control"
+                [(ngModel)]="modulo1.IDireccionNotificacion.correoElectronico"
+                formControlName="email"
+                placeholder="you@example.com"
+              />
+              <div class="invalid-feedback">Correo electrónico requerido</div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">
+          Siguiente
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--numeral 3,4,5,6-->
+    <mat-expansion-panel
+      [expanded]="step === 3"
+      (opened)="setStep(3)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Númerales 3, 4, 5, 6 </mat-panel-title>
+        <mat-icon> import_export</mat-icon>
+      </mat-expansion-panel-header>
+
+      <div class="row row-cols-2">
+        <div
+          class="col-6"
+          style="
+            border: 1px solid black;
+            margin-block-end: 10px;
+            margin-right: 10 px;
+          "
+        >
+          <!--titulo numeral 3-->
+          <div class="col-md-12">
+            <h2>Numeral 3. TIPO DE ORGANIZACIÓN</h2>
+          </div>
+          <div class="col-md-8">
+            <label for="country" class="form-label"
+              >Organización jurídica (*)</label
+            >
+            <select
+              name="tipoOrg"
+              [(ngModel)]="modulo1.IcaratulaUnica.idTipoOrganizacion"
+              class="form-select"
+              (change)="
+                getSubtipoOrgnizacion(modulo1.IcaratulaUnica.idTipoOrganizacion)
+              "
+            >
+              <option *ngFor="let item of listTipoOrg" value="{{ item.id }}">
+                {{ item.nombre }}
+              </option>
+            </select>
+            <div class="invalid-feedback"></div>
+          </div>
+          <div class="col-md-8">
+            <label for="cual" class="form-label" *ngIf="editableotros"
+              >Cual?</label
+            >
+            <textarea
+              type="textarea"
+              class="form-control"
+              [(ngModel)]="modulo1.IcaratulaUnica.cualTipoOrgaizacion"
+              *ngIf="editableotros"
+              placeholder=""
+            ></textarea>
+          </div>
+          <br />
+          <div class="col-md-8">
+            <select
+              *ngIf="editable"
+              name="subtipoOrg"
+              [(ngModel)]="modulo1.IcaratulaUnica.idSubTipoOrganizacion"
+              class="form-select"
+            >
+              <option *ngFor="let item of listSubTipoOrg" value="{{ item.id }}">
+                {{ item.nombre }}
+              </option>
+            </select>
+          </div>
+          <br />
+        </div>
+        <div
+          class="col-5"
+          style="
+            border: 1px solid black;
+            margin-block-end: 10px;
+            margin-left: 10px;
+          "
+        >
+          <div class="col-md-12">
+            <h2>Númeral 4. FECHA DE CONSTITUCIÓN</h2>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Desde: </label>
+
+            <input
+              type="text"
+              class="form-control input-sm"
+              bsDatepicker
+              [(ngModel)]="modulo1.IcaratulaUnica.fechaConstitucionDesde"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Hasta: </label>
+            <input
+              type="text"
+              class="form-control input-sm"
+              bsDatepicker
+              [(ngModel)]="modulo1.IcaratulaUnica.fechaConstitucionHasta"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+
+          <br />
+        </div>
+        <div
+          class="col-12"
+          style="
+            border: 1px solid black;
+            margin-block-end: 10px;
+            margin-right: 10px;
+          "
+        >
+          <div class="row">
             <div class="col-md-12">
-               <form [formGroup]="numeral1">
-                  <div class="container">
-                     <div class="row g-4">
-                        <div class="col-sm-10">
-                           <label for="firstName" class="form-label">1. Razón social de la empresa (*)</label>
-                           <input [(ngModel)]="modulo1.IcaratulaUnica.razonSocial"
-                              [ngModelOptions]="{ standalone: true }" type="text" class="form-control" />
-                        </div>
-                        <div class="col-sm-2">
-                           <label for="lastName" class="form-label">LGGR</label>
-                           <input [(ngModel)]="modulo1.IcaratulaUnica.numeroOrden"
-                              [ngModelOptions]="{ standalone: true }" type="text" class="form-control" disabled />
-                        </div>
-                        <div class="col-sm-10">
-                           <label for="firstName" class="form-label">
-                              2. Nombre comercial (*)</label>
-                           <input [(ngModel)]="modulo1.IcaratulaUnica.nombreComercial"
-                              [ngModelOptions]="{ standalone: true }" type="text" class="form-control" id="firstName"
-                              placeholder="" value="" required />
-                        </div>
-                        <div class="col-sm-2">
-                           <label for="lastName" class="form-label">3. Sigla</label>
-                           <input [(ngModel)]="modulo1.IcaratulaUnica.sigla" [ngModelOptions]="{ standalone: true }"
-                              type="text" class="form-control" />
-                        </div>
-                        <div class="col-12">
-                           <label for="username" class="form-label">4. Domicilio principal o dirección de la gerencia
-                           </label>
-                           <div class="input-group has-validation">
-                              <input [(ngModel)]="modulo1.IDireccion.direccion" [ngModelOptions]="{ standalone: true }"
-                                 type="text" class="form-control" />
-                           </div>
-                        </div>
-                        <div class="col-md-6">
-                           <label for="country" class="form-label">5. Departamento (*)</label>
-                           <select name="depto" class="form-select" [(ngModel)]="modulo1.IDireccion.idDepartamento"
-                              [ngModelOptions]="{ standalone: true }"
-                              (change)="getMunicipios(modulo1.IDireccion.idDepartamento)">
-                              <option *ngFor="let item of listDepto" value="{{ item.codigo}}">
-                                 {{ item.nombre }}
-                              </option>
-                           </select>
-                        </div>
-                        <div class="col-md-6">
-                           <label for="state" class="form-label">6. Municipio (*)</label>
-                           <select name="muni1" class="form-select" [(ngModel)]="modulo1.IDireccion.idMunicipio">
-                              <option *ngFor="let item of listMunicipio" value="{{item.codigo}}">
-                                 {{ item.nombre }}
-                              </option>
-                           </select>
-                        </div>
-                        <div class="col-3">
-                           <label for="address" class="form-label">7. Teléfono (*)</label>
-                           <input [(ngModel)]="modulo1.IDireccion.telefono" [ngModelOptions]="{ standalone: true }"
-                              type="tel" class="form-control" />
-                        </div>
-                        <div class="col-9">
-                           <label for="address2" class="form-label">8. Redes sociales</label>
-                           <input [(ngModel)]="modulo1.IDireccion.redesSociales" [ngModelOptions]="{ standalone: true }"
-                              type="text" class="form-control" />
-                        </div>
-                        <div class="col-6">
-                           <label for="email" class="form-label">9. Correo electrónico
-                           </label>
-                           <input [(ngModel)]="modulo1.IDireccion.correoElectronico"
-                              [ngModelOptions]="{ standalone: true }" type="email" class="form-control" id="email"
-                              placeholder="you@example.com" />
-
-                        </div>
-                        <div class="col-6">
-                           <label for="address2" class="form-label">10 Página Web</label>
-                           <input [(ngModel)]="modulo1.IDireccion.paginaWeb" [ngModelOptions]="{ standalone: true }"
-                              type="text" class="form-control" id="redes" placeholder="" required />
-
-                        </div>
-                        <div class="col-sm-10">
-                           <label for="firstName" class="form-label">11. Dirección para notificación</label>
-                           <input [(ngModel)]="modulo1.IDireccionNotificacion.direccion"
-                              [ngModelOptions]="{ standalone: true }" type="text" class="form-control" value=""
-                              required />
-
-                        </div>
-                        <div class="col-sm-2">
-                           <label for="lastName" class="form-label">LGPN</label>
-                           <input [(ngModel)]="modulo1.IcaratulaUnica.numeroRegistro"
-                              [ngModelOptions]="{ standalone: true }" type="text" class="form-control" disabled />
-
-                        </div>
-                        <div class="col-md-6">
-                           <label for="country" class="form-label">12. Departamento</label>
-                           <select name="depto1" [(ngModel)]="modulo1.IDireccionNotificacion.idDepartamento"
-                              [ngModelOptions]="{ standalone: true }" class="form-select"
-                              (change)="getMunicipiosNoti(modulo1.IDireccion.idDepartamento)">
-                              <option *ngFor="let item of listDeptoNoti" [value]="item.codigo">
-                                 {{ item.nombre }}
-                              </option>
-                           </select>
-                        </div>
-                        <div class="col-md-6">
-                           <label for="state" class="form-label">13. Municipio (*)</label>
-                           <select name="muni2" [(ngModel)]="modulo1.IDireccionNotificacion.idMunicipio"
-                              [ngModelOptions]="{standalone: true}" class="form-select">
-                              <option *ngFor="let item of listMunicipioNoti" value="{{ item.codigo}}">
-                                 {{ item.nombre }}
-                              </option>
-                           </select>
-                        </div>
-                        <div class="col-3">
-                           <label for="address" class="form-label">14. Teléfono (*)</label>
-                           <input type="tel" class="form-control" [(ngModel)]="modulo1.IDireccionNotificacion.telefono"
-                              [ngModelOptions]="{standalone: true}" />
-
-                        </div>
-                        <div class="col-9">
-                           <label for="address2" class="form-label">15. Redes sociales</label>
-                           <input type="text" class="form-control"
-                              [(ngModel)]="modulo1.IDireccionNotificacion.redesSociales"
-                              [ngModelOptions]="{standalone: true}" />
-
-                        </div>
-                        <div class="col-12">
-                           <label for="email" class="form-label">16. Correo electrónico
-                           </label>
-                           <input type="email" class="form-control"
-                              [(ngModel)]="modulo1.IDireccionNotificacion.correoElectronico"
-                              [ngModelOptions]="{standalone: true}" id="email" placeholder="you@example.com" />
-
-                        </div>
-                     </div>
-                  </div>
-               </form>
+              <h2>Numeral 5. Composición del capital social</h2>
             </div>
-         </div>
-         <mat-action-row>
-            <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-            <button mat-button color="primary" (click)="nextStep()">
-               Siguiente
-            </button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 3,4,5,6-->
-      <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title>Númerales 3, 4, 5, 6 </mat-panel-title>
-            <mat-icon> import_export</mat-icon>
-         </mat-expansion-panel-header>
-         <!--numeral 3,4,5,6-->
-         <div class="container">
-            <div class="row g-4">
-               <!--titulo numeral 3-->
-               <div class="col-md-8">
-                  <h2>Numeral 3. TIPO DE ORGANIZACIÓN</h2>
-               </div>
-               <!--titulo numeral 4-->
-               <div class="col-md-4">
-                  <h2>Númeral 4. FECHA DE CONSTITUCIÓN</h2>
-               </div>
-               <div class="col-md-4">
-                  <label for="country" class="form-label">Organización jurídica (*)</label>
-                  <select name="tipoOrg" [(ngModel)]="modulo1.IcaratulaUnica.idTipoOrganizacion" class="form-select"
-                     (change)="getSubtipoOrgnizacion(modulo1.IcaratulaUnica.idTipoOrganizacion)">
-                     <option *ngFor="let item of listTipoOrg" value="{{ item.id }}">
-                        {{ item.nombre }}
-                     </option>
-                  </select>
-                  <div class="invalid-feedback"></div>
-               </div>
-               <div class="col-md-4">
-                  <label for="cual" class="form-label" *ngIf="editableotros">Cual?</label>
-                  <textarea type="textarea" class="form-control" *ngIf="editableotros" placeholder=""></textarea>
-               </div>
-               <div class="col-md-4">
-                  <label class="form-label">Desde: </label>
+          </div>
 
-                  <input type="text" class="form-control input-sm" bsDatepicker
-                     [(ngModel)]="modulo1.IcaratulaUnica.fechaConstitucionDesde" [ngModelOptions]="{standalone: true}">
-               </div>
-               <div class="col-md-4">
-                  <select *ngIf="editable" name="subtipoOrg" [(ngModel)]="modulo1.IcaratulaUnica.idSubTipoOrganizacion"
-                     class="form-select">
-                     <option *ngFor="let item of listSubTipoOrg" value="{{ item.id }}">
-                        {{ item.nombre }}
-                     </option>
-                  </select>
-               </div>
-               <div class="col-md-4"></div>
-               <div class="col-md-4">
-                  <label class="form-label">Hasta: </label>
-                  <input type="text" class="form-control input-sm" bsDatepicker
-                     [(ngModel)]="modulo1.IcaratulaUnica.fechaConstitucionHasta" [ngModelOptions]="{standalone: true}">
-               </div>
+          <div class="row row-cols-2 row-cols-lg-3">
+            <div class="col-4 col-lg-3">
+              <label class="form-label">1 Nacional %</label>
+              <input
+                [(ngModel)]="modulo1.IcapitalSocialN.total"
+                [ngModelOptions]="{ standalone: true }"
+                type="number"
+                class="form-control"
+                disabled
+              />
             </div>
-         </div>
-         <!--numeral 5 y 6-->
-         <div class="container">
-            <div class="row g-4">
-               <!--titulos-->
-               <div class="col-md-8">
-                  <h2>Numeral 5. Composición del capital social</h2>
-               </div>
-               <div class="col-md-4">
-                  <h2>Numeral 6. ESTADO ACTUAL DE LA EMPRESA</h2>
-               </div>
+            <div class="col-4 col-lg-3">
+              <label class="form-label">1.1 % Publico</label>
+              <input
+                [(ngModel)]="modulo1.IcapitalSocialN.publico"
+                (change)="sumapublico(modulo1.IcapitalSocialN)"
+                [ngModelOptions]="{ standalone: true }"
+                type="number"
+                class="form-control"
+              />
+            </div>
+            <div class="col-4 col-lg-3">
+              <label class="form-label">2 Extranjero %</label>
+              <input
+                [(ngModel)]="modulo1.ICapitalSocialE.total"
+                [ngModelOptions]="{ standalone: true }"
+                type="number"
+                class="form-control"
+                disabled=""
+              />
+            </div>
+            <div class="col-4 col-lg-3">
+              <label class="form-label">2.1 % Publico </label>
+              <input
+                [(ngModel)]="modulo1.ICapitalSocialE.publico"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="sumapuExt(modulo1.ICapitalSocialE)"
+                type="number"
+                class="form-control"
+              />
+            </div>
+          </div>
 
-               <!--  linea 1-->
-               <div class="col-md-2"></div>
-               <div class="col-md-2">
-                  <label class="form-label">1.1 % Publico</label>
-                  <input type="number" class="form-control" />
-               </div>
-               <div class="col-md-2"></div>
-               <div class="col-md-2">
-                  <label class="form-label">2.1 % Publico </label>
-                  <input type="number" class="form-control" />
-               </div>
+          <div class="row row-cols-2 row-cols-lg-3">
+            <div class="col-4 col-lg-3"></div>
+            <div class="col-4 col-lg-3">
+              <label class="form-label">1.2 % Privado</label>
+              <input
+                [(ngModel)]="modulo1.IcapitalSocialN.privado"
+                [ngModelOptions]="{ standalone: true }"
+                (change)="sumapublico(modulo1.IcapitalSocialN)"
+                type="number"
+                class="form-control"
+              />
+            </div>
+            <div class="col-4 col-lg-3"></div>
+            <div class="col-4 col-lg-3">
+              <label class="form-label">2.2 % Privado</label>
+              <input
+                [(ngModel)]="modulo1.ICapitalSocialE.privado"
+                [ngModelOptions]="{ standalone: true }"
+                type="number"
+                class="form-control"
+                (change)="sumapuExt(modulo1.ICapitalSocialE)"
+              />
+            </div>
+          </div>
 
-               <div class="col-md-4">
-                  <label for="country" class="form-label">ESTADO DE LA EMPRESA</label>
-                  <select class="form-select">
-                     <option *ngFor="let item of listEstadoEmpresa" value="{{item.id}}">
-                        {{ item.estadoEmpresa }}
-                     </option>
-                  </select>
-               </div>
-
-               <!--  linea 2-->
-               <div class="col-md-2">
-                  <label class="form-label">1 Nacional %</label>
-                  <input type="number" class="form-control" />
-               </div>
-
-               <div class="col-md-2"></div>
-               <div class="col-md-2">
-                  <label class="form-label">2 Extrangero %</label>
-                  <input type="number" class="form-control" />
-               </div>
-               <div class="col-md-2"></div>
-               <div class="col-md-4">
-                  <label for="cual" class="form-label" *ngIf="editableotros">Cual?</label>
-                  <textarea type="textarea" class="form-control" *ngIf="editableotros"
-                     [(ngModel)]="modulo1.IcaratulaUnica.cualOtroEstado"></textarea>
-               </div>
-
-               <!--linea 3-->
-               <div class="col-md-2"></div>
-               <div class="col-md-2">
-                  <label class="form-label">1.2 % Privado</label>
-                  <input type="number" class="form-control" />
-               </div>
-               <div class="col-md-2"></div>
-               <div class="col-md-2">
-                  <label class="form-label">2.2 % Privado</label>
-                  <input type="number" class="form-control" />
-               </div>
-               <div class="col-md-2"></div>
-            </div>
-         </div>
-
-         <mat-action-row>
-            <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-            <button mat-button color="primary" (click)="nextStep()">
-               Siguiente
-            </button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 7-->
-      <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title>Númeral 7. VARIABLES PRINCIPALES DEL TOTAL DE LA EMPRESA.
-            </mat-panel-title>
-            <mat-icon>description</mat-icon>
-         </mat-expansion-panel-header>
-         <div class="container">
-            <label>Columna 2: Asigne para cada sección la principal actividad en codigo
-               (CIIU 4 Rev.4 A.C.) realizada por la empresa durante el año.</label>
-            <label>Columnas 3 y 4 Relacione el número de establecimientos y el valor de
-               los ingresos causados durante el año en cada sección.</label>
-            <label>Columnas 5, 6 y 7 Relacione el personal ocupado, la remuneración y
-               los costos y gastos causados durante el año en cada sección.</label>
-            <div class="container">
-               <table class="table table-bordered">
-                  <thead>
-                     <tr>
-                        <th scope="col" colspan="2">#</th>
-                        <th scope="col">"SECCIÓN (1)"</th>
-                        <th scope="col">"Código (2)"</th>
-                        <th scope="col">No. Establecimientos</th>
-                        <th scope="col">Ingresos $miles (4)</th>
-                        <th scope="col">"Personal ocupado (promedio) en el año (5) " </th>
-                        <th scope="col">"Remuneración (sueldos, salarios y carga prestacional)($ miles) (6)"</th>
-                        <th scope="col">"Otros Costos y gastos (excluya pagos de personal) ($ miles) (7)"</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-                     </tr>
-                     <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>Jacob</td>
-                        <td>Thornton</td>
-                        <td>@fat</td>
-                        <td>@fat</td>
-                     </tr>
-                     <tr>
-                        <th scope="row">3</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td>@mdo</td>
-
-                  </tbody>
-               </table>
-
-            </div>
-         </div>
-         <mat-action-row>
-            <button mat-button color="warn" (click)="prevStep()">Anterio</button>
-            <button mat-button color="primary" (click)="nextStep()">
-               Siguiente
-            </button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 8-->
-      <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title>Númeral 8. INGRESOS NO OPERACIONALES </mat-panel-title>
-            <mat-icon> attach_money</mat-icon>
-         </mat-expansion-panel-header>
-         <div class="container">
-            <div class="row g-4" *ngFor="let item of listNoOper">
-
-               <div class="col-md-8">
-                  <label class="form-check-label">{{
-                     item.nombre
-                     }}</label>
-               </div>
-
-               <div class="col-md-4">
-                  <input type="number" [(ngModel)]="modulo1.IIngresosNoOperacioneales.valor">
-               </div>
-
-            </div>
-         </div>
-         <mat-action-row>
-            <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-            <button mat-button color="primary" (click)="nextStep()">
-               Siguiente
-            </button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 9-->
-      <mat-expansion-panel [expanded]="step === 6" (opened)="setStep(6)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title>Númeral 9. NUMERO DE UNIDADES DE APOYO
-            </mat-panel-title>
-            <mat-icon>group_work</mat-icon>
-         </mat-expansion-panel-header>
-         <div class="container">
-            <div class="row">
-               <div class="col-md-2">
-                  <label class="form-label">Número de unidades de apoyo *</label>
-               </div>
-               <div class="col-md-4">
-                  <input [(ngModel)]="modulo1.IcaratulaUnica.numeroUnidadesApoyo" type="number" class="form-control" />
-               </div>
-               <div class="col-md-6">
-                  <p>
-                     *Establecimientos independientes de aquellos en los que se
-                     desarrollan las actividades principales o secundarias , destinados
-                     a apoyar dichas actividades (relacionadas con el comercio) y en
-                     los cuales, "NO se realiza Facturación". Por ejemplo: bodegas,
-                     gerencia general, oficinas de contabilidad e informática, agencias
-                     de distribución, dispensarios de medicamentos a EPS en los que no
-                     se realice venta directa y facturación, etc.
-                  </p>
-               </div>
-            </div>
-         </div>
-         <mat-action-row>
-            <button mat-button color="warn" (click)="prevStep()">Anterio</button>
-            <button mat-button color="primary" (click)="nextStep()">
-               Siguiente
-            </button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 10-->
-      <mat-expansion-panel [expanded]="step === 7" (opened)="setStep(7)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title>Númeral 10. IMPORTACIONES Y EXPORTACIONES REALIZADAS EN EL AÑO
-            </mat-panel-title>
-            <mat-icon> import_export</mat-icon>
-         </mat-expansion-panel-header>
-         <table>
-            <tr>
-               <td>
-                  <p>
-                     1. La empresa efectuó operaciones de compra con otro (s) país (es)
-                     de:
-                  </p>
-               </td>
-               <td>
-                  <section class="example-section">
-                     <mat-radio-group>
-                        <mat-radio-button name="opciones" [value]="1" style="margin: 10px">
-                           Bienes</mat-radio-button>
-                        <mat-radio-button name="opciones" [value]="2" style="margin: 10px">
-                           Servicios
-                        </mat-radio-button>
-                        <mat-radio-button name="opciones" [value]="3" style="margin: 10px">
-                           Ninguana</mat-radio-button>
-                     </mat-radio-group>
-                  </section>
-               </td>
-            </tr>
-            <tr>
-               <td>
-                  <p>
-                     2. La empresa efectuó operaciones de venta con otro (s) país (es)
-                     de:
-                  </p>
-               </td>
-               <td>
-                  <section class="example-section">
-                     <mat-radio-group>
-                        <mat-radio-button name="opciones" [value]="1" style="margin: 10px">
-                           Bienes</mat-radio-button>
-                        <mat-radio-button name="opciones" [value]="2" style="margin: 10px">
-                           Servicios
-                        </mat-radio-button>
-                        <mat-radio-button name="opciones" [value]="3" style="margin: 10px">
-                           Ninguana</mat-radio-button>
-                     </mat-radio-group>
-                  </section>
-               </td>
-            </tr>
-         </table>
-         <mat-action-row>
-            <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-            <button mat-button color="primary" (click)="nextStep()">
-               Siguiente
-            </button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <!--numeral 11-->
-      <mat-expansion-panel [expanded]="step === 8" (opened)="setStep(8)" hideToggle>
-         <mat-expansion-panel-header>
-            <mat-panel-title>Númeral 11. FUNCIONAMIENTO DE LA ACTIVIDAD COMERCIAL Y ORGANIZACIÓN
-               DE LA EMPRESA, DURANTE EL AÑO DE LA ENCUESTA
-            </mat-panel-title>
-            <mat-icon>reorder</mat-icon>
-         </mat-expansion-panel-header>
-         <div class="container">
-            <div class="row">
-               <div class="col-md-3">
-                  <label class="form-label">1. Año de iniciación de operaciones de la actividad comercial
-                  </label>
-               </div>
-               <div class="col-md-2">
-                  <input type="number" class="form-control"
-                     [(ngModel)]="modulo1.IInformacionFuncionamiento.anioInicioOperaciones"
-                     [ngModelOptions]="{standalone: true}" />
-               </div>
-               <div class="col-md-4">
-                  <label class="form-label">2. Meses de operación de la actividad comercial en el año</label>
-               </div>
-               <div class="col-md-2">
-                  <input type="number" class="form-control"
-                     [(ngModel)]="modulo1.IInformacionFuncionamiento.mesesOperacion"
-                     [ngModelOptions]="{standalone: true}" />
-               </div>
-               <div class="col-md-12">
-                  <label class="form-label">3. Si el período de operaciones (ítem 2) fue inferior a 12 meses,
-                     indique la causa</label>
-               </div>
-               <div class="col-md-2"></div>
-               <div class="col-md-4">
-
-               </div>
-               <div class="col-md-6">
-                  <label class="form-label">Seleccione Causa: </label>
-                  <select class="form-select">
-                     <option *ngFor="let item of listTipoCausa" value="{{item.id}}">
-                        {{ item.nombre }}
-                     </option>
-                  </select>
-               </div>
-               <div class="col-md-2"></div>
-               <div class="col-md-4"></div>
-               <div class="col-md-6">
-                  <br />
-                  <label class="form-label">Cual? </label>
-                  <textarea type="textarea" class="form-control" id="cual" placeholder="" value=""></textarea>
-                  <div class="invalid-feedback"></div>
-               </div>
-            </div>
-         </div>
-         <mat-action-row>
-            <button mat-button color="warn" (click)="prevStep()">Anterior</button>
-            <button mat-button color="primary" (click)="nextStep()">Fin</button>
-         </mat-action-row>
-      </mat-expansion-panel>
-      <div class="container">
-         <br />
-         <div class="row">
-            <div class="col-md-3">
-               <label class="form-label">Fecha de diligenciamiento</label>
-            </div>
-            <div class="col-md-4">
-               <label class="form-label">Representante legal o inscrito:</label>
-            </div>
-            <div class="col-md-5">
-               <label class="form-label">Persona que diligencia:</label>
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-4">
-               <label for="firstName" class="form-label"> Nombre:</label>
-               <input type="text" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.representanteLegal"
-                  [ngModelOptions]="{standalone: true}" />
-
-            </div>
-            <div class="col-md-5">
-               <label for="firstName" class="form-label"> Nombre:</label>
-               <input type="text" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.personaDiligencia"
-                  [ngModelOptions]="{standalone: true}" />
-
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-md-3">
-               <input type="datetime" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.fechaDiligenciamiento"
-                  [ngModelOptions]="{standalone: true}" />
-            </div>
-            <div class="col-md-4">
-               <label for="correofirma" class="form-label">
-                  Correo electrónico:</label>
-               <input type="text" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.emailRepresentante"
-                  [ngModelOptions]="{standalone: true}" />
-            </div>
-            <div class="col-md-2">
-               <label for="correofirma" class="form-label"> Cargo:</label>
-               <input type="text" class="form-control" [(ngModel)]="modulo1.IInformacionFuncionamiento.cargoDiligencia"
-                  [ngModelOptions]="{standalone: true}" />
-
-            </div>
-            <div class="col-md-2">
-               <label for="telefonofirma" class="form-label"> Tel:</label>
-               <input type="tel" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.telefonoDiligencia"
-                  [ngModelOptions]="{standalone: true}" />
-               <div class="invalid-feedback">Telefono requerido requerido</div>
-            </div>
-            <div class="col-md-1">
-               <label for="ext" class="form-label"> Ext:</label>
-               <input type="tel" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.extensionDiligencia"
-                  [ngModelOptions]="{standalone: true}" />
-            </div>
-         </div>
-         <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-4">
-               <label for="celularfirma" class="form-label"> celular:</label>
-               <input type="celular" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.celularRepresentante"
-                  [ngModelOptions]="{standalone: true}" />
-               <div class="invalid-feedback">Celular requerido requerido</div>
-            </div>
-            <div class="col-md-3">
-               <label for="correofirma" class="form-label">
-                  Correo electrónico:</label>
-               <input type="text" class="form-control" [(ngModel)]="modulo1.IInformacionFuncionamiento.emailDiligencia"
-                  [ngModelOptions]="{standalone: true}" />
-               <div class="invalid-feedback">Correo electrónico requerido</div>
-            </div>
-            <div class="col-md-2">
-               <label for="celularfirma" class="form-label"> celular:</label>
-               <input type="celular" class="form-control"
-                  [(ngModel)]="modulo1.IInformacionFuncionamiento.celularDiligencia"
-                  [ngModelOptions]="{standalone: true}" />
-               <div class="invalid-feedback">Celular requerido requerido</div>
-            </div>
-         </div>
+          <br />
+        </div>
+        <div
+          class="col-12"
+          style="
+            border: 1px solid black;
+            margin-block-end: 10px;
+            margin-right: 10px;
+          "
+        >
+          <div class="col-md-12">
+            <h2>Numeral 6. ESTADO ACTUAL DE LA EMPRESA</h2>
+          </div>
+          <div class="col-md-4">
+            <label for="country" class="form-label">ESTADO DE LA EMPRESA</label>
+            <select class="form-select">
+              <option
+                *ngFor="let item of listEstadoEmpresa"
+                value="{{ item.id }}"
+              >
+                {{ item.estadoEmpresa }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-8">
+            <label for="cual" class="form-label">Cual?</label>
+            <textarea
+              type="textarea"
+              class="form-control"
+              [(ngModel)]="modulo1.IcaratulaUnica.cualOtroEstado"
+            ></textarea>
+          </div>
+          <br />
+        </div>
+        <br />
       </div>
 
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">
+          Siguiente
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--numeral 7-->
+    <mat-expansion-panel
+      [expanded]="step === 4"
+      (opened)="setStep(4)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          >Númeral 7. VARIABLES PRINCIPALES DEL TOTAL DE LA EMPRESA.
+        </mat-panel-title>
+        <mat-icon>description</mat-icon>
+      </mat-expansion-panel-header>
       <div class="container">
-         <div class="row">
-            <div class="col-auto">
-               <button type="button" class="btn btn-lg btn-primary" (click)="guardar()">
-                  GUARDAR
-               </button>
-            </div>
-         </div>
+        <label
+          >Columna 2: Asigne para cada sección la principal actividad en codigo
+          (CIIU 4 Rev.4 A.C.) realizada por la empresa durante el año.</label
+        >
+        <label
+          >Columnas 3 y 4 Relacione el número de establecimientos y el valor de
+          los ingresos causados durante el año en cada sección.</label
+        >
+        <label
+          >Columnas 5, 6 y 7 Relacione el personal ocupado, la remuneración y
+          los costos y gastos causados durante el año en cada sección.</label
+        >
+        <div class="container">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col" colspan="2">#</th>
+                <th scope="col">"SECCIÓN (1)"</th>
+                <th scope="col">"Código (2)"</th>
+                <th scope="col">No. Establecimientos</th>
+                <th scope="col">Ingresos $miles (4)</th>
+                <th scope="col">
+                  "Personal ocupado (promedio) en el año (5) "
+                </th>
+                <th scope="col">
+                  "Remuneración (sueldos, salarios y carga prestacional)($
+                  miles) (6)"
+                </th>
+                <th scope="col">
+                  "Otros Costos y gastos (excluya pagos de personal) ($ miles)
+                  (7)"
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+                <td>@mdo</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-   </mat-accordion>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterio</button>
+        <button mat-button color="primary" (click)="nextStep()">
+          Siguiente
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--numeral 8-->
+    <mat-expansion-panel
+      [expanded]="step === 5"
+      (opened)="setStep(5)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Númeral 8. INGRESOS NO OPERACIONALES </mat-panel-title>
+        <mat-icon> attach_money</mat-icon>
+      </mat-expansion-panel-header>
+      <div class="container">
+        <div class="row g-4" *ngFor="let item of listNoOper">
+          <div class="col-md-8">
+            <label class="form-check-label">{{ item.nombre }}</label>
+          </div>
+
+          <div class="col-md-4">
+            <input
+              type="number"
+              [(ngModel)]="modulo1.IIngresosNoOperacioneales.valor"
+            />
+          </div>
+        </div>
+      </div>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">
+          Siguiente
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--numeral 9-->
+    <mat-expansion-panel
+      [expanded]="step === 6"
+      (opened)="setStep(6)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          >Númeral 9. NUMERO DE UNIDADES DE APOYO
+        </mat-panel-title>
+        <mat-icon>group_work</mat-icon>
+      </mat-expansion-panel-header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-2">
+            <label class="form-label">Número de unidades de apoyo *</label>
+          </div>
+          <div class="col-md-4">
+            <input
+              [(ngModel)]="modulo1.IcaratulaUnica.numeroUnidadesApoyo"
+              type="number"
+              class="form-control"
+            />
+          </div>
+          <div class="col-md-6">
+            <p>
+              *Establecimientos independientes de aquellos en los que se
+              desarrollan las actividades principales o secundarias , destinados
+              a apoyar dichas actividades (relacionadas con el comercio) y en
+              los cuales, "NO se realiza Facturación". Por ejemplo: bodegas,
+              gerencia general, oficinas de contabilidad e informática, agencias
+              de distribución, dispensarios de medicamentos a EPS en los que no
+              se realice venta directa y facturación, etc.
+            </p>
+          </div>
+        </div>
+      </div>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterio</button>
+        <button mat-button color="primary" (click)="nextStep()">
+          Siguiente
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--numeral 10-->
+    <mat-expansion-panel
+      [expanded]="step === 7"
+      (opened)="setStep(7)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          >Númeral 10. IMPORTACIONES Y EXPORTACIONES REALIZADAS EN EL AÑO
+        </mat-panel-title>
+        <mat-icon> import_export</mat-icon>
+      </mat-expansion-panel-header>
+      <table>
+        <tr>
+          <td>
+            <p>
+              1. La empresa efectuó operaciones de compra con otro (s) país (es)
+              de:
+            </p>
+          </td>
+          <td>
+            <section class="example-section">
+              <mat-radio-group>
+                <mat-radio-button
+                  name="opciones"
+                  [value]="1"
+                  style="margin: 10px"
+                >
+                  Bienes</mat-radio-button
+                >
+                <mat-radio-button
+                  name="opciones"
+                  [value]="2"
+                  style="margin: 10px"
+                >
+                  Servicios
+                </mat-radio-button>
+                <mat-radio-button
+                  name="opciones"
+                  [value]="3"
+                  style="margin: 10px"
+                >
+                  Ninguana</mat-radio-button
+                >
+              </mat-radio-group>
+            </section>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <p>
+              2. La empresa efectuó operaciones de venta con otro (s) país (es)
+              de:
+            </p>
+          </td>
+          <td>
+            <section class="example-section">
+              <mat-radio-group>
+                <mat-radio-button
+                  name="opciones"
+                  [value]="1"
+                  style="margin: 10px"
+                >
+                  Bienes</mat-radio-button
+                >
+                <mat-radio-button
+                  name="opciones"
+                  [value]="2"
+                  style="margin: 10px"
+                >
+                  Servicios
+                </mat-radio-button>
+                <mat-radio-button
+                  name="opciones"
+                  [value]="3"
+                  style="margin: 10px"
+                >
+                  Ninguana</mat-radio-button
+                >
+              </mat-radio-group>
+            </section>
+          </td>
+        </tr>
+      </table>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">
+          Siguiente
+        </button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <!--numeral 11-->
+    <mat-expansion-panel
+      [expanded]="step === 8"
+      (opened)="setStep(8)"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title
+          >Númeral 11. FUNCIONAMIENTO DE LA ACTIVIDAD COMERCIAL Y ORGANIZACIÓN
+          DE LA EMPRESA, DURANTE EL AÑO DE LA ENCUESTA
+        </mat-panel-title>
+        <mat-icon>reorder</mat-icon>
+      </mat-expansion-panel-header>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-3">
+            <label class="form-label"
+              >1. Año de iniciación de operaciones de la actividad comercial
+            </label>
+          </div>
+          <div class="col-md-2">
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="
+                modulo1.IInformacionFuncionamiento.anioInicioOperaciones
+              "
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="col-md-4">
+            <label class="form-label"
+              >2. Meses de operación de la actividad comercial en el año</label
+            >
+          </div>
+          <div class="col-md-2">
+            <input
+              type="number"
+              class="form-control"
+              [(ngModel)]="modulo1.IInformacionFuncionamiento.mesesOperacion"
+              [ngModelOptions]="{ standalone: true }"
+            />
+          </div>
+          <div class="col-md-12">
+            <label class="form-label"
+              >3. Si el período de operaciones (ítem 2) fue inferior a 12 meses,
+              indique la causa</label
+            >
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-4"></div>
+          <div class="col-md-6">
+            <label class="form-label">Seleccione Causa: </label>
+            <select class="form-select">
+              <option *ngFor="let item of listTipoCausa" value="{{ item.id }}">
+                {{ item.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="col-md-2"></div>
+          <div class="col-md-4"></div>
+          <div class="col-md-6">
+            <br />
+            <label class="form-label">Cual? </label>
+            <textarea
+              type="textarea"
+              class="form-control"
+              id="cual"
+              placeholder=""
+              value=""
+            ></textarea>
+            <div class="invalid-feedback"></div>
+          </div>
+        </div>
+      </div>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Anterior</button>
+        <button mat-button color="primary" (click)="nextStep()">Fin</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <div class="container">
+      <br />
+      <div class="row">
+        <div class="col-md-3">
+          <label class="form-label">Fecha de diligenciamiento</label>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Representante legal o inscrito:</label>
+        </div>
+        <div class="col-md-5">
+          <label class="form-label">Persona que diligencia:</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+          <label for="firstName" class="form-label"> Nombre:</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.representanteLegal"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+        <div class="col-md-5">
+          <label for="firstName" class="form-label"> Nombre:</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.personaDiligencia"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3">
+          <input
+            type="datetime"
+            class="form-control"
+            [(ngModel)]="
+              modulo1.IInformacionFuncionamiento.fechaDiligenciamiento
+            "
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+        <div class="col-md-4">
+          <label for="correofirma" class="form-label">
+            Correo electrónico:</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.emailRepresentante"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+        <div class="col-md-2">
+          <label for="correofirma" class="form-label"> Cargo:</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.cargoDiligencia"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+        <div class="col-md-2">
+          <label for="telefonofirma" class="form-label"> Tel:</label>
+          <input
+            type="tel"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.telefonoDiligencia"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <div class="invalid-feedback">Telefono requerido requerido</div>
+        </div>
+        <div class="col-md-1">
+          <label for="ext" class="form-label"> Ext:</label>
+          <input
+            type="tel"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.extensionDiligencia"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-4">
+          <label for="celularfirma" class="form-label"> celular:</label>
+          <input
+            type="celular"
+            class="form-control"
+            [(ngModel)]="
+              modulo1.IInformacionFuncionamiento.celularRepresentante
+            "
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <div class="invalid-feedback">Celular requerido requerido</div>
+        </div>
+        <div class="col-md-3">
+          <label for="correofirma" class="form-label">
+            Correo electrónico:</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.emailDiligencia"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <div class="invalid-feedback">Correo electrónico requerido</div>
+        </div>
+        <div class="col-md-2">
+          <label for="celularfirma" class="form-label"> celular:</label>
+          <input
+            type="celular"
+            class="form-control"
+            [(ngModel)]="modulo1.IInformacionFuncionamiento.celularDiligencia"
+            [ngModelOptions]="{ standalone: true }"
+          />
+          <div class="invalid-feedback">Celular requerido requerido</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-auto">
+          <button
+            type="button"
+            class="btn btn-lg btn-primary"
+            (click)="guardar()"
+          >
+            GUARDAR
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-accordion>
 </div>

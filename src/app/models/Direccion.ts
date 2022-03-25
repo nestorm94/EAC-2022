@@ -13,7 +13,7 @@ export interface Direccion{
 	redesSociales?: string, 
 	correoElectronico?: string, 
 	paginaWeb?: string,
-	idTipoDireccion?: string,
+	idTipoDireccion?: number,
 	idCaratulaUnica?: number,
 	idDepartamento?: number,
     idMunicipio?: number,

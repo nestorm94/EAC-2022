@@ -11,7 +11,8 @@ export interface Modulo1{
     IcaratulaUnica:CaratulaUnica,
     IInformacionFuncionamiento:InformacionFuncionamiento,
     IDireccion:Direccion,
-    ICapitalSocial:CapitalSocial,
+    ICapitalSocialE:CapitalSocial,
     IIngresosNoOperacioneales:IngresosNoOperacioneales,
     IDireccionNotificacion:Direccion,
+    IcapitalSocialN:CapitalSocial,
 }

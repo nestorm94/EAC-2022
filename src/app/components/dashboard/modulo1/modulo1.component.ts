@@ -1,11 +1,12 @@
 import { Component, Injectable, Input, OnInit, ViewChild } from "@angular/core";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { CaratulaUnicaService } from "src/app/services/caratula-unica.service";
 import { TipoDocumento } from "src/app/models/TipoDocumento";
 import { Modulo1 } from "src/app/models/modulo1";
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from "ngx-spinner";
+import { CapitalSocial } from "src/app/models/CapitalSocial";
 
 
 
@@ -22,12 +23,10 @@ export class Modulo1Component implements OnInit {
   public editableo11?: boolean;
 
   @ViewChild(MatAccordion) accordion!: MatAccordion;
-  step = 0;
-  formFields!: any[];
+  step = 0;;
 
   public numeral1!: FormGroup;
   public numeral2!: FormGroup;
-
 
   public modulo1!: Modulo1;
   public listTipoDocumento!: TipoDocumento[];
@@ -58,8 +57,9 @@ export class Modulo1Component implements OnInit {
   constructor(
     public httpCaratula: CaratulaUnicaService,
     private _formBuild: FormBuilder, private toastr: ToastrService, private spinner: NgxSpinnerService) {
-    this.buildForm();
+
   }
+
 
   ngOnInit(): void {
     this.spinner.show();
@@ -73,40 +73,89 @@ export class Modulo1Component implements OnInit {
     this.getAllTipoCausa();
     this.findAllEstadoEmpresa();
 
+    this.buildForm()
 
     this.modulo1 = {
       IcaratulaUnica: {},
       IDireccion: {},
       IInformacionFuncionamiento: {},
-      ICapitalSocial: {},
+      ICapitalSocialE: {},
       IIngresosNoOperacioneales: {},
       IDireccionNotificacion: {},
+      IcapitalSocialN: {},
     };
 
   }
 
-  private buildForm() {
-    this.numeral1 = this._formBuild.group({
-      numeroDocumento: ['', [Validators.required, Validators.min(1.0)]]
-    });
-  }
+
   inicilaizarCaratulaUnica() {
 
     this.modulo1 = {
       IcaratulaUnica: {},
       IDireccion: {},
       IInformacionFuncionamiento: {},
-      ICapitalSocial: {},
+      ICapitalSocialE: {},
       IIngresosNoOperacioneales: {},
       IDireccionNotificacion: {},
+      IcapitalSocialN: {},
     };
 
   }
-  guardar(): void {
-    this.modulo1.IDireccion.idTipoDireccion = "1";
-    this.modulo1.IDireccionNotificacion.idTipoDireccion = "2";
 
+
+  buildForm() {
+
+    this.numeral1 = this._formBuild.group({
+      numeroDocumento: new FormControl('', Validators.required),
+      digitoVerificacion: new FormControl('', [Validators.required, Validators.maxLength(1)]),
+      numeroCamara: new FormControl('', Validators.required),
+      numeroRegistro: new FormControl('', Validators.required),
+      idTipoDocumento: new FormControl('', Validators.required),
+    })
+
+
+    this.numeral2 = this._formBuild.group({
+      razonSocial: new FormControl('', Validators.required),
+      nombreComercial: new FormControl('', Validators.required),
+      sigla: new FormControl('', Validators.required),
+      direccionGerencia: new FormControl('', Validators.required),
+      departamento: new FormControl('', Validators.required),
+      municipio: new FormControl('', Validators.required),
+      telefono: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      direccion: new FormControl('', Validators.required),
+      redesSociales: new FormControl('', Validators.required),
+      paginaWeb: new FormControl('', Validators.required),
+    })
+  }
+  guardar(): void {
+    this.modulo1.IDireccion.idTipoDireccion = 1;
+    this.modulo1.IDireccion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+    this.modulo1.IDireccionNotificacion.idTipoDireccion = 2;
+    this.modulo1.IDireccionNotificacion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+
+    this.modulo1.IcapitalSocialN.idTipoCapitalSocial = 1;
+    this.modulo1.IcapitalSocialN.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+    this.modulo1.ICapitalSocialE.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+
+    this.modulo1.ICapitalSocialE.idTipoCapitalSocial = 2;
     //guardar direccion
+    this.httpCaratula.guardarCapitalSocial(this.modulo1.ICapitalSocialE).subscribe((resp) => {
+      this.modulo1.ICapitalSocialE = resp;
+    },
+      (err) => {
+        this.toastr.error("No se puedo guardar Composición del capital so ");
+      });
+
+
+    this.httpCaratula.guardarCapitalSocial(this.modulo1.IcapitalSocialN).subscribe((resp) => {
+      this.modulo1.IcapitalSocialN = resp;
+    },
+      (err) => {
+        this.toastr.error("No se puedo guardar Composición del capital so ");
+      });
+    //guardar direccion
+
     this.httpCaratula.guardarDireccion(this.modulo1.IDireccion).subscribe((resp) => {
       this.modulo1.IDireccion = resp;
     },
@@ -121,7 +170,7 @@ export class Modulo1Component implements OnInit {
         this.toastr.error("No se puedo guardar la Dirección de notificación");
       });
 
-       //guarda la caratula 
+    //guarda la caratula 
     this.httpCaratula.guardarInformacionFuncionamiento(this.modulo1.IInformacionFuncionamiento).subscribe(
       (resp) => {
         debugger
@@ -135,6 +184,10 @@ export class Modulo1Component implements OnInit {
     );
 
     //guarda la caratula 
+    debugger
+    if (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 99) {
+      this.modulo1.IcaratulaUnica.idSubTipoOrganizacion == 0
+    }
     this.httpCaratula.guardarCaratula(this.modulo1.IcaratulaUnica).subscribe(
       (resp) => {
         debugger
@@ -147,8 +200,6 @@ export class Modulo1Component implements OnInit {
     );
   }
 
-  
-
   cargarCaratulaUnica() {
     this.spinner.show();
 
@@ -156,8 +207,18 @@ export class Modulo1Component implements OnInit {
     this.httpCaratula.cargarCaratulaUnica().subscribe(
       result => {
         this.modulo1.IcaratulaUnica = result;
+        this.editableotros = (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 99);
+        if (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 12) {
+
+          this.getSubtipoOrgnizacion(this.modulo1.IcaratulaUnica.idTipoOrganizacion);
+          this.editable = ((this.modulo1.IcaratulaUnica.idSubTipoOrganizacion || 0) > 0);
+
+        }
+
+
         this.getCaratulaUnicaDirecciones(this.modulo1.IcaratulaUnica.id);
         this.getCaratulaUnicaInformacionFuncionamiento(this.modulo1.IcaratulaUnica.id);
+        this.getCaratulaUnicaCapitalSocial(this.modulo1.IcaratulaUnica.id);
 
         this.spinner.hide();
         this.toastr.success("se cargo el modulo exitosamente ");
@@ -176,18 +237,68 @@ export class Modulo1Component implements OnInit {
     this.httpCaratula.getCaratulaUnicaDirecciones(idCaratulaUnica).subscribe(
       result => {
 
-        if (result[0].idTipoDireccion == 1) {
+        result.forEach((element: any) => {
+          if (element.idTipoDireccion == 1) {
+            debugger
+            this.modulo1.IDireccion = element;
+            this.getMunicipios(this.modulo1.IDireccion.idDepartamento);
 
-          this.modulo1.IDireccion = result[0];
-          this.getMunicipios(this.modulo1.IDireccion.idDepartamento);
+          }
+          if (element.idTipoDireccion == 2) {
+            debugger
+            this.modulo1.IDireccionNotificacion = element;
+            this.getMunicipiosNoti(this.modulo1.IDireccionNotificacion.idDepartamento);
 
-        }
-        if (result[1].idTipoDireccion == 2) {
+          }
+        });
 
-          this.modulo1.IDireccionNotificacion = result[1];
-          this.getMunicipiosNoti(this.modulo1.IDireccionNotificacion.idDepartamento);
 
-        }
+      },
+      err => {
+        this.toastr.error("no se puedo cargar las direcciones ");
+      }
+    );
+
+  }
+
+  sumapublico(item: any) {
+    debugger//(foo.bar || 0)
+    this.modulo1.IcapitalSocialN.total = ((item.publico || 0) + (item.privado || 0));
+    if (this.modulo1.IcapitalSocialN.total == undefined || this.modulo1.IcapitalSocialN.total < 100) {
+
+      this.toastr.warning("La suma del capital nacional no es 100 ");
+
+    }
+
+  }
+  sumapuExt(item: any) {
+    debugger//(foo.bar || 0)
+    this.modulo1.ICapitalSocialE.total = ((item.publico || 0) + (item.privado || 0));
+    if (this.modulo1.ICapitalSocialE.total == undefined || this.modulo1.ICapitalSocialE.total < 100) {
+
+      this.toastr.warning("La suma del capital extranjero no es 100 ");
+
+    }
+
+  }
+  getCaratulaUnicaCapitalSocial(idCaratulaUnica: any) {
+
+    this.httpCaratula.getCaratulaUnicaCapitalSocial(idCaratulaUnica).subscribe(
+      result => {
+        result.forEach((element: any) => {
+          if (element.idTipoCapitalSocial == 1) {
+            debugger
+            this.modulo1.IcapitalSocialN = element;
+
+          } else if (element.idTipoCapitalSocial == 2) {
+            debugger
+            this.modulo1.ICapitalSocialE = element;
+
+          }
+
+        });
+
+
       },
       err => {
         console.log(err)
@@ -195,6 +306,7 @@ export class Modulo1Component implements OnInit {
     );
 
   }
+
 
 
   //listas de parametros
@@ -341,7 +453,7 @@ export class Modulo1Component implements OnInit {
   getSubtipoOrgnizacion(idTipoOrganizacion: any) {
 
 
-    this.editableotros = idTipoOrganizacion == 99;
+    this.editableotros = (idTipoOrganizacion == 99);
     this.httpCaratula.findSubTipoOrganizacionByIdTipoOrganizacion(idTipoOrganizacion).subscribe(
       result => {
 
