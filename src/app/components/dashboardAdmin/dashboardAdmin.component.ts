@@ -2,13 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { TokenStorageService } from 'src/app/services/token-storage.service';
 
 @Component({
-  selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  selector: 'app-dashboardAdmin',
+  templateUrl: './dashboardAdmin.component.html',
+  styleUrls: ['./dashboardAdmin.component.css']
 })
 
 
-export class DashboardComponent implements OnInit {
+export class DashboardAdminComponent implements OnInit {
 
   logo="./assets/img/logo.png"
 
