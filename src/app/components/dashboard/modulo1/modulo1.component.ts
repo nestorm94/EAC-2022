@@ -6,8 +6,9 @@ import { TipoDocumento } from "src/app/models/TipoDocumento";
 import { Modulo1 } from "src/app/models/modulo1";
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from "ngx-spinner";
-import { CapitalSocial } from "src/app/models/CapitalSocial";
-
+import { TipoVariableEmpresa } from "src/app/models/TipoVariableEmpresa";
+import { IngresosNoOperacioneales } from "src/app/models/IngresosNoOperacioneales";
+import { element } from "protractor";
 
 
 @Component({
@@ -19,6 +20,7 @@ import { CapitalSocial } from "src/app/models/CapitalSocial";
 @Injectable()
 export class Modulo1Component implements OnInit {
   public editable?: boolean;
+  public editableotroEstado?: boolean;
   public editableotros?: boolean;
   public editableo11?: boolean;
 
@@ -28,8 +30,11 @@ export class Modulo1Component implements OnInit {
   public numeral1!: FormGroup;
   public numeral2!: FormGroup;
 
+  public numeromeses!: Boolean;
+
   public modulo1!: Modulo1;
   public listTipoDocumento!: TipoDocumento[];
+
   public listTipoRegMercantil!: any[];
   public listDepto!: any[];
   public listMunicipio!: any[];
@@ -38,8 +43,10 @@ export class Modulo1Component implements OnInit {
   public listEstadoEmpresa!: any[];
   public listTipoOrg!: any[];
   public listSubTipoOrg!: any[];
-  public listNoOper!: any[];
+  public listNoOper!: IngresosNoOperacioneales[];
   public listTipoCausa!: any[];
+  public listVariable!: TipoVariableEmpresa[];
+  public listCIIUVariable!: any[];
 
 
   setStep(index: number) {
@@ -72,6 +79,7 @@ export class Modulo1Component implements OnInit {
     this.getAllTipoIngresosNoOperacionales();
     this.getAllTipoCausa();
     this.findAllEstadoEmpresa();
+    this.getAllTipoVariable();
 
     this.buildForm()
 
@@ -80,9 +88,10 @@ export class Modulo1Component implements OnInit {
       IDireccion: {},
       IInformacionFuncionamiento: {},
       ICapitalSocialE: {},
-      IIngresosNoOperacioneales: {},
+      IIngresosNoOperacioneales: [],
       IDireccionNotificacion: {},
       IcapitalSocialN: {},
+      IVariableEmpresa: [],
     };
 
   }
@@ -95,9 +104,10 @@ export class Modulo1Component implements OnInit {
       IDireccion: {},
       IInformacionFuncionamiento: {},
       ICapitalSocialE: {},
-      IIngresosNoOperacioneales: {},
+      IIngresosNoOperacioneales: [],
       IDireccionNotificacion: {},
       IcapitalSocialN: {},
+      IVariableEmpresa: [],
     };
 
   }
@@ -111,6 +121,7 @@ export class Modulo1Component implements OnInit {
       numeroCamara: new FormControl('', Validators.required),
       numeroRegistro: new FormControl('', Validators.required),
       idTipoDocumento: new FormControl('', Validators.required),
+      idTipoRegistroMercantil: new FormControl('', Validators.required),
     })
 
 
@@ -129,6 +140,8 @@ export class Modulo1Component implements OnInit {
     })
   }
   guardar(): void {
+
+    
     this.modulo1.IDireccion.idTipoDireccion = 1;
     this.modulo1.IDireccion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
     this.modulo1.IDireccionNotificacion.idTipoDireccion = 2;
@@ -139,12 +152,38 @@ export class Modulo1Component implements OnInit {
     this.modulo1.ICapitalSocialE.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
 
     this.modulo1.ICapitalSocialE.idTipoCapitalSocial = 2;
+
+    //guardar tipo de variable
+
+
+   
+    for (const variable of this.listVariable) {
+      debugger
+      variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+      variable.idSeccion = variable.codigo;
+      if(variable.idSeccion ==13){
+        variable.idCodigoCIIU = '12';
+      }
+      this.guardarvariableEmpresa(variable);
+
+    }
+  
+    // guardar ingreso no operacional
+    
+
+    for (const variable of this.listNoOper) {
+      
+      variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+      this.guardarIngresosNoOperacionales(variable);
+
+    }
+
     //guardar direccion
     this.httpCaratula.guardarCapitalSocial(this.modulo1.ICapitalSocialE).subscribe((resp) => {
       this.modulo1.ICapitalSocialE = resp;
     },
       (err) => {
-        this.toastr.error("No se puedo guardar Composición del capital so ");
+        this.toastr.error("No se puedo guardar Composición del capital social ");
       });
 
 
@@ -152,7 +191,7 @@ export class Modulo1Component implements OnInit {
       this.modulo1.IcapitalSocialN = resp;
     },
       (err) => {
-        this.toastr.error("No se puedo guardar Composición del capital so ");
+        this.toastr.error("No se puedo guardar Composición del capital social ");
       });
     //guardar direccion
 
@@ -173,29 +212,29 @@ export class Modulo1Component implements OnInit {
     //guarda la caratula 
     this.httpCaratula.guardarInformacionFuncionamiento(this.modulo1.IInformacionFuncionamiento).subscribe(
       (resp) => {
-        debugger
+
         this.modulo1.IInformacionFuncionamiento = resp;
         this.cargarCaratulaUnica();
         this.toastr.success("se guardo el modulo 1 exitosamente");
       },
       (err) => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error("No se puedo guardar la inforacion de mudulo 1");
       }
     );
 
     //guarda la caratula 
-    debugger
+
     if (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 99) {
       this.modulo1.IcaratulaUnica.idSubTipoOrganizacion == 0
     }
     this.httpCaratula.guardarCaratula(this.modulo1.IcaratulaUnica).subscribe(
       (resp) => {
-        debugger
+
         this.modulo1.IcaratulaUnica = resp;
         this.toastr.success("se guardo el modulo 1 exitosamente");
       },
       (err) => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error("No se puedo guardar la Dirección");
       }
     );
   }
@@ -214,11 +253,16 @@ export class Modulo1Component implements OnInit {
           this.editable = ((this.modulo1.IcaratulaUnica.idSubTipoOrganizacion || 0) > 0);
 
         }
+        if (this.modulo1.IcaratulaUnica.idEstadoEmpresa == 7) {
 
+          this.editableotroEstado = ((this.modulo1.IcaratulaUnica.idEstadoEmpresa || 0) > 0);
 
+        }
         this.getCaratulaUnicaDirecciones(this.modulo1.IcaratulaUnica.id);
         this.getCaratulaUnicaInformacionFuncionamiento(this.modulo1.IcaratulaUnica.id);
         this.getCaratulaUnicaCapitalSocial(this.modulo1.IcaratulaUnica.id);
+        this.getCaratulaUnicaIngresosNoOperacionales(this.modulo1.IcaratulaUnica.id);
+        this.getCaratulaUnicaVariableEmpresa(this.modulo1.IcaratulaUnica.id);
 
         this.spinner.hide();
         this.toastr.success("se cargo el modulo exitosamente ");
@@ -226,7 +270,90 @@ export class Modulo1Component implements OnInit {
       },
       err => {
 
-        this.toastr.error(err.Message + '');
+
+        this.toastr.error("No se puedo cargar la información el modulo ");
+      }
+    );
+  }
+
+  guardarvariableEmpresa(variableEmpresa: any) {
+    this.httpCaratula.guardarVariableEmpresa(variableEmpresa).subscribe((resp) => {
+      debugger
+      this.modulo1.IVariableEmpresa = resp;
+    },
+      (err) => {
+        this.toastr.error("No se puedo guardar variables principales");
+      });
+
+  }
+  getCaratulaUnicaVariableEmpresa(idCaratulaUnica: any) {
+    
+    this.httpCaratula.getCaratulaUnicaVariableEmpresa(idCaratulaUnica).subscribe(
+      result => {
+        debugger
+        if (result.length > 0) { 
+          
+          this.listVariable.forEach(element => {
+            
+            var item = result.find((x: any) => x.idSeccion == element.codigo)
+            if (item != null) {
+              debugger
+              element.id = item.id
+              element.numeroEstablecimientos= item.numeroEstablecimientos 
+              element.ingreso=item.ingreso 
+              element.personalOcupado = item.personalOcupado 
+              element.remuneracion = item.remuneracion
+              element.otrosCostosGastos = item.otrosCostosGastos
+              element.idCodigoCIIU = item.idCodigoCIIU
+              element.remuneracion = item.remuneracion 
+            }
+          })
+        
+        }else{
+          this.getAllTipoVariable();
+        }
+
+
+
+      },
+      err => {
+        this.toastr.error("No se pudo cargar la información de capital social");
+      }
+    );
+  }
+
+
+  guardarIngresosNoOperacionales(IngresosNoOperacioneales: any) {
+
+    this.httpCaratula.guardarIngresosNoOperacionales(IngresosNoOperacioneales).subscribe((resp) => {
+      this.modulo1.IIngresosNoOperacioneales = resp;
+    },
+      (err) => {
+        this.toastr.error("No se puedo guardar variables principales");
+      });
+
+  }
+
+  getCaratulaUnicaIngresosNoOperacionales(idCaratulaUnica: any) {
+
+    this.httpCaratula.getCaratulaUnicaIngresosNoOperacionales(idCaratulaUnica).subscribe(
+      result => {
+        
+        if (result.length > 0) {
+          
+          this.listNoOper.forEach(element => {
+            var item = result.find((x: any) => x.idTipoIngresosNoOperacionales == element.codigo)
+            if (item != null) {
+              element.id = item.id
+              element.valor = item.valor
+            }
+          })
+        } else {
+          this.getAllTipoIngresosNoOperacionales()
+        }
+      },
+      err => {
+        this.toastr.error("No se puedo cargar las direcciones ");
       }
     );
   }
@@ -239,13 +366,13 @@ export class Modulo1Component implements OnInit {
 
         result.forEach((element: any) => {
           if (element.idTipoDireccion == 1) {
-            debugger
+
             this.modulo1.IDireccion = element;
             this.getMunicipios(this.modulo1.IDireccion.idDepartamento);
 
           }
           if (element.idTipoDireccion == 2) {
-            debugger
+
             this.modulo1.IDireccionNotificacion = element;
             this.getMunicipiosNoti(this.modulo1.IDireccionNotificacion.idDepartamento);
 
@@ -255,30 +382,23 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error("no se puedo cargar las direcciones ");
+        this.toastr.error("No se puedo cargar las direcciones ");
       }
     );
 
   }
 
-  sumapublico(item: any) {
-    debugger//(foo.bar || 0)
-    this.modulo1.IcapitalSocialN.total = ((item.publico || 0) + (item.privado || 0));
-    if (this.modulo1.IcapitalSocialN.total == undefined || this.modulo1.IcapitalSocialN.total < 100) {
+  sumacapitalsocial(item: any) {
 
-      this.toastr.warning("La suma del capital nacional no es 100 ");
 
+    if (item.idTipoCapitalSocial = 1) { this.modulo1.IcapitalSocialN.total = ((this.modulo1.IcapitalSocialN.publico || 0) + (this.modulo1.IcapitalSocialN.privado || 0)); }
+    if (item.idTipoCapitalSocial = 2) { this.modulo1.ICapitalSocialE.total = ((this.modulo1.ICapitalSocialE.publico || 0) + (this.modulo1.ICapitalSocialE.privado || 0)); }
+
+    if ((((this.modulo1.IcapitalSocialN.total || 0) + (this.modulo1.ICapitalSocialE.total || 0)) != 100)) {
+      this.toastr.warning("La suma del capital nacional  y  extranjero no es 100 ");
     }
 
-  }
-  sumapuExt(item: any) {
-    debugger//(foo.bar || 0)
-    this.modulo1.ICapitalSocialE.total = ((item.publico || 0) + (item.privado || 0));
-    if (this.modulo1.ICapitalSocialE.total == undefined || this.modulo1.ICapitalSocialE.total < 100) {
 
-      this.toastr.warning("La suma del capital extranjero no es 100 ");
-
-    }
 
   }
   getCaratulaUnicaCapitalSocial(idCaratulaUnica: any) {
@@ -287,11 +407,11 @@ export class Modulo1Component implements OnInit {
       result => {
         result.forEach((element: any) => {
           if (element.idTipoCapitalSocial == 1) {
-            debugger
+
             this.modulo1.IcapitalSocialN = element;
 
           } else if (element.idTipoCapitalSocial == 2) {
-            debugger
+
             this.modulo1.ICapitalSocialE = element;
 
           }
@@ -301,26 +421,83 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        console.log(err)
+        this.toastr.error("No se pudo cargar la información de capital social");
       }
     );
 
   }
+  meses() {
+    if (this.modulo1.IInformacionFuncionamiento.mesesOperacion == 12) {
+      this.numeromeses = true;
+    } else {
+      this.numeromeses = false;
+    }
 
 
+  }
+
+  cambioEstado(item: any) {
+
+    if (this.modulo1.IcaratulaUnica.idEstadoEmpresa == 7) {
+
+      this.editableotroEstado = ((this.modulo1.IcaratulaUnica.idEstadoEmpresa || 0) > 0);
+
+    } else {
+      this.editableotroEstado = false;
+    }
+
+  }
 
   //listas de parametros
 
+  getAllTipoVariable() {
+    
+    this.httpCaratula.getAllTipoVariable().subscribe(
+      result => {
+        debugger
+        result.forEach((element: any) => {
+          result.id =0;
+          this.httpCaratula.findCodigoCIIUByIdTipoVariable(element.codigo).subscribe(
+            result => {
+              
+              element.listCIIU = result;
+              element.listCIIU.unshift({
+                codigo: "0",
+                nombre: "Seleccione el codigo CIIU",
+                id: 0
+              });
+
+            }
+          )
+        });
+        this.listVariable = result;
+        console.log("lista de variables:", this.listVariable)
+      },
+      err => {
+        this.toastr.error("No se puedo cargar la lista de tipo de variables ");
+      })
+  }
+
+  findCodigoCIIUByIdTipoVariable(idTipoOrganizacion: any) {
+    this.httpCaratula.findCodigoCIIUByIdTipoVariable(idTipoOrganizacion).subscribe(
+      result => {
+        this.listCIIUVariable = result;
+      },
+      err => {
+        this.toastr.error("No se puedo cargar la lista de CIIU ");
+      }
+    )
+
+
+  }
 
   getTipoDocumento() {
     this.httpCaratula.getTipoDocumento().subscribe(
       result => {
-
         this.listTipoDocumento = result;
-
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de tipo de documentos');
       }
     )
 
@@ -334,7 +511,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de tipo registro');
       }
     )
 
@@ -353,7 +530,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de deparatamentos');
       }
     )
   }
@@ -371,7 +548,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de municipios');
       }
     )
 
@@ -389,7 +566,8 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+
+        this.toastr.error("No se puedo cargar la lista de estado de empresa ");
       }
     )
   }
@@ -406,7 +584,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de departamentos');
       }
     )
   }
@@ -425,7 +603,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de municipios');
       }
     )
 
@@ -445,7 +623,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de tipo organización');
       }
     )
   }
@@ -468,7 +646,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de subtipo organización');
       }
     )
 
@@ -478,14 +656,82 @@ export class Modulo1Component implements OnInit {
     this.httpCaratula.getAllTipoIngresosNoOperacionales().subscribe(
 
       result => {
+        
         this.listNoOper = result;
+        this.listNoOper.forEach(element => {
+          element.id = 0;
+          element.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
+          element.idTipoIngresosNoOperacionales = element.codigo;
+
+        })
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de ingresos no operacionles');
       }
     )
 
+  }
+
+  sumaNoOperacionales() {
+    let suma = 0;
+    for (let index = 0; index < this.listNoOper.length-1; index++) {
+      let  item = suma;
+      suma =  item +(this.listNoOper[index].valor||0);
+      this.listNoOper[4].valor = suma;
+    }
+
+
+    //this.listNoOper[4].valor = ((this.listNoOper[0].valor || 0) + (this.listNoOper[1].valor || 0) + (this.listNoOper[2].valor || 0) + (this.listNoOper[3].valor || 0) || 0)
+
+  }
+
+  sumaNovariablesnumeroEstablecimientos() {
+    let suma = 0;
+
+    for (let index = 0; index < this.listVariable.length-1; index++) {
+      let  item = suma;
+
+      suma = item + (this.listVariable[index].numeroEstablecimientos||0);
+      this.listVariable[12].numeroEstablecimientos = suma;
+      
+    }
+  }
+  sumaNovariablesingreso() {
+    let suma = 0;
+
+    for (let index = 0; index < this.listVariable.length-1; index++) {
+      let  item = suma;
+      suma = item + (this.listVariable[index].ingreso||0);
+      this.listVariable[12].ingreso = suma;
+    }
+  }
+  sumaNovariablespersonalOcupado(){
+    let suma = 0;
+
+    for (let index = 0; index < this.listVariable.length-1; index++) {
+      let  item = suma;
+      suma = item + (this.listVariable[index].personalOcupado||0);
+      this.listVariable[12].personalOcupado = suma;
+    }
+  }
+  sumaNovariablesremuneracion(){
+    let suma = 0;
+
+    for (let index = 0; index < this.listVariable.length-1; index++) {
+      let  item = suma;
+      suma = item + (this.listVariable[index].remuneracion||0);
+      this.listVariable[12].remuneracion = suma;
+    }
+  }
+  sumaNovariablesotrosCostosGastos(){
+    let suma = 0;
+
+    for (let index = 0; index < this.listVariable.length-1; index++) {
+      let  item = suma;
+      suma = item + (this.listVariable[index].otrosCostosGastos||0);
+      this.listVariable[12].otrosCostosGastos = suma;
+    }
   }
 
   getAllTipoCausa() {
@@ -501,7 +747,7 @@ export class Modulo1Component implements OnInit {
 
       },
       err => {
-        this.toastr.error(err.Message + '');
+        this.toastr.error('No se puede cargar la información de tipo causa');
       }
     )
 
@@ -512,13 +758,13 @@ export class Modulo1Component implements OnInit {
     this.httpCaratula.getCaratulaUnicaInformacionFuncionamiento(idCaratulaUnica).subscribe(
       result => {
         this.modulo1.IInformacionFuncionamiento = result;
-        console.log("informacion:", this.modulo1.IInformacionFuncionamiento);
       },
       err => {
-        console.log(err)
+        this.toastr.error('No se puede cargar la información');
       }
     );
 
   }
 
 }
+

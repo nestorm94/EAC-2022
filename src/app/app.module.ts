@@ -18,12 +18,6 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DatepickerModule, BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimepickerModule } from 'ngx-bootstrap/timepicker';
 
-
-
-
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

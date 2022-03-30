@@ -4,7 +4,9 @@ import { InformacionFuncionamiento } from "src/app/models/InformacionFuncionamie
 import { Direccion } from "src/app/models/Direccion";
 import { CapitalSocial } from "src/app/models/CapitalSocial";
 import { IngresosNoOperacioneales } from "src/app/models/IngresosNoOperacioneales";
+import { VariableEmpresa } from "src/app/models/VariableEmpresa";
 
+import { TipoVariableEmpresa } from "src/app/models/TipoVariableEmpresa";
 
 export interface Modulo1{
     
@@ -12,7 +14,8 @@ export interface Modulo1{
     IInformacionFuncionamiento:InformacionFuncionamiento,
     IDireccion:Direccion,
     ICapitalSocialE:CapitalSocial,
-    IIngresosNoOperacioneales:IngresosNoOperacioneales,
+    IIngresosNoOperacioneales:IngresosNoOperacioneales[],
     IDireccionNotificacion:Direccion,
     IcapitalSocialN:CapitalSocial,
+    IVariableEmpresa:TipoVariableEmpresa[],
 }

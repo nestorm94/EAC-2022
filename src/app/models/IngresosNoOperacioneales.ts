@@ -6,7 +6,10 @@
 export interface IngresosNoOperacioneales{
 	id?:number; 
 	valor?: number, 
-	idTipoIngresosNoOperacionales?: string, 
-	idCaratulaUnica?: string
+	idTipoIngresosNoOperacionales?: number, 
+	idCaratulaUnica?: number,
+	orden?:number,
+	codigo?:number,
+	nombre?:string
 	
 }

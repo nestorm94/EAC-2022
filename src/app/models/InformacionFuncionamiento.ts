@@ -8,7 +8,7 @@ import { NumericLiteral } from "typescript";
 export interface InformacionFuncionamiento{
 	id?:number;
   	anioInicioOperaciones?:number;
-	mesesOperacion?:Int32Array;
+	mesesOperacion?:number;
 	cualOtraCausa?:string;
 	numeroDepartamentos?: number;
 	fechaDiligenciamiento?: string;

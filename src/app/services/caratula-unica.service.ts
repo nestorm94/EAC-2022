@@ -33,6 +33,22 @@ export class CaratulaUnicaService {
       params: { idCaratulaUnica: idCaratulaUnica },
     });
   }
+  //guardarVariableEmpresa
+
+  public guardarVariableEmpresa(variableEmpresa: any): Observable<any> {
+    return this.httpClient.post(this.API_SERV + 'guardarVariableEmpresa/', variableEmpresa);
+  }
+
+  //guardarIngresosNoOperacionales
+  public guardarIngresosNoOperacionales(IngresosNoOperacioneales: any): Observable<any> {
+    return this.httpClient.post(this.API_SERV + 'guardarIngresosNoOperacionales/', IngresosNoOperacioneales);
+  }
+  //getCaratulaUnicaIngresosNoOperacionales
+  getCaratulaUnicaIngresosNoOperacionales(idCaratulaUnica: any): Observable<any> {
+    return this.httpClient.get(this.API_SERV + 'getCaratulaUnicaIngresosNoOperacionales/', {
+      params: { idCaratulaUnica: idCaratulaUnica },
+    });
+  }
 
 
 
@@ -50,6 +66,13 @@ export class CaratulaUnicaService {
     });
   }
 
+  //getCaratulaUnicaVariableEmpresa
+  
+  public getCaratulaUnicaVariableEmpresa(idCaratulaUnica: any): Observable<any> {
+    return this.httpClient.get(this.API_SERV + 'getCaratulaUnicaVariableEmpresa/', {
+      params: { idCaratulaUnica: idCaratulaUnica },
+    });
+  }
   // lista tipo de docuemnto
   public getTipoDocumento(): Observable<any> {
     return this.httpClient.get(this.API_SERV + 'getAllTipoDocumento/');
@@ -101,6 +124,16 @@ export class CaratulaUnicaService {
       this.API_SERV + 'findSubTipoOrganizacionByIdTipoOrganizacion/',
       { params: { idTipoOrganizacion: idTipoOrganizacion } }
     );
+  }
+  //getAllTipoVariable
+
+  public getAllTipoVariable(): Observable<any> {
+    return this.httpClient.get(this.API_SERV + 'getAllTipoVariable/');
+  }
+
+  //findCodigoCIIUByIdTipoVariable
+  public findCodigoCIIUByIdTipoVariable(idTipoVariable: any): Observable<any> {
+    return this.httpClient.get(this.API_SERV + 'findCodigoCIIUByIdTipoVariable/',{ params: { idTipoVariable: idTipoVariable }} );
   }
 
   //getCaratulaUnicaInformacionFuncionamiento

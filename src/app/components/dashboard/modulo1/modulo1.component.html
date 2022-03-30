@@ -6,7 +6,7 @@
     <button mat-raised-button color="warn" (click)="accordion.closeAll()">
       CONTRAER TODO
     </button>
-    <button mat-raised-button  color="primary" (click)="guardar()">
+    <button mat-raised-button color="primary" (click)="guardar()">
       GUARDAR
     </button>
   </div>
@@ -31,40 +31,36 @@
               <h2>Registro mercantil/ sin ánimo de lucro / de proponentes</h2>
             </div>
             <div class="col-sm-6">
-              <div
-                class="form-check form-check-inline"
-                *ngFor="let item of listTipoDocumento"
+              <mat-radio-group
+                name="tipoDoc"
+                [(ngModel)]="modulo1.IcaratulaUnica.idTipoDocumento"
+                formControlName="idTipoDocumento"
               >
-                <input
-                  name="tipoDoc"
-                  [(ngModel)]="modulo1.IcaratulaUnica.idTipoDocumento"
-                  [ngModelOptions]="{ standalone: true }"
-                  class="form-check-input"
-                  type="radio"
+                <mat-radio-button
+                  name="opcionesTipoDoc"
+                  *ngFor="let item of listTipoDocumento"
                   value="{{ item.id }}"
-                />
-                <label class="mat-checkbox" for="inlineRadio1">{{
-                  item.tipoDocumento
-                }}</label>
-              </div>
+                  style="margin: 10px"
+                >
+                  {{ item.tipoDocumento }}</mat-radio-button
+                >
+              </mat-radio-group>
             </div>
             <div class="col-sm-6">
-              <div
-                class="form-check form-check-inline"
-                *ngFor="let item of listTipoRegMercantil"
+              <mat-radio-group
+                name="tipoMercatil"
+                [(ngModel)]="modulo1.IcaratulaUnica.idTipoRegistroMercantil"
+                formControlName="idTipoRegistroMercantil"
               >
-                <input
-                  name="tipoMercatil"
-                  [(ngModel)]="modulo1.IcaratulaUnica.idTipoRegistroMercantil"
-                  [ngModelOptions]="{ standalone: true }"
-                  class="form-check-input"
-                  type="radio"
-                  value="{{ item.codigo }}"
-                />
-                <label class="form-check-label" for="inlineRadio1">{{
-                  item.tipoRegistroMercantil
-                }}</label>
-              </div>
+                <mat-radio-button
+                  name="opcionestipoMercatil"
+                  value="{{ item.id }}"
+                  style="margin: 10px"
+                  *ngFor="let item of listTipoRegMercantil"
+                >
+                  {{ item.tipoRegistroMercantil }}</mat-radio-button
+                >
+              </mat-radio-group>
             </div>
             <div class="col-sm-5">
               <label class="form-label">Nro. Documento (*)</label>
@@ -493,8 +489,8 @@
             </select>
             <div class="invalid-feedback"></div>
           </div>
-          <div class="col-md-8">
-            <label for="cual" class="form-label" *ngIf="editableotros"
+          <div class="col-md-8" *ngIf="editableotros" >
+            <label for="cual" class="form-label" 
               >Cual?</label
             >
             <textarea
@@ -506,9 +502,9 @@
             ></textarea>
           </div>
           <br />
-          <div class="col-md-8">
+          <div class="col-md-8" *ngIf="editable">
             <select
-              *ngIf="editable"
+              
               name="subtipoOrg"
               [(ngModel)]="modulo1.IcaratulaUnica.idSubTipoOrganizacion"
               class="form-select"
@@ -584,9 +580,11 @@
               <label class="form-label">1.1 % Publico</label>
               <input
                 [(ngModel)]="modulo1.IcapitalSocialN.publico"
-                (change)="sumapublico(modulo1.IcapitalSocialN)"
+                (change)="sumacapitalsocial(modulo1.IcapitalSocialN)"
                 [ngModelOptions]="{ standalone: true }"
-                type="number"
+                ng-model="percentage"
+                ui-percentage-mask
+                ui-percentage-value
                 class="form-control"
               />
             </div>
@@ -597,7 +595,7 @@
                 [ngModelOptions]="{ standalone: true }"
                 type="number"
                 class="form-control"
-                disabled=""
+                disabled="true"
               />
             </div>
             <div class="col-4 col-lg-3">
@@ -605,7 +603,7 @@
               <input
                 [(ngModel)]="modulo1.ICapitalSocialE.publico"
                 [ngModelOptions]="{ standalone: true }"
-                (change)="sumapuExt(modulo1.ICapitalSocialE)"
+                (change)="sumacapitalsocial(modulo1.ICapitalSocialE)"
                 type="number"
                 class="form-control"
               />
@@ -619,7 +617,7 @@
               <input
                 [(ngModel)]="modulo1.IcapitalSocialN.privado"
                 [ngModelOptions]="{ standalone: true }"
-                (change)="sumapublico(modulo1.IcapitalSocialN)"
+                (change)="sumacapitalsocial(modulo1.IcapitalSocialN)"
                 type="number"
                 class="form-control"
               />
@@ -632,7 +630,7 @@
                 [ngModelOptions]="{ standalone: true }"
                 type="number"
                 class="form-control"
-                (change)="sumapuExt(modulo1.ICapitalSocialE)"
+                (change)="sumacapitalsocial(modulo1.ICapitalSocialE)"
               />
             </div>
           </div>
@@ -650,9 +648,12 @@
           <div class="col-md-12">
             <h2>Numeral 6. ESTADO ACTUAL DE LA EMPRESA</h2>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" >
             <label for="country" class="form-label">ESTADO DE LA EMPRESA</label>
-            <select class="form-select">
+            <select class="form-select"
+            [(ngModel)]="modulo1.IcaratulaUnica.idEstadoEmpresa"
+            (change)="cambioEstado(modulo1.IcaratulaUnica.idEstadoEmpresa)"
+            >
               <option
                 *ngFor="let item of listEstadoEmpresa"
                 value="{{ item.id }}"
@@ -661,7 +662,7 @@
               </option>
             </select>
           </div>
-          <div class="col-md-8">
+          <div class="col-md-8" *ngIf="editableotroEstado">
             <label for="cual" class="form-label">Cual?</label>
             <textarea
               type="textarea"
@@ -710,7 +711,6 @@
           <table class="table table-bordered">
             <thead>
               <tr>
-                <th scope="col" colspan="2">#</th>
                 <th scope="col">"SECCIÓN (1)"</th>
                 <th scope="col">"Código (2)"</th>
                 <th scope="col">No. Establecimientos</th>
@@ -729,35 +729,75 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-                <td>@mdo</td>
+              <tr *ngFor="let item of listVariable">
+                <td>{{ item.nombre }}</td>
+                <td>
+                  <select
+                    class="form-select"
+                    [(ngModel)]="item.idCodigoCIIU"
+                    *ngIf="item.codigo != 13"
+                    [ngModelOptions]="{ standalone: true }"
+                  >
+                    <option
+                      *ngFor="let item of item.listCIIU"
+                      value="{{ item.codigo }}"
+                    >
+                      {{ item.nombre }}
+                    </option>
+                  </select>
+
+                  <input
+                    *ngIf="item.codigo == 13"
+                    [disabled]="true"
+                    class="form-control"
+                    type="number"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="item.numeroEstablecimientos"
+                    [disabled]="item.codigo == 13"
+                    (change)="sumaNovariablesnumeroEstablecimientos()"  
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="item.ingreso"
+                    [disabled]="item.codigo == 13"
+                    (change)="sumaNovariablesingreso()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="item.personalOcupado"
+                    [disabled]="item.codigo == 13"
+                    (change)="sumaNovariablespersonalOcupado()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="item.remuneracion"
+                    [disabled]="item.codigo == 13"
+                    (change)="sumaNovariablesremuneracion()"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    class="form-control"
+                    [(ngModel)]="item.otrosCostosGastos"
+                    [disabled]="item.codigo == 13"
+                    (change)="sumaNovariablesotrosCostosGastos()"
+                  />
+                </td>
               </tr>
             </tbody>
           </table>
@@ -781,18 +821,31 @@
         <mat-icon> attach_money</mat-icon>
       </mat-expansion-panel-header>
       <div class="container">
-        <div class="row g-4" *ngFor="let item of listNoOper">
-          <div class="col-md-8">
-            <label class="form-check-label">{{ item.nombre }}</label>
-          </div>
-
-          <div class="col-md-4">
-            <input
-              type="number"
-              [(ngModel)]="modulo1.IIngresosNoOperacioneales.valor"
-            />
-          </div>
-        </div>
+        <table>
+          <tr *ngFor="let item of listNoOper">
+            <td>{{ item.nombre }}</td>
+            <td>
+              <input
+                *ngIf="item.codigo != 5"
+                type="number"
+                [(ngModel)]="item.valor"
+                (change)="sumaNoOperacionales()"
+                class="form-control"
+              />
+              <input
+                type="number"
+                [disabled]="true"
+                [(ngModel)]="item.valor"
+                *ngIf="item.codigo == 5"
+                class="form-control"
+              />
+            </td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+        </table>
       </div>
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Anterior</button>
@@ -977,37 +1030,43 @@
               class="form-control"
               [(ngModel)]="modulo1.IInformacionFuncionamiento.mesesOperacion"
               [ngModelOptions]="{ standalone: true }"
+              (change)="meses()"
             />
           </div>
-          <div class="col-md-12">
-            <label class="form-label"
-              >3. Si el período de operaciones (ítem 2) fue inferior a 12 meses,
-              indique la causa</label
-            >
-          </div>
-          <div class="col-md-2"></div>
-          <div class="col-md-4"></div>
-          <div class="col-md-6">
-            <label class="form-label">Seleccione Causa: </label>
-            <select class="form-select">
-              <option *ngFor="let item of listTipoCausa" value="{{ item.id }}">
-                {{ item.nombre }}
-              </option>
-            </select>
-          </div>
-          <div class="col-md-2"></div>
-          <div class="col-md-4"></div>
-          <div class="col-md-6">
-            <br />
-            <label class="form-label">Cual? </label>
-            <textarea
-              type="textarea"
-              class="form-control"
-              id="cual"
-              placeholder=""
-              value=""
-            ></textarea>
-            <div class="invalid-feedback"></div>
+          <div *ngIf="modulo1.IInformacionFuncionamiento.mesesOperacion !=12">
+            <div class="col-md-12">
+              <label class="form-label"
+                >3. Si el período de operaciones (ítem 2) fue inferior a 12
+                meses, indique la causa</label
+              >
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-6">
+              <label class="form-label">Seleccione Causa: </label>
+              <select class="form-select" [(ngModel)]="modulo1.IInformacionFuncionamiento.idTipoCausa">
+                <option
+                  *ngFor="let item of listTipoCausa"
+                  value="{{ item.id }}"
+                >
+                  {{ item.nombre }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-2"></div>
+            <div class="col-md-4"></div>
+            <div class="col-md-6" *ngIf="modulo1.IInformacionFuncionamiento.idTipoCausa==6">
+              <br/>
+              <label class="form-label">Cual? </label>
+              <textarea
+                type="textarea"
+                class="form-control"
+                id="cual"
+                placeholder=""
+                value=""
+              ></textarea>
+              <div class="invalid-feedback"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1059,6 +1118,7 @@
               modulo1.IInformacionFuncionamiento.fechaDiligenciamiento
             "
             [ngModelOptions]="{ standalone: true }"
+            mask
           />
         </div>
         <div class="col-md-4">
