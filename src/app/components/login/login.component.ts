@@ -1,28 +1,3 @@
-// import { Component, OnInit } from '@angular/core';
-// import { Router } from '@angular/router';
-
-// @Component({
-//   selector: 'app-login',
-//   templateUrl: './login.component.html',
-//   styleUrls: ['./login.component.css']
-// })
-// export class LoginComponent implements OnInit {
-//   logo="./assets/img/logo.png"
-  
-//   constructor(private router: Router) { }
-
-//   ngOnInit(): void {
-//   }
-
-//   ingresar() {
-
-
-
-//     this.router.navigateByUrl('/dashboard');
-//   }
-
-// }
-
 
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
@@ -56,28 +31,30 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const { username, password } = this.form;
-    this.authService.login(username, password).subscribe(
-      data => {
-        this.tokenStorage.saveToken(data.accessToken);
-        this.tokenStorage.saveUser(data);
+    debugger
+    this.router.navigateByUrl('/dashboard/inicio');
+    //const { username, password } = this.form;
+    //this.authService.login(username, password).subscribe(
+      //data => {
+       // this.tokenStorage.saveToken(data.accessToken);
+        //this.tokenStorage.saveUser(data);
 
-        this.isLoginFailed = false;
-        this.isLoggedIn = true;
-        this.roles = this.tokenStorage.getUser().roles;
+        //this.isLoginFailed = false;
+        //this.isLoggedIn = true;
+        //this.roles = this.tokenStorage.getUser().roles;
         //this.reloadPage();
-        if(this.roles[0]=="Administrador")
-        this.router.navigateByUrl('/dashboardAdmin');
-        else
-        this.router.navigateByUrl('/dashboard');
+        //if(this.roles[0]=="Administrador")
+        //this.router.navigateByUrl('/dashboardAdmin');
+       // else
+        //this.router.navigateByUrl('/dashboard');
         
 
-      },
-      err => {
-        this.errorMessage = err.error.message;
-        this.isLoginFailed = true;
-      }
-    );
+      //},
+      //err => {
+       // this.errorMessage = err.error.message;
+       // this.isLoginFailed = true;
+      //}
+    //);
   }
 
   // reloadPage(): void {

@@ -8,7 +8,10 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from "ngx-spinner";
 import { TipoVariableEmpresa } from "src/app/models/TipoVariableEmpresa";
 import { IngresosNoOperacioneales } from "src/app/models/IngresosNoOperacioneales";
-import { element } from "protractor";
+
+import { DatePipe } from '@angular/common'
+
+
 
 
 @Component({
@@ -17,7 +20,6 @@ import { element } from "protractor";
   styleUrls: ["./modulo1.component.css"],
 })
 
-@Injectable()
 export class Modulo1Component implements OnInit {
   public editable?: boolean;
   public editableotroEstado?: boolean;
@@ -31,6 +33,8 @@ export class Modulo1Component implements OnInit {
   public numeral2!: FormGroup;
 
   public numeromeses!: Boolean;
+
+  public digitoV!: boolean;
 
   public modulo1!: Modulo1;
   public listTipoDocumento!: TipoDocumento[];
@@ -47,6 +51,8 @@ export class Modulo1Component implements OnInit {
   public listTipoCausa!: any[];
   public listVariable!: TipoVariableEmpresa[];
   public listCIIUVariable!: any[];
+  public listOperacion!: any[];
+
 
 
   setStep(index: number) {
@@ -63,7 +69,7 @@ export class Modulo1Component implements OnInit {
 
   constructor(
     public httpCaratula: CaratulaUnicaService,
-    private _formBuild: FormBuilder, private toastr: ToastrService, private spinner: NgxSpinnerService) {
+    private _formBuild: FormBuilder, private toastr: ToastrService, private spinner: NgxSpinnerService,public datepipe: DatePipe) {
 
   }
 
@@ -80,6 +86,7 @@ export class Modulo1Component implements OnInit {
     this.getAllTipoCausa();
     this.findAllEstadoEmpresa();
     this.getAllTipoVariable();
+    this.getAllTipoOperacion();
 
     this.buildForm()
 
@@ -116,7 +123,7 @@ export class Modulo1Component implements OnInit {
   buildForm() {
 
     this.numeral1 = this._formBuild.group({
-      numeroDocumento: new FormControl('', Validators.required),
+      numeroDocumento: new FormControl('', [Validators.required, Validators.max(10)]),
       digitoVerificacion: new FormControl('', [Validators.required, Validators.maxLength(1)]),
       numeroCamara: new FormControl('', Validators.required),
       numeroRegistro: new FormControl('', Validators.required),
@@ -141,7 +148,7 @@ export class Modulo1Component implements OnInit {
   }
   guardar(): void {
 
-    
+
     this.modulo1.IDireccion.idTipoDireccion = 1;
     this.modulo1.IDireccion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
     this.modulo1.IDireccionNotificacion.idTipoDireccion = 2;
@@ -156,25 +163,49 @@ export class Modulo1Component implements OnInit {
     //guardar tipo de variable
 
 
-   
+
     for (const variable of this.listVariable) {
-      debugger
+
       variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
       variable.idSeccion = variable.codigo;
-      if(variable.idSeccion ==13){
+      if (variable.idSeccion == 13) {
         variable.idCodigoCIIU = '12';
       }
       this.guardarvariableEmpresa(variable);
 
     }
-  
+
     // guardar ingreso no operacional
-    
+
 
     for (const variable of this.listNoOper) {
-      
+
       variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
       this.guardarIngresosNoOperacionales(variable);
+
+    }
+    //guardar operacon
+
+    for (const variable of this.listOperacion) {
+      debugger
+      variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id
+      variable.idTipoOperacion = variable.idTipoOperacion
+      if (variable.valor == 1) {
+        variable.bienes = variable.valor
+        variable.servicios = null
+        variable.ninguna = null
+      }
+      else if (variable.valor == 2) {
+        variable.bienes = null
+        variable.servicios = variable.valor
+        variable.ninguna = null
+      }
+      else if (variable.valor == 3) {
+        variable.bienes = null
+        variable.servicios = null
+        variable.ninguna = variable.valor
+      }
+      this.guardarOperacion(variable);
 
     }
 
@@ -210,6 +241,7 @@ export class Modulo1Component implements OnInit {
       });
 
     //guarda la caratula 
+    debugger
     this.httpCaratula.guardarInformacionFuncionamiento(this.modulo1.IInformacionFuncionamiento).subscribe(
       (resp) => {
 
@@ -246,6 +278,22 @@ export class Modulo1Component implements OnInit {
     this.httpCaratula.cargarCaratulaUnica().subscribe(
       result => {
         this.modulo1.IcaratulaUnica = result;
+
+
+        let fechaConstitucionDesde = this.datepipe.transform(this.modulo1.IcaratulaUnica.fechaConstitucionDesde, 'yyyy-MM-dd');
+        this.modulo1.IcaratulaUnica.fechaConstitucionDesde  = (fechaConstitucionDesde||undefined);
+
+
+        let fechaConstitucionHasta = this.datepipe.transform(this.modulo1.IcaratulaUnica.fechaConstitucionHasta, 'yyyy-MM-dd');
+        this.modulo1.IcaratulaUnica.fechaConstitucionHasta  = (fechaConstitucionHasta||undefined)
+
+
+        this.modulo1.IcaratulaUnica.fechaConstitucionDesde
+
+        if (this.modulo1.IcaratulaUnica.idTipoDocumento == 1) {
+          this.digitoV = false;
+        }
+
         this.editableotros = (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 99);
         if (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 12) {
 
@@ -263,6 +311,8 @@ export class Modulo1Component implements OnInit {
         this.getCaratulaUnicaCapitalSocial(this.modulo1.IcaratulaUnica.id);
         this.getCaratulaUnicaIngresosNoOperacionales(this.modulo1.IcaratulaUnica.id);
         this.getCaratulaUnicaVariableEmpresa(this.modulo1.IcaratulaUnica.id);
+        this.getCaratulaUnicaOperacion(this.modulo1.IcaratulaUnica.id);
+
 
         this.spinner.hide();
         this.toastr.success("se cargo el modulo exitosamente ");
@@ -278,7 +328,7 @@ export class Modulo1Component implements OnInit {
 
   guardarvariableEmpresa(variableEmpresa: any) {
     this.httpCaratula.guardarVariableEmpresa(variableEmpresa).subscribe((resp) => {
-      debugger
+
       this.modulo1.IVariableEmpresa = resp;
     },
       (err) => {
@@ -287,29 +337,29 @@ export class Modulo1Component implements OnInit {
 
   }
   getCaratulaUnicaVariableEmpresa(idCaratulaUnica: any) {
-    
+
     this.httpCaratula.getCaratulaUnicaVariableEmpresa(idCaratulaUnica).subscribe(
       result => {
-        debugger
-        if (result.length > 0) { 
-          
+
+        if (result.length > 0) {
+
           this.listVariable.forEach(element => {
-            
+
             var item = result.find((x: any) => x.idSeccion == element.codigo)
             if (item != null) {
-              debugger
-              element.id = item.id
-              element.numeroEstablecimientos= item.numeroEstablecimientos 
-              element.ingreso=item.ingreso 
-              element.personalOcupado = item.personalOcupado 
+
+              element.id = item.idTipoOperacion
+              element.numeroEstablecimientos = item.numeroEstablecimientos
+              element.ingreso = item.ingreso
+              element.personalOcupado = item.personalOcupado
               element.remuneracion = item.remuneracion
               element.otrosCostosGastos = item.otrosCostosGastos
               element.idCodigoCIIU = item.idCodigoCIIU
-              element.remuneracion = item.remuneracion 
+              element.remuneracion = item.remuneracion
             }
           })
-        
-        }else{
+
+        } else {
           this.getAllTipoVariable();
         }
 
@@ -321,7 +371,16 @@ export class Modulo1Component implements OnInit {
       }
     );
   }
+  //guardarOperacion
+  guardarOperacion(operacion: any) {
+    this.httpCaratula.guardarOperacion(operacion).subscribe((resp) => {
 
+    },
+      (err) => {
+        this.toastr.error("No se puedo guardar variables principales");
+      });
+
+  }
 
   guardarIngresosNoOperacionales(IngresosNoOperacioneales: any) {
 
@@ -333,14 +392,49 @@ export class Modulo1Component implements OnInit {
       });
 
   }
+  getCaratulaUnicaOperacion(idCaratulaUnica: any) {
+    this.httpCaratula.getCaratulaUnicaOperacion(idCaratulaUnica).subscribe(
+      result => {
+        if (result.length > 0) {
+          debugger
+          this.listOperacion.forEach(element => {
+            var item = result.find((x: any) => x.idTipoOperacion == element.idTipoOperacion)
+            if (item != null) {
+              debugger
+              element.id = item.id
+              if (item.bienes ==1){
+                element.valor =1
+              }else if (item.servicios ==2){
+                element.valor =2
+              }else if (item.ninguna == 3){
+                item.valor = 3
+              }
+
+              element.bienes = item.bienes
+              element.servicios = item.servicios
+              element.ninguna = item.ninguna
+            }
+          })
+          console.log('lista de operacion 1:', this.listOperacion);
+
+        } else {
+          this.getAllTipoOperacion()
+        }
+      },
+      err => {
+        this.toastr.error("No se puedo cargar las direcciones ");
+      }
+    );
+
+  }
 
   getCaratulaUnicaIngresosNoOperacionales(idCaratulaUnica: any) {
 
     this.httpCaratula.getCaratulaUnicaIngresosNoOperacionales(idCaratulaUnica).subscribe(
       result => {
-        
+
         if (result.length > 0) {
-          
+
           this.listNoOper.forEach(element => {
             var item = result.find((x: any) => x.idTipoIngresosNoOperacionales == element.codigo)
             if (item != null) {
@@ -451,15 +545,15 @@ export class Modulo1Component implements OnInit {
   //listas de parametros
 
   getAllTipoVariable() {
-    
+
     this.httpCaratula.getAllTipoVariable().subscribe(
       result => {
-        debugger
+
         result.forEach((element: any) => {
-          result.id =0;
+          result.id = 0;
           this.httpCaratula.findCodigoCIIUByIdTipoVariable(element.codigo).subscribe(
             result => {
-              
+
               element.listCIIU = result;
               element.listCIIU.unshift({
                 codigo: "0",
@@ -485,6 +579,26 @@ export class Modulo1Component implements OnInit {
       },
       err => {
         this.toastr.error("No se puedo cargar la lista de CIIU ");
+      }
+    )
+
+
+  }
+  getAllTipoOperacion() {
+    this.httpCaratula.getAllTipoOperacion().subscribe(
+      result => {
+        console.log('lista de tipo operacion', result);
+        this.listOperacion = result;
+        this.listOperacion.forEach(element => {
+          debugger
+          element.idTipoOperacion = element.id
+          element.lista = [{ id: 1, value: "Bienes" }, { id: 2, value: "Servicios" }, { id: 3, value: "Ninguno" }]
+
+        })
+        console.log('lista de tipo operacion', this.listOperacion);
+      },
+      err => {
+        this.toastr.error('No se puede cargar la información de operaciones');
       }
     )
 
@@ -656,7 +770,7 @@ export class Modulo1Component implements OnInit {
     this.httpCaratula.getAllTipoIngresosNoOperacionales().subscribe(
 
       result => {
-        
+
         this.listNoOper = result;
         this.listNoOper.forEach(element => {
           element.id = 0;
@@ -675,9 +789,9 @@ export class Modulo1Component implements OnInit {
 
   sumaNoOperacionales() {
     let suma = 0;
-    for (let index = 0; index < this.listNoOper.length-1; index++) {
-      let  item = suma;
-      suma =  item +(this.listNoOper[index].valor||0);
+    for (let index = 0; index < this.listNoOper.length - 1; index++) {
+      let item = suma;
+      suma = item + (this.listNoOper[index].valor || 0);
       this.listNoOper[4].valor = suma;
     }
 
@@ -689,47 +803,47 @@ export class Modulo1Component implements OnInit {
   sumaNovariablesnumeroEstablecimientos() {
     let suma = 0;
 
-    for (let index = 0; index < this.listVariable.length-1; index++) {
-      let  item = suma;
+    for (let index = 0; index < this.listVariable.length - 1; index++) {
+      let item = suma;
 
-      suma = item + (this.listVariable[index].numeroEstablecimientos||0);
+      suma = item + (this.listVariable[index].numeroEstablecimientos || 0);
       this.listVariable[12].numeroEstablecimientos = suma;
-      
+
     }
   }
   sumaNovariablesingreso() {
     let suma = 0;
 
-    for (let index = 0; index < this.listVariable.length-1; index++) {
-      let  item = suma;
-      suma = item + (this.listVariable[index].ingreso||0);
+    for (let index = 0; index < this.listVariable.length - 1; index++) {
+      let item = suma;
+      suma = item + (this.listVariable[index].ingreso || 0);
       this.listVariable[12].ingreso = suma;
     }
   }
-  sumaNovariablespersonalOcupado(){
+  sumaNovariablespersonalOcupado() {
     let suma = 0;
 
-    for (let index = 0; index < this.listVariable.length-1; index++) {
-      let  item = suma;
-      suma = item + (this.listVariable[index].personalOcupado||0);
+    for (let index = 0; index < this.listVariable.length - 1; index++) {
+      let item = suma;
+      suma = item + (this.listVariable[index].personalOcupado || 0);
       this.listVariable[12].personalOcupado = suma;
     }
   }
-  sumaNovariablesremuneracion(){
+  sumaNovariablesremuneracion() {
     let suma = 0;
 
-    for (let index = 0; index < this.listVariable.length-1; index++) {
-      let  item = suma;
-      suma = item + (this.listVariable[index].remuneracion||0);
+    for (let index = 0; index < this.listVariable.length - 1; index++) {
+      let item = suma;
+      suma = item + (this.listVariable[index].remuneracion || 0);
       this.listVariable[12].remuneracion = suma;
     }
   }
-  sumaNovariablesotrosCostosGastos(){
+  sumaNovariablesotrosCostosGastos() {
     let suma = 0;
 
-    for (let index = 0; index < this.listVariable.length-1; index++) {
-      let  item = suma;
-      suma = item + (this.listVariable[index].otrosCostosGastos||0);
+    for (let index = 0; index < this.listVariable.length - 1; index++) {
+      let item = suma;
+      suma = item + (this.listVariable[index].otrosCostosGastos || 0);
       this.listVariable[12].otrosCostosGastos = suma;
     }
   }
@@ -758,6 +872,14 @@ export class Modulo1Component implements OnInit {
     this.httpCaratula.getCaratulaUnicaInformacionFuncionamiento(idCaratulaUnica).subscribe(
       result => {
         this.modulo1.IInformacionFuncionamiento = result;
+
+        let fechaDiligenciamiento = this.datepipe.transform(this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento, 'yyyy-MM-dd');
+        this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento  = (fechaDiligenciamiento||undefined);
+
+        console.log('fecha de constitucion :', this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento );
+
+
+
       },
       err => {
         this.toastr.error('No se puede cargar la información');
@@ -766,5 +888,15 @@ export class Modulo1Component implements OnInit {
 
   }
 
+  tipoDoc(item: any) {
+
+    if (item == "1") {
+      this.digitoV = true;
+    } else {
+      this.digitoV = false;
+    }
+    console.log('validacon', this.digitoV)
+
+  }
 }
 

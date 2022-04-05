@@ -49,7 +49,22 @@ export class CaratulaUnicaService {
       params: { idCaratulaUnica: idCaratulaUnica },
     });
   }
+  //getCaratulaUnicaOperacion
+  getCaratulaUnicaOperacion(idCaratulaUnica: any): Observable<any> {
+    return this.httpClient.get(this.API_SERV + 'getCaratulaUnicaOperacion/', {
+      params: { idCaratulaUnica: idCaratulaUnica },
+    });
+  }
+  //guardarOperacion
+  public guardarOperacion(operacion: any): Observable<any> {
+    return this.httpClient.post(this.API_SERV + 'guardarOperacion/', operacion);
+  }
 
+//getAllTipoOperacion
+
+public getAllTipoOperacion(): Observable<any> {
+  return this.httpClient.get(this.API_SERV + 'getAllTipoOperacion/');
+}
 
 
   //obtener la caratula unica 

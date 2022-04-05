@@ -1,3 +1,6 @@
+
+<app-navbar></app-navbar>
+
 <div class="container">
   <div class="container">
     <button mat-raised-button color="primary" (click)="accordion.openAll()">
@@ -35,6 +38,7 @@
                 name="tipoDoc"
                 [(ngModel)]="modulo1.IcaratulaUnica.idTipoDocumento"
                 formControlName="idTipoDocumento"
+                (change)="tipoDoc(modulo1.IcaratulaUnica.idTipoDocumento)"
               >
                 <mat-radio-button
                   name="opcionesTipoDoc"
@@ -78,7 +82,7 @@
                 Numero de documento es requerido
               </div>
             </div>
-            <div class="col-sm-1">
+            <div class="col-sm-1" >
               <label class="form-label">D.v</label>
               <input
                 [class.is-invalid]="
@@ -89,10 +93,12 @@
                 formControlName="digitoVerificacion"
                 type="number"
                 class="form-control"
+                
               />
               <div class="invalid-feedback">
                 dígito de verificación requerido
               </div>
+              
             </div>
             <div class="col-sm-3">
               <label class="form-label"> Cámara </label>
@@ -281,6 +287,7 @@
                 formControlName="telefono"
                 type="tel"
                 class="form-control"
+                matInput mask="(000) 000-0000" placeholder=" (000) 000-0000"
               />
               <div class="invalid-feedback">Teléfono requerido</div>
             </div>
@@ -478,6 +485,7 @@
             <select
               name="tipoOrg"
               [(ngModel)]="modulo1.IcaratulaUnica.idTipoOrganizacion"
+              [ngModelOptions]="{standalone: true}"
               class="form-select"
               (change)="
                 getSubtipoOrgnizacion(modulo1.IcaratulaUnica.idTipoOrganizacion)
@@ -497,6 +505,7 @@
               type="textarea"
               class="form-control"
               [(ngModel)]="modulo1.IcaratulaUnica.cualTipoOrgaizacion"
+              [ngModelOptions]="{standalone: true}"
               *ngIf="editableotros"
               placeholder=""
             ></textarea>
@@ -504,9 +513,9 @@
           <br />
           <div class="col-md-8" *ngIf="editable">
             <select
-              
               name="subtipoOrg"
               [(ngModel)]="modulo1.IcaratulaUnica.idSubTipoOrganizacion"
+              [ngModelOptions]="{standalone: true}"
               class="form-select"
             >
               <option *ngFor="let item of listSubTipoOrg" value="{{ item.id }}">
@@ -531,7 +540,7 @@
             <label class="form-label">Desde: </label>
 
             <input
-              type="text"
+            type="date"
               class="form-control input-sm"
               bsDatepicker
               [(ngModel)]="modulo1.IcaratulaUnica.fechaConstitucionDesde"
@@ -541,7 +550,7 @@
           <div class="col-md-6">
             <label class="form-label">Hasta: </label>
             <input
-              type="text"
+            type="date"
               class="form-control input-sm"
               bsDatepicker
               [(ngModel)]="modulo1.IcaratulaUnica.fechaConstitucionHasta"
@@ -652,6 +661,7 @@
             <label for="country" class="form-label">ESTADO DE LA EMPRESA</label>
             <select class="form-select"
             [(ngModel)]="modulo1.IcaratulaUnica.idEstadoEmpresa"
+            [ngModelOptions]="{standalone: true}"
             (change)="cambioEstado(modulo1.IcaratulaUnica.idEstadoEmpresa)"
             >
               <option
@@ -668,6 +678,7 @@
               type="textarea"
               class="form-control"
               [(ngModel)]="modulo1.IcaratulaUnica.cualOtroEstado"
+              [ngModelOptions]="{standalone: true}"
             ></textarea>
           </div>
           <br />
@@ -735,6 +746,7 @@
                   <select
                     class="form-select"
                     [(ngModel)]="item.idCodigoCIIU"
+                    [ngModelOptions]="{standalone: true}"
                     *ngIf="item.codigo != 13"
                     [ngModelOptions]="{ standalone: true }"
                   >
@@ -758,6 +770,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="item.numeroEstablecimientos"
+                    [ngModelOptions]="{standalone: true}"
                     [disabled]="item.codigo == 13"
                     (change)="sumaNovariablesnumeroEstablecimientos()"  
                   />
@@ -767,6 +780,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="item.ingreso"
+                    [ngModelOptions]="{standalone: true}"
                     [disabled]="item.codigo == 13"
                     (change)="sumaNovariablesingreso()"
                   />
@@ -776,6 +790,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="item.personalOcupado"
+                    [ngModelOptions]="{standalone: true}"
                     [disabled]="item.codigo == 13"
                     (change)="sumaNovariablespersonalOcupado()"
                   />
@@ -785,6 +800,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="item.remuneracion"
+                    [ngModelOptions]="{standalone: true}"
                     [disabled]="item.codigo == 13"
                     (change)="sumaNovariablesremuneracion()"
                   />
@@ -794,6 +810,7 @@
                     type="number"
                     class="form-control"
                     [(ngModel)]="item.otrosCostosGastos"
+                    [ngModelOptions]="{standalone: true}"
                     [disabled]="item.codigo == 13"
                     (change)="sumaNovariablesotrosCostosGastos()"
                   />
@@ -826,24 +843,25 @@
             <td>{{ item.nombre }}</td>
             <td>
               <input
+              matInput mask="separator.2" thousandSeparator="."
                 *ngIf="item.codigo != 5"
                 type="number"
                 [(ngModel)]="item.valor"
+                [ngModelOptions]="{standalone: true}"
                 (change)="sumaNoOperacionales()"
                 class="form-control"
+                 
               />
               <input
                 type="number"
                 [disabled]="true"
-                [(ngModel)]="item.valor"
+                [(ngModel)]="item.valor" 
+                [ngModelOptions]="{standalone: true}"
                 *ngIf="item.codigo == 5"
+                matInput mask="separator.2" thousandSeparator="." 
                 class="form-control"
               />
             </td>
-          </tr>
-          <tr>
-            <td></td>
-            <td></td>
           </tr>
         </table>
       </div>
@@ -874,6 +892,7 @@
           <div class="col-md-4">
             <input
               [(ngModel)]="modulo1.IcaratulaUnica.numeroUnidadesApoyo"
+              [ngModelOptions]="{standalone: true}"
               type="number"
               class="form-control"
             />
@@ -911,77 +930,26 @@
         <mat-icon> import_export</mat-icon>
       </mat-expansion-panel-header>
       <table>
-        <tr>
-          <td>
-            <p>
-              1. La empresa efectuó operaciones de compra con otro (s) país (es)
-              de:
-            </p>
-          </td>
+        <tr *ngFor="let item of listOperacion">
+          <td>{{ item.tipoOperacion }}</td>
           <td>
             <section class="example-section">
-              <mat-radio-group>
+              <mat-radio-group *ngFor="let tipo of item.lista" 
+              [(ngModel)]="item.valor"
+              [ngModelOptions]="{standalone: true}">
                 <mat-radio-button
                   name="opciones"
-                  [value]="1"
+                  [value]="tipo.id" 
                   style="margin: 10px"
                 >
-                  Bienes</mat-radio-button
-                >
-                <mat-radio-button
-                  name="opciones"
-                  [value]="2"
-                  style="margin: 10px"
-                >
-                  Servicios
-                </mat-radio-button>
-                <mat-radio-button
-                  name="opciones"
-                  [value]="3"
-                  style="margin: 10px"
-                >
-                  Ninguana</mat-radio-button
-                >
-              </mat-radio-group>
-            </section>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <p>
-              2. La empresa efectuó operaciones de venta con otro (s) país (es)
-              de:
-            </p>
-          </td>
-          <td>
-            <section class="example-section">
-              <mat-radio-group>
-                <mat-radio-button
-                  name="opciones"
-                  [value]="1"
-                  style="margin: 10px"
-                >
-                  Bienes</mat-radio-button
-                >
-                <mat-radio-button
-                  name="opciones"
-                  [value]="2"
-                  style="margin: 10px"
-                >
-                  Servicios
-                </mat-radio-button>
-                <mat-radio-button
-                  name="opciones"
-                  [value]="3"
-                  style="margin: 10px"
-                >
-                  Ninguana</mat-radio-button
+                  {{tipo.value}}</mat-radio-button
                 >
               </mat-radio-group>
             </section>
           </td>
         </tr>
       </table>
+
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Anterior</button>
         <button mat-button color="primary" (click)="nextStep()">
@@ -1044,7 +1012,10 @@
             <div class="col-md-4"></div>
             <div class="col-md-6">
               <label class="form-label">Seleccione Causa: </label>
-              <select class="form-select" [(ngModel)]="modulo1.IInformacionFuncionamiento.idTipoCausa">
+              <select class="form-select" 
+              [(ngModel)]="modulo1.IInformacionFuncionamiento.idTipoCausa"
+              [ngModelOptions]="{ standalone: true }"
+              >
                 <option
                   *ngFor="let item of listTipoCausa"
                   value="{{ item.id }}"
@@ -1112,7 +1083,7 @@
       <div class="row">
         <div class="col-md-3">
           <input
-            type="datetime"
+            type="date"
             class="form-control"
             [(ngModel)]="
               modulo1.IInformacionFuncionamiento.fechaDiligenciamiento

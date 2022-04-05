@@ -1,8 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 
 // Angular Material
 import {MatSliderModule } from '@angular/material/slider';
@@ -23,11 +21,6 @@ import {MatGridListModule} from '@angular/material/grid-list';
 
 //angular forms
 import { ReactiveFormsModule } from '@angular/forms';
-
-
-
-
-
 
 
 

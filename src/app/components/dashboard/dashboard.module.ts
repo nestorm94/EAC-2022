@@ -10,6 +10,9 @@ import { ReportesComponent } from './reportes/reportes.component';
 import { Modulo1Component } from './modulo1/modulo1.component';
 import { Modulo3Component } from './modulo3/modulo3.component';
 import { Modulo2Component } from './modulo2/modulo2.component';
+import { DatePipe } from '@angular/common';
+
+
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -33,6 +36,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
-  ]
+  ],
+  providers: [
+    DatePipe,
+  ],
 })
 export class DashboardModule { }
