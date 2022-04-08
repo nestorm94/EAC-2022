@@ -32,29 +32,29 @@ export class LoginComponent implements OnInit {
 
   onSubmit(): void {
     debugger
-    this.router.navigateByUrl('/dashboard/inicio');
-    //const { username, password } = this.form;
-    //this.authService.login(username, password).subscribe(
-      //data => {
-       // this.tokenStorage.saveToken(data.accessToken);
-        //this.tokenStorage.saveUser(data);
-
-        //this.isLoginFailed = false;
-        //this.isLoggedIn = true;
-        //this.roles = this.tokenStorage.getUser().roles;
-        //this.reloadPage();
-        //if(this.roles[0]=="Administrador")
-        //this.router.navigateByUrl('/dashboardAdmin');
-       // else
-        //this.router.navigateByUrl('/dashboard');
+    const { username, password } = this.form;
+    this.authService.login(username, password).subscribe(
+      data => {
+        this.tokenStorage.saveToken(data.accessToken);
+        this.tokenStorage.saveUser(data);
         
 
-      //},
-      //err => {
-       // this.errorMessage = err.error.message;
-       // this.isLoginFailed = true;
-      //}
-    //);
+        this.isLoginFailed = false;
+        this.isLoggedIn = true;
+        this.roles = this.tokenStorage.getUser().roles;
+        // this.reloadPage();
+        if(this.roles[0]=="Administrador")
+        this.router.navigateByUrl('/dashboardAdmin');
+        else
+        this.router.navigateByUrl('/dashboard/inicio');
+        
+
+      },
+      err => {
+        this.errorMessage = err.error.message;
+        this.isLoginFailed = true;
+      }
+    );
   }
 
   // reloadPage(): void {

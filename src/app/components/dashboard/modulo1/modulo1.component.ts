@@ -8,6 +8,8 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService } from "ngx-spinner";
 import { TipoVariableEmpresa } from "src/app/models/TipoVariableEmpresa";
 import { IngresosNoOperacioneales } from "src/app/models/IngresosNoOperacioneales";
+import { TokenStorageService } from '../../../services/token-storage.service';
+
 
 import { DatePipe } from '@angular/common'
 
@@ -26,8 +28,13 @@ export class Modulo1Component implements OnInit {
   public editableotros?: boolean;
   public editableo11?: boolean;
 
+  public token!: any;
+  public username!: any;
+
+
   @ViewChild(MatAccordion) accordion!: MatAccordion;
-  step = 0;;
+  step = 0;
+
 
   public numeral1!: FormGroup;
   public numeral2!: FormGroup;
@@ -69,7 +76,12 @@ export class Modulo1Component implements OnInit {
 
   constructor(
     public httpCaratula: CaratulaUnicaService,
-    private _formBuild: FormBuilder, private toastr: ToastrService, private spinner: NgxSpinnerService,public datepipe: DatePipe) {
+    private _formBuild: FormBuilder,
+    private tokenStorage: TokenStorageService,
+    private toastr: ToastrService,
+    private spinner: NgxSpinnerService,
+    public datepipe: DatePipe) {
+    this.token = (this.tokenStorage.getToken());
 
   }
 
@@ -100,6 +112,10 @@ export class Modulo1Component implements OnInit {
       IcapitalSocialN: {},
       IVariableEmpresa: [],
     };
+
+    this.token = ("Bearer " + this.tokenStorage.getToken());
+
+
 
   }
 
@@ -148,7 +164,7 @@ export class Modulo1Component implements OnInit {
   }
   guardar(): void {
 
-
+    debugger
     this.modulo1.IDireccion.idTipoDireccion = 1;
     this.modulo1.IDireccion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
     this.modulo1.IDireccionNotificacion.idTipoDireccion = 2;
@@ -165,7 +181,7 @@ export class Modulo1Component implements OnInit {
 
 
     for (const variable of this.listVariable) {
-
+      debugger
       variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
       variable.idSeccion = variable.codigo;
       if (variable.idSeccion == 13) {
@@ -281,11 +297,11 @@ export class Modulo1Component implements OnInit {
 
 
         let fechaConstitucionDesde = this.datepipe.transform(this.modulo1.IcaratulaUnica.fechaConstitucionDesde, 'yyyy-MM-dd');
-        this.modulo1.IcaratulaUnica.fechaConstitucionDesde  = (fechaConstitucionDesde||undefined);
+        this.modulo1.IcaratulaUnica.fechaConstitucionDesde = (fechaConstitucionDesde || undefined);
 
 
         let fechaConstitucionHasta = this.datepipe.transform(this.modulo1.IcaratulaUnica.fechaConstitucionHasta, 'yyyy-MM-dd');
-        this.modulo1.IcaratulaUnica.fechaConstitucionHasta  = (fechaConstitucionHasta||undefined)
+        this.modulo1.IcaratulaUnica.fechaConstitucionHasta = (fechaConstitucionHasta || undefined)
 
 
         this.modulo1.IcaratulaUnica.fechaConstitucionDesde
@@ -402,11 +418,11 @@ export class Modulo1Component implements OnInit {
             if (item != null) {
               debugger
               element.id = item.id
-              if (item.bienes ==1){
-                element.valor =1
-              }else if (item.servicios ==2){
-                element.valor =2
-              }else if (item.ninguna == 3){
+              if (item.bienes == 1) {
+                element.valor = 1
+              } else if (item.servicios == 2) {
+                element.valor = 2
+              } else if (item.ninguna == 3) {
                 item.valor = 3
               }
 
@@ -484,39 +500,73 @@ export class Modulo1Component implements OnInit {
 
   sumacapitalsocial(item: any) {
 
+    debugger
+    if (item.idTipoCapitalSocial = 1) { this.modulo1.IcapitalSocialN.total = ((this.modulo1.IcapitalSocialN.publico || 0) + (this.modulo1.IcapitalSocialN.privado || 0)); }
+    if (item.idTipoCapitalSocial = 2) { this.modulo1.ICapitalSocialE.total = ((this.modulo1.ICapitalSocialE.publico || 0) + (this.modulo1.ICapitalSocialE.privado || 0)); }
 
+    //this.modulo1.IcapitalSocialN.total = (this.modulo1.IcapitalSocialN.publico|| 0) + (this.modulo1.IcapitalSocialN.privado || 0); 
+
+    if ((((this.modulo1.IcapitalSocialN.total || 0) + (this.modulo1.ICapitalSocialE.total || 0)) != 100)) {
+      this.toastr.warning("La suma del capital nacional  y  extranjero no es 100 ");
+    }
+  }
+  sumacapitalsocialExtrangero(item: any) {
+
+    debugger
     if (item.idTipoCapitalSocial = 1) { this.modulo1.IcapitalSocialN.total = ((this.modulo1.IcapitalSocialN.publico || 0) + (this.modulo1.IcapitalSocialN.privado || 0)); }
     if (item.idTipoCapitalSocial = 2) { this.modulo1.ICapitalSocialE.total = ((this.modulo1.ICapitalSocialE.publico || 0) + (this.modulo1.ICapitalSocialE.privado || 0)); }
 
     if ((((this.modulo1.IcapitalSocialN.total || 0) + (this.modulo1.ICapitalSocialE.total || 0)) != 100)) {
       this.toastr.warning("La suma del capital nacional  y  extranjero no es 100 ");
     }
-
-
-
   }
+
+
   getCaratulaUnicaCapitalSocial(idCaratulaUnica: any) {
 
     this.httpCaratula.getCaratulaUnicaCapitalSocial(idCaratulaUnica).subscribe(
       result => {
-        result.forEach((element: any) => {
-          if (element.idTipoCapitalSocial == 1) {
+        debugger
+        if (result.length > 0) {
+          result.forEach((element: any) => {
+            if (element.idTipoCapitalSocial == 1) {
 
-            this.modulo1.IcapitalSocialN = element;
+              this.modulo1.IcapitalSocialN = element;
 
-          } else if (element.idTipoCapitalSocial == 2) {
+            } else if (element.idTipoCapitalSocial == 2) {
 
-            this.modulo1.ICapitalSocialE = element;
+              this.modulo1.ICapitalSocialE = element;
 
+            }
+
+          });
+        }
+        else {
+          this.modulo1.IcapitalSocialN = {
+
+            id:0,
+            publico:0,
+            privado:0,
+            total:0,
+            idTipoCapitalSocial:0,
+            idCaratulaUnica:0,
+          }
+          this.modulo1.ICapitalSocialE = {
+
+            id:0,
+            publico:0,
+            privado:0,
+            total:0,
+            idTipoCapitalSocial:0,
+            idCaratulaUnica:0,
           }
 
-        });
 
 
-      },
-      err => {
-        this.toastr.error("No se pudo cargar la información de capital social");
-      }
+        }},
+        err => {
+          this.toastr.error("No se pudo cargar la información de capital social");
+        }
     );
 
   }
@@ -874,9 +924,9 @@ export class Modulo1Component implements OnInit {
         this.modulo1.IInformacionFuncionamiento = result;
 
         let fechaDiligenciamiento = this.datepipe.transform(this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento, 'yyyy-MM-dd');
-        this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento  = (fechaDiligenciamiento||undefined);
+        this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento = (fechaDiligenciamiento || undefined);
 
-        console.log('fecha de constitucion :', this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento );
+        console.log('fecha de constitucion :', this.modulo1.IInformacionFuncionamiento.fechaDiligenciamiento);
 
 
 
