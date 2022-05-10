@@ -1,23 +1,181 @@
-
 <app-navbar></app-navbar>
 
 <div class="container">
-    <mat-accordion class="example-headers-align" multi>
-      <mat-expansion-panel class="contenedor">
-          <!--modulo 1-->
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              MÓDULO 3 - IDENTIFICACIÓN Y DATOS GENERALES
-            </mat-panel-title>
-            <mat-panel-description> IDENTIFICACIÓN Y DATOS GENERALES 
-              <mat-icon>horizontal_split</mat-icon>
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-              
-              <div class="example-button-row">
-                <button mat-raised-button color="primary"  (click)="guardar()">GUARDAR</button>
-              </div>
-      </mat-expansion-panel>
-      
-    </mat-accordion>
-  </div>
+  <form>
+    <fieldset>
+      <legend>MÓDULO 3 - IDENTIFICACIÓN Y DATOS GENERALES</legend>
+      <br />
+      <br />
+      <label>Registre el promedio de personal (administración y ventas) y sus gastos
+        de nómina, requeridos para obtener los ingresos reportados en el módulo
+        2.</label>
+      <br />
+      <br />
+      <h2>
+        Numeral 1. PERSONAL PROMEDIO OCUPADO POR LA EMPRESA EN DESARROLLO DE LA
+        ACTIVIDAD COMERCIAL
+      </h2>
+      <br />
+
+      <table class="table table-bordered">
+        <thead>
+          <tr class="table-warning">
+            <th colspan="2"> TIPO DE CONTRATACIÓN</th>
+            <th scope="col">Mujeres (1)</th>
+            <th scope="col">Hombres (2)</th>
+            <th scope="col">Total (3) = (1+2)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td> Propietarios, socios y familiares sin remuneración</td>
+            <td>
+              <input class="form-control" type="number" />
+            </td>
+            <td>
+              <input type="number" class="form-control" />
+            </td>
+            <td>
+              <input [disabled]="true" type="number" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td> Personal permanente o de planta, contratado a término indefinido n</td>
+            <td>
+              <input class="form-control" type="number" />
+            </td>
+            <td>
+              <input type="number" class="form-control" />
+            </td>
+            <td>
+              <input [disabled]="true" type="number" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td> Personal temporal contratado directamente por la empresa, contratado a término fijo </td>
+            <td>
+              <input class="form-control" type="number" />
+            </td>
+            <td>
+              <input type="number" class="form-control" />
+            </td>
+            <td>
+              <input [disabled]="true" type="number" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td> Personal temporal contratado a través de empresas </td>
+            <td>
+              <input class="form-control" type="number" />
+            </td>
+            <td>
+              <input type="number" class="form-control" />
+            </td>
+            <td>
+              <input [disabled]="true" type="number" class="form-control" />
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td> Aprendices, etapa práctica y lectiva (Ley 789 de diciembre de 2002) </td>
+            <td>
+              <input class="form-control" type="number" />
+            </td>
+            <td>
+              <input type="number" class="form-control" />
+            </td>
+            <td>
+              <input [disabled]="true" type="number" class="form-control" />
+            </td>
+          </tr>
+          <tr class="table-warning">
+            <th scope="row">6</th>
+            <td> TOTAL (renglones 1 a 5)</td>
+            <td>
+              <input [disabled]="true" class="form-control" type="number" />
+            </td>
+            <td>
+              <input [disabled]="true" type="number" class="form-control" />
+            </td>
+            <td>
+              <input [disabled]="true" type="number" class="form-control" />
+            </td>
+          </tr>
+
+        </tbody>
+      </table>
+
+      <br />
+      <br />
+      <h2>
+        Numeral 2. GASTOS CAUSADOS POR EL PERSONAL OCUPADO EN LA ACTIVIDAD
+        COMERCIAL.
+      </h2>
+      <br />
+
+      <table class="table table-bordered">
+
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Sueldos y salarios del personal permanente (en dinero y especie, horas extras, dominicales, comisión por
+              ventas, viáticos permanentes). Incluye Salario integral para personal permanente.</td>
+            <td><input type="number" class="form-control" /></td>
+            <th scope="row">6</th>
+            <td>@Aportes sobre la nómina (SENA, cajas de compensación familiar, ICBF)</td>
+            <td><input type="number" class="form-control" /></td>
+          </tr>
+          <tr>
+            <th scope="row" >2</th>
+            <td >Prestaciones sociales del personal permanente (primas legales y extralegales,
+              inclusive prima de vacaciones, cesantías e intereses de cesantías)</td>
+            <td ><input type="number" class="form-control" /></td>
+            <th scope="row" >7</th>
+            <td >Prestaciones sociales del personal permanente (primas legales y extralegales,
+              inclusive prima de vacaciones, cesantías e intereses de cesantías)</td>
+            <td ><input type="number" class="form-control" /></td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>Sueldos, salarios del personal temporal contratado directamente por la empresa. Incluye Salario integral
+              del personal temporal contratado directamente.</td>
+            <td><input type="number" class="form-control" /></td>
+            <th scope="row">8</th>
+            <td>Gastos causados por el personal temporal contratado a través de empresas</td>
+            <td><input type="number" class="form-control" /></td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>Prestaciones sociales del personal temporal contratado directamente por la empresas</td>
+            <td><input type="number" class="form-control" /></td>
+            <th scope="row">9</th>
+            <td>Apoyo de sostenimiento aprendices (Ley 789 de diciembre de 2002)</td>
+            <td><input type="number" class="form-control" /></td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Cotizaciones patronales obligatorias (salud, ARL y pensión) del personal permanente, temporal directo y
+              aprendiz</td>
+            <td><input type="number" class="form-control" /></td>
+            <th scope="row">10</th>
+            <td>Otros gastos de personal no incluidos antes (incluya auxilio de transporte) (relacione en
+              observaciones).</td>
+            <td><input type="number" class="form-control" /></td>
+          </tr>
+          <tr class="table-warning">
+            <th scope="row">11</th>
+            <td colspan="3">TOTAL (renglones 1 a 10)</td>
+            <td colspan="2"><input type="number" class="form-control" disabled /></td>
+          </tr>
+
+
+
+        </tbody>
+      </table>
+    </fieldset>
+  </form>
+</div>

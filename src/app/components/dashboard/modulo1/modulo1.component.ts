@@ -1,4 +1,4 @@
-import { Component, Injectable, Input, OnInit, ViewChild } from "@angular/core";
+import { Component, DebugElement, Injectable, Input, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAccordion } from '@angular/material/expansion';
 import { CaratulaUnicaService } from "src/app/services/caratula-unica.service";
@@ -38,6 +38,7 @@ export class Modulo1Component implements OnInit {
 
   public numeral1!: FormGroup;
   public numeral2!: FormGroup;
+  public numeral11!: FormGroup;
 
   public numeromeses!: Boolean;
 
@@ -59,6 +60,8 @@ export class Modulo1Component implements OnInit {
   public listVariable!: TipoVariableEmpresa[];
   public listCIIUVariable!: any[];
   public listOperacion!: any[];
+  idtipodocumento: number | undefined;
+  public variableEmpresa:any | undefined;
 
 
 
@@ -148,6 +151,9 @@ export class Modulo1Component implements OnInit {
     })
 
 
+
+
+
     this.numeral2 = this._formBuild.group({
       razonSocial: new FormControl('', Validators.required),
       nombreComercial: new FormControl('', Validators.required),
@@ -161,10 +167,27 @@ export class Modulo1Component implements OnInit {
       redesSociales: new FormControl('', Validators.required),
       paginaWeb: new FormControl('', Validators.required),
     })
+    this.numeral11 = this._formBuild.group({
+      mesesOperacion: new FormControl('', [Validators.required, Validators.max(12)]),
+      anioInicioOperaciones: new FormControl('', [Validators.required, Validators.maxLength(4)]),
+ 
+    })
+    const email = this.numeral2.get('email')?.value
   }
   guardar(): void {
 
+    
     debugger
+    this.httpCaratula.guardarCaratula(this.modulo1.IcaratulaUnica).subscribe(
+      (resp) => {
+
+        this.modulo1.IcaratulaUnica = resp;
+        this.toastr.success("se guardo el modulo 1 exitosamente");
+      },
+      (err) => {
+        this.toastr.error("No se puedo guardar la Dirección");
+      }
+    );
     this.modulo1.IDireccion.idTipoDireccion = 1;
     this.modulo1.IDireccion.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
     this.modulo1.IDireccionNotificacion.idTipoDireccion = 2;
@@ -176,18 +199,39 @@ export class Modulo1Component implements OnInit {
 
     this.modulo1.ICapitalSocialE.idTipoCapitalSocial = 2;
 
+      //guardar direccion
+      this.httpCaratula.guardarCapitalSocial(this.modulo1.ICapitalSocialE).subscribe((resp) => {
+        debugger
+        this.modulo1.ICapitalSocialE = resp;
+      },
+        (err) => {
+          this.toastr.error("No se puedo guardar Composición del capital social ");
+        });
+  
+  
+      this.httpCaratula.guardarCapitalSocial(this.modulo1.IcapitalSocialN).subscribe((resp) => {
+        debugger
+        this.modulo1.IcapitalSocialN = resp;
+      },
+        (err) => {
+          this.toastr.error("No se puedo guardar Composición del capital social ");
+        });
+
     //guardar tipo de variable
 
 
-
+    
     for (const variable of this.listVariable) {
-      debugger
+      
       variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id;
       variable.idSeccion = variable.codigo;
       if (variable.idSeccion == 13) {
         variable.idCodigoCIIU = '12';
       }
-      this.guardarvariableEmpresa(variable);
+      if (variable.idCodigoCIIU != null) {
+        this.guardarvariableEmpresa(variable);
+      }
+
 
     }
 
@@ -204,44 +248,31 @@ export class Modulo1Component implements OnInit {
 
     for (const variable of this.listOperacion) {
       debugger
-      variable.idCaratulaUnica = this.modulo1.IcaratulaUnica.id
-      variable.idTipoOperacion = variable.idTipoOperacion
+      this.variableEmpresa.idCaratulaUnica = this.modulo1.IcaratulaUnica.id
+      this.variableEmpresa.idTipoOperacion = variable.idTipoOperacion
       if (variable.valor == 1) {
-        variable.bienes = variable.valor
-        variable.servicios = null
-        variable.ninguna = null
+        this.variableEmpresa.bienes = variable.valor
+        this.variableEmpresa.servicios = undefined
+        this.variableEmpresa.ninguna = undefined
       }
       else if (variable.valor == 2) {
-        variable.bienes = null
-        variable.servicios = variable.valor
-        variable.ninguna = null
+        this.variableEmpresa.bienes = undefined
+        this.variableEmpresa.servicios = variable.valor
+        this.variableEmpresa.ninguna = undefined
       }
       else if (variable.valor == 3) {
-        variable.bienes = null
-        variable.servicios = null
-        variable.ninguna = variable.valor
+        this.variableEmpresa.bienes = undefined
+        this.variableEmpresa.servicios = undefined
+        this.variableEmpresa.ninguna = variable.valor
       }
-      this.guardarOperacion(variable);
+      this.guardarOperacion(this.variableEmpresa);
 
     }
 
+    debugger
+  
     //guardar direccion
-    this.httpCaratula.guardarCapitalSocial(this.modulo1.ICapitalSocialE).subscribe((resp) => {
-      this.modulo1.ICapitalSocialE = resp;
-    },
-      (err) => {
-        this.toastr.error("No se puedo guardar Composición del capital social ");
-      });
-
-
-    this.httpCaratula.guardarCapitalSocial(this.modulo1.IcapitalSocialN).subscribe((resp) => {
-      this.modulo1.IcapitalSocialN = resp;
-    },
-      (err) => {
-        this.toastr.error("No se puedo guardar Composición del capital social ");
-      });
-    //guardar direccion
-
+      debugger
     this.httpCaratula.guardarDireccion(this.modulo1.IDireccion).subscribe((resp) => {
       this.modulo1.IDireccion = resp;
     },
@@ -257,7 +288,7 @@ export class Modulo1Component implements OnInit {
       });
 
     //guarda la caratula 
-    debugger
+    
     this.httpCaratula.guardarInformacionFuncionamiento(this.modulo1.IInformacionFuncionamiento).subscribe(
       (resp) => {
 
@@ -275,24 +306,17 @@ export class Modulo1Component implements OnInit {
     if (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 99) {
       this.modulo1.IcaratulaUnica.idSubTipoOrganizacion == 0
     }
-    this.httpCaratula.guardarCaratula(this.modulo1.IcaratulaUnica).subscribe(
-      (resp) => {
-
-        this.modulo1.IcaratulaUnica = resp;
-        this.toastr.success("se guardo el modulo 1 exitosamente");
-      },
-      (err) => {
-        this.toastr.error("No se puedo guardar la Dirección");
-      }
-    );
+    
   }
 
   cargarCaratulaUnica() {
     this.spinner.show();
 
     this.toastr.clear();
+    debugger
     this.httpCaratula.cargarCaratulaUnica().subscribe(
       result => {
+        debugger
         this.modulo1.IcaratulaUnica = result;
 
 
@@ -308,7 +332,11 @@ export class Modulo1Component implements OnInit {
 
         if (this.modulo1.IcaratulaUnica.idTipoDocumento == 1) {
           this.digitoV = false;
+
         }
+        this.idtipodocumento = this.modulo1.IcaratulaUnica.idTipoDocumento;
+        console.log('tipodocumento:',this.modulo1.IcaratulaUnica.idTipoDocumento );
+        console.log('tipodocumento:', this.idtipodocumento);
 
         this.editableotros = (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 99);
         if (this.modulo1.IcaratulaUnica.idTipoOrganizacion == 12) {
@@ -356,15 +384,16 @@ export class Modulo1Component implements OnInit {
 
     this.httpCaratula.getCaratulaUnicaVariableEmpresa(idCaratulaUnica).subscribe(
       result => {
-
+        
         if (result.length > 0) {
-
+          
           this.listVariable.forEach(element => {
 
             var item = result.find((x: any) => x.idSeccion == element.codigo)
+            
             if (item != null) {
 
-              element.id = item.idTipoOperacion
+              element.id = item.id
               element.numeroEstablecimientos = item.numeroEstablecimientos
               element.ingreso = item.ingreso
               element.personalOcupado = item.personalOcupado
@@ -374,7 +403,7 @@ export class Modulo1Component implements OnInit {
               element.remuneracion = item.remuneracion
             }
           })
-
+          console.log("lista de variables:", this.listVariable)
         } else {
           this.getAllTipoVariable();
         }
@@ -389,6 +418,7 @@ export class Modulo1Component implements OnInit {
   }
   //guardarOperacion
   guardarOperacion(operacion: any) {
+    
     this.httpCaratula.guardarOperacion(operacion).subscribe((resp) => {
 
     },
@@ -401,6 +431,7 @@ export class Modulo1Component implements OnInit {
   guardarIngresosNoOperacionales(IngresosNoOperacioneales: any) {
 
     this.httpCaratula.guardarIngresosNoOperacionales(IngresosNoOperacioneales).subscribe((resp) => {
+      
       this.modulo1.IIngresosNoOperacioneales = resp;
     },
       (err) => {
@@ -414,9 +445,10 @@ export class Modulo1Component implements OnInit {
         if (result.length > 0) {
           debugger
           this.listOperacion.forEach(element => {
+            
             var item = result.find((x: any) => x.idTipoOperacion == element.idTipoOperacion)
             if (item != null) {
-              debugger
+              
               element.id = item.id
               if (item.bienes == 1) {
                 element.valor = 1
@@ -448,7 +480,7 @@ export class Modulo1Component implements OnInit {
 
     this.httpCaratula.getCaratulaUnicaIngresosNoOperacionales(idCaratulaUnica).subscribe(
       result => {
-
+        
         if (result.length > 0) {
 
           this.listNoOper.forEach(element => {
@@ -500,7 +532,7 @@ export class Modulo1Component implements OnInit {
 
   sumacapitalsocial(item: any) {
 
-    debugger
+    
     if (item.idTipoCapitalSocial = 1) { this.modulo1.IcapitalSocialN.total = ((this.modulo1.IcapitalSocialN.publico || 0) + (this.modulo1.IcapitalSocialN.privado || 0)); }
     if (item.idTipoCapitalSocial = 2) { this.modulo1.ICapitalSocialE.total = ((this.modulo1.ICapitalSocialE.publico || 0) + (this.modulo1.ICapitalSocialE.privado || 0)); }
 
@@ -512,7 +544,7 @@ export class Modulo1Component implements OnInit {
   }
   sumacapitalsocialExtrangero(item: any) {
 
-    debugger
+    
     if (item.idTipoCapitalSocial = 1) { this.modulo1.IcapitalSocialN.total = ((this.modulo1.IcapitalSocialN.publico || 0) + (this.modulo1.IcapitalSocialN.privado || 0)); }
     if (item.idTipoCapitalSocial = 2) { this.modulo1.ICapitalSocialE.total = ((this.modulo1.ICapitalSocialE.publico || 0) + (this.modulo1.ICapitalSocialE.privado || 0)); }
 
@@ -526,7 +558,7 @@ export class Modulo1Component implements OnInit {
 
     this.httpCaratula.getCaratulaUnicaCapitalSocial(idCaratulaUnica).subscribe(
       result => {
-        debugger
+        
         if (result.length > 0) {
           result.forEach((element: any) => {
             if (element.idTipoCapitalSocial == 1) {
@@ -544,29 +576,30 @@ export class Modulo1Component implements OnInit {
         else {
           this.modulo1.IcapitalSocialN = {
 
-            id:0,
-            publico:0,
-            privado:0,
-            total:0,
-            idTipoCapitalSocial:0,
-            idCaratulaUnica:0,
+            id: 0,
+            publico: 0,
+            privado: 0,
+            total: 0,
+            idTipoCapitalSocial: 0,
+            idCaratulaUnica: 0,
           }
           this.modulo1.ICapitalSocialE = {
 
-            id:0,
-            publico:0,
-            privado:0,
-            total:0,
-            idTipoCapitalSocial:0,
-            idCaratulaUnica:0,
+            id: 0,
+            publico: 0,
+            privado: 0,
+            total: 0,
+            idTipoCapitalSocial: 0,
+            idCaratulaUnica: 0,
           }
 
 
 
-        }},
-        err => {
-          this.toastr.error("No se pudo cargar la información de capital social");
         }
+      },
+      err => {
+        this.toastr.error("No se pudo cargar la información de capital social");
+      }
     );
 
   }
@@ -600,20 +633,21 @@ export class Modulo1Component implements OnInit {
       result => {
 
         result.forEach((element: any) => {
-          result.id = 0;
           this.httpCaratula.findCodigoCIIUByIdTipoVariable(element.codigo).subscribe(
             result => {
-
+              element.id =0,
               element.listCIIU = result;
               element.listCIIU.unshift({
-                codigo: "0",
+                codigo: "undefined",
                 nombre: "Seleccione el codigo CIIU",
-                id: 0
+                idCodigoCIIU: undefined,
+                id: undefined
               });
-
             }
           )
         });
+        
+
         this.listVariable = result;
         console.log("lista de variables:", this.listVariable)
       },
@@ -635,12 +669,13 @@ export class Modulo1Component implements OnInit {
 
   }
   getAllTipoOperacion() {
+    debugger
     this.httpCaratula.getAllTipoOperacion().subscribe(
       result => {
         console.log('lista de tipo operacion', result);
         this.listOperacion = result;
         this.listOperacion.forEach(element => {
-          debugger
+          
           element.idTipoOperacion = element.id
           element.lista = [{ id: 1, value: "Bienes" }, { id: 2, value: "Servicios" }, { id: 3, value: "Ninguno" }]
 
@@ -741,7 +776,7 @@ export class Modulo1Component implements OnInit {
 
         this.listDeptoNoti = result;
         this.listDeptoNoti.unshift({
-          codigo: "0",
+          codigo: undefined,
           nombre: "Seleccione el Departamento",
           id: 0
         });

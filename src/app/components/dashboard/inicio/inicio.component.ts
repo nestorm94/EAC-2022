@@ -11,6 +11,11 @@ export class InicioComponent implements OnInit {
 
   principal="./assets/img/principal.png"
 
+  consultar="./assets/img/Consultar.jpg"
+  diligenciar="./assets/img/Diligenciar.jpg"
+  modificar="./assets/img/Modificar.jpg"
+  warning="./assets/img/Warning.jpg"
+
   public token!: any;
   public username!: any;
 
